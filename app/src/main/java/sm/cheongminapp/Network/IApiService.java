@@ -17,7 +17,7 @@ import sm.cheongminapp.Model.Result;
 
 public interface IApiService {
     @FormUrlEncoded
-    @POST("user/login")
+    @POST("users/login")
     Call<Result> Login(
             @Field("id") String id,
             @Field("passwd") String password);
