@@ -32,12 +32,10 @@ public class FriendFragment extends Fragment {
         friendList = (ListView)view.findViewById(R.id.friend_list);
         friendList.setAdapter(adapter);
 
-
-        adapter.addItem(getContext().getDrawable(R.drawable.ic_account), "이름1", "상태 메세지");
-        adapter.addItem(getContext().getDrawable(R.drawable.ic_account), "이름2", "상태 메세지");
-        adapter.addItem(getContext().getDrawable(R.drawable.ic_account), "이름3", "상태 메세지");
-        adapter.addItem(getContext().getDrawable(R.drawable.ic_account), "이름4", "상태 메세지");
-        adapter.addItem(getContext().getDrawable(R.drawable.ic_account), "이름5", "상태 메세지");
+        for(int i = 0; i < 100; i++)
+        {
+            adapter.addItem(getContext().getDrawable(R.drawable.ic_account), "이름" + i, "상태 메세지");
+        }
 
         return view;
     }

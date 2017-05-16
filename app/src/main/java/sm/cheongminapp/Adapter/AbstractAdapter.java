@@ -1,4 +1,4 @@
-package sm.cheongminapp.adapter;
+package sm.cheongminapp.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
