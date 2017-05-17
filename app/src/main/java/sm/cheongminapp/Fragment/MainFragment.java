@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,6 @@ import sm.cheongminapp.R;
 
 public class MainFragment extends Fragment {
 
-
     @BindView(R.id.fragment_main_tab_layout)
     TabLayout tabLayout;
 
@@ -28,6 +24,9 @@ public class MainFragment extends Fragment {
     ViewPager viewPager;
 
     Unbinder unbinder;
+
+    FriendFragment friendFragment = new FriendFragment();
+    ChatFragment chatFragment = new ChatFragment();
 
     public MainFragment() {
     }
@@ -39,13 +38,14 @@ public class MainFragment extends Fragment {
         // 버터나이프 바인딩
         unbinder = ButterKnife.bind(this, view);
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.addFragment("친구", new FriendFragment());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFragment("친구", friendFragment);
+        adapter.addFragment("채팅", chatFragment);
 
         viewPager.setAdapter(adapter);
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         return view;
     }

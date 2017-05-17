@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import sm.cheongminapp.Fragment.CenterFragment;
 import sm.cheongminapp.Fragment.FriendFragment;
 import sm.cheongminapp.Fragment.MainFragment;
+import sm.cheongminapp.data.Center;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_bottom_navigation)
     BottomNavigationView bottomNavigation;
 
-   MainFragment mainFragment = new MainFragment();
+    MainFragment mainFragment = new MainFragment();
+    CenterFragment centerFragment = new CenterFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        replaceFragment(new MainFragment());
+                        replaceFragment(mainFragment);
 
                         return true;
                     case R.id.navigation_dashboard:
-                        replaceFragment(new CenterFragment());
+                        replaceFragment(centerFragment);
                         return true;
                 }
 

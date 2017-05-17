@@ -1,4 +1,4 @@
-package sm.cheongminapp;
+package sm.cheongminapp.Adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -11,12 +11,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import sm.cheongminapp.data.Friend;
+import sm.cheongminapp.R;
+
 /**
  * Created by Raye on 2017-05-16.
  */
 
 public class FriendListAdapter extends BaseAdapter {
-    private ArrayList<FriendListItem> itemArrayList = new ArrayList<FriendListItem>() ;
+    private ArrayList<Friend> itemArrayList = new ArrayList<Friend>() ;
 
     public FriendListAdapter() {
 
@@ -30,18 +33,16 @@ public class FriendListAdapter extends BaseAdapter {
         // Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.friend_list_layout, parent, false);
+            convertView = inflater.inflate(R.layout.layout_friend_item, parent, false);
         }
 
         ImageView iconImageView = (ImageView) convertView.findViewById(R.id.imageView) ;
         TextView nameTextView = (TextView) convertView.findViewById(R.id.textName) ;
-        TextView descTextView = (TextView) convertView.findViewById(R.id.textDescription) ;
 
-        FriendListItem item = itemArrayList.get(position);
+        Friend item = itemArrayList.get(position);
 
         iconImageView.setImageDrawable(item.getIconDrawable());
         nameTextView.setText(item.getName());
-        descTextView.setText(item.getDescription());
 
         return convertView;
     }
@@ -60,12 +61,11 @@ public class FriendListAdapter extends BaseAdapter {
         return itemArrayList.size() ;
     }
 
-    public void addItem(Drawable icon, String name, String desc) {
-        FriendListItem item = new FriendListItem();
+    public void addItem(Drawable icon, String name) {
+        Friend item = new Friend();
 
         item.setIconDrawable(icon);
         item.setName(name);
-        item.setDescription(desc);
 
         itemArrayList.add(item);
     }
