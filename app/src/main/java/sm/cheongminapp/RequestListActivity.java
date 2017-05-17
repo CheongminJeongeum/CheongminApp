@@ -6,8 +6,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import sm.cheongminapp.Adapter.AbstractAdapter;
-import sm.cheongminapp.Adapter.RequestAdapter;
+import sm.cheongminapp.view.adapter.AbstractAdapter;
+import sm.cheongminapp.view.adapter.RequestAdapter;
 import sm.cheongminapp.data.RequestList;
 
 public class RequestListActivity extends AppCompatActivity {

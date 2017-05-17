@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.transition.Transition;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +14,8 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import sm.cheongminapp.Fragment.CenterFragment;
-import sm.cheongminapp.Fragment.FriendFragment;
-import sm.cheongminapp.Fragment.MainFragment;
-import sm.cheongminapp.data.Center;
+import sm.cheongminapp.fragment.CenterFragment;
+import sm.cheongminapp.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout_chat_room_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:padding="3dp"
+        android:layout_marginRight="5dp">
+
+        <ImageView
+            android:id="@+id/layout_chat_room_icon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="fitCenter" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/layout_chat_room_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/layout_chat_room_thumbnail"
+        android:layout_toRightOf="@id/layout_chat_room_thumbnail"
+        android:layout_marginTop="10dp"
+        android:text="방 이름"
+        android:textSize="18dp"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/layout_chat_room_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/layout_chat_room_thumbnail"
+        android:layout_below="@id/layout_chat_room_name"
+        android:text="메세지"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/layout_chat_room_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/layout_chat_room_name"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="10분전"
+        android:textSize="15dp"/>
+
+</RelativeLayout>

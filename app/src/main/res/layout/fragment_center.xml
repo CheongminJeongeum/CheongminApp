@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="sm.cheongminapp.Fragment.CenterFragment">
+    tools:context="sm.cheongminapp.fragment.CenterFragment">
 
     <Button
         android:id="@+id/btn_request_list"

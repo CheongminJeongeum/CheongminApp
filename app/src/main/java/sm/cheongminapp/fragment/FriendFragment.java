@@ -1,4 +1,4 @@
-package sm.cheongminapp.Fragment;
+package sm.cheongminapp.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import sm.cheongminapp.Adapter.FriendListAdapter;
+import sm.cheongminapp.view.adapter.FriendAdapter;
 import sm.cheongminapp.R;
 
 public class FriendFragment extends Fragment {
@@ -23,7 +23,7 @@ public class FriendFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend, container, false);
 
-        FriendListAdapter adapter = new FriendListAdapter();
+        FriendAdapter adapter = new FriendAdapter();
 
         friendList = (ListView)view.findViewById(R.id.friend_list);
         friendList.setAdapter(adapter);

@@ -1,15 +1,11 @@
-package sm.cheongminapp.Network;
-
-import org.json.JSONObject;
+package sm.cheongminapp.network;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import sm.cheongminapp.Model.Result;
+import sm.cheongminapp.model.Result;
 
 /**
  * Created by Raye on 2017-05-02.

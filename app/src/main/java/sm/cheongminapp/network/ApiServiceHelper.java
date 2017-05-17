@@ -1,4 +1,4 @@
-package sm.cheongminapp.Network;
+package sm.cheongminapp.network;
 
 import retrofit2.*;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,18 +1,15 @@
-package sm.cheongminapp.Adapter;
+package sm.cheongminapp.view.adapter;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import sm.cheongminapp.data.Center;
 import sm.cheongminapp.R;
+import sm.cheongminapp.data.RequestList;
 
-/**
- * Created by user on 2017. 5. 14..
- */
-public class CenterAdapter extends AbstractAdapter<Center> {
-    public CenterAdapter(Context ctx) {
+public class RequestAdapter extends AbstractAdapter<RequestList> {
+    public RequestAdapter(Context ctx) {
         super(ctx);
     }
 
@@ -21,22 +18,26 @@ public class CenterAdapter extends AbstractAdapter<Center> {
         ViewHolder viewHolder;
         // General ListView optimization code.
         if (view == null) {
-            view = mInflator.inflate(R.layout.listitem_center, viewGroup, false);
+            view = mInflator.inflate(R.layout.listitem_request, viewGroup, false);
             viewHolder = new ViewHolder();
+            viewHolder.tvListItemLocation = (TextView) view.findViewById(R.id.location);
             viewHolder.tvListItemCenterName = (TextView) view.findViewById(R.id.center_name);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        final Center info = adapterList.get(i);
+        final RequestList info = adapterList.get(i);
         if (info == null)
             return view;
 
-        viewHolder.tvListItemCenterName.setText(info.name);
+        viewHolder.tvListItemLocation.setText(info.location);
+        viewHolder.tvListItemCenterName.setText(info.centerName);
         return view;
     }
 
     private class ViewHolder {
+        TextView tvListItemLocation;
         TextView tvListItemCenterName;
+
     }
 }

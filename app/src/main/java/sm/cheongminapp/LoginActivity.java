@@ -1,13 +1,7 @@
 package sm.cheongminapp;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,9 +18,9 @@ import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sm.cheongminapp.Model.Result;
-import sm.cheongminapp.Network.ApiServiceHelper;
-import sm.cheongminapp.Network.IApiService;
+import sm.cheongminapp.model.Result;
+import sm.cheongminapp.network.ApiServiceHelper;
+import sm.cheongminapp.network.IApiService;
 
 /**
  * A login screen that offers login via email/password.

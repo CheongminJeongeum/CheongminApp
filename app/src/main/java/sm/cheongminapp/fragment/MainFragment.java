@@ -1,4 +1,4 @@
-package sm.cheongminapp.Fragment;
+package sm.cheongminapp.fragment;
 
 
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import sm.cheongminapp.Adapter.ViewPagerAdapter;
+import sm.cheongminapp.view.adapter.ViewPagerAdapter;
 import sm.cheongminapp.R;
 
 public class MainFragment extends Fragment {

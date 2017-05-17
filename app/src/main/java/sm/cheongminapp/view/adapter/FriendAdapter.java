@@ -1,4 +1,4 @@
-package sm.cheongminapp.Adapter;
+package sm.cheongminapp.view.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -18,10 +18,10 @@ import sm.cheongminapp.R;
  * Created by Raye on 2017-05-16.
  */
 
-public class FriendListAdapter extends BaseAdapter {
+public class FriendAdapter extends BaseAdapter {
     private ArrayList<Friend> itemArrayList = new ArrayList<Friend>() ;
 
-    public FriendListAdapter() {
+    public FriendAdapter() {
 
     }
 
