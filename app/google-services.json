@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "821492417042",
+    "firebase_url": "https://cheongmin-c355b.firebaseio.com",
+    "project_id": "cheongmin-c355b",
+    "storage_bucket": "cheongmin-c355b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821492417042:android:0cf2a3f38c99d37d",
+        "android_client_info": {
+          "package_name": "sm.cheongminapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "821492417042-lnn9bqgadm6lh62i996rqs03sisrlae0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0CBPQEXxtn9NO2m6vzwB_N60sdAPdCw8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

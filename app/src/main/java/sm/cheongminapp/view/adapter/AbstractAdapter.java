@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by user on 2017. 5. 14..
  */
-public class AbstractAdapter<T> extends BaseAdapter {
+public abstract class AbstractAdapter<T> extends BaseAdapter {
     ArrayList<T> adapterList = new ArrayList<T>();
     LayoutInflater mInflator;
 
