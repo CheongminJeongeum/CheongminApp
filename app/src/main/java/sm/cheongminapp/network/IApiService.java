@@ -1,10 +1,15 @@
 package sm.cheongminapp.network;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import sm.cheongminapp.model.Center;
+import sm.cheongminapp.model.Profile;
 import sm.cheongminapp.model.Result;
 
 /**
@@ -18,12 +23,27 @@ public interface IApiService {
             @Field("id") String id,
             @Field("passwd") String password);
 
+    @GET("users/{id}")
+    Call<Profile> GetProfile(@Path("id") String id);
+
+    @GET("users/")
+    Call<Profile> GetMyProfile();
+
+    @GET("centers/")
+    Call<List<Center>> GetCenters();
+
     @FormUrlEncoded
-    @POST("requests/center/{id}")
+    @POST("/centers/{id}/requests")
     Call<Result> RequestReservation(
             @Path("id") int centerID,
             @Field("day") String day,
             @Field("start_time") int startTime,
             @Field("end_time") int endTime,
-            @Field("reservation_info") String info);
+            @Field("info") String info,
+            @Field("lat") float lat,
+            @Field("lng") float lng);
+
+
+
+
 }

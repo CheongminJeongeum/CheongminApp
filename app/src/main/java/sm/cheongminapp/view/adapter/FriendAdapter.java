@@ -36,8 +36,8 @@ public class FriendAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.layout_friend_item, parent, false);
         }
 
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.imageView) ;
-        TextView nameTextView = (TextView) convertView.findViewById(R.id.textName) ;
+        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.profile) ;
+        TextView nameTextView = (TextView) convertView.findViewById(R.id.name) ;
 
         Friend item = itemArrayList.get(position);
 
