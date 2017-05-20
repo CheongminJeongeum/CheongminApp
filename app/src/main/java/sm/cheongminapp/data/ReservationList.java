@@ -3,10 +3,9 @@ package sm.cheongminapp.data;
 /**
  * Created by user on 2017. 5. 15..
  */
-public class RequestList {
+public class ReservationList {
     public String location;
     public String centerName;
     public String date;
-    public int start_time;
-    public int end_time;
+    public String time; // 서버단에서 1시~3시 형태로 바꿔서 출력?
 }

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 import sm.cheongminapp.view.adapter.AbstractAdapter;
 import sm.cheongminapp.view.adapter.RequestAdapter;
-import sm.cheongminapp.data.RequestList;
+import sm.cheongminapp.data.ReservationList;
 
 public class RequestListActivity extends AppCompatActivity {
     ListView listView;
-    AbstractAdapter<RequestList> adapter;
-    ArrayList<RequestList> reqList = new ArrayList<RequestList>();
+    AbstractAdapter<ReservationList> adapter;
+    ArrayList<ReservationList> reqList = new ArrayList<ReservationList>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +24,16 @@ public class RequestListActivity extends AppCompatActivity {
 
         adapter = new RequestAdapter(this);
 
-        RequestList l1 = new RequestList();
-        RequestList l2 = new RequestList();
+        ReservationList l1 = new ReservationList();
+        ReservationList l2 = new ReservationList();
         l1.location = "ㅎㅎㅈㄷㄱ";
         l1.centerName = "wfew";
+        l1.date = "2017년 8월 8일";
+        l1.time = "1시 3시";
         l2.location = "ㅎfewㄱ";
         l2.centerName = "vssew";
+        l2.date = "2017년 8월 8일";
+        l2.time = "1시 3시";
         reqList.add(l1);
         reqList.add(l2);
         adapter.addOrderList(reqList);
