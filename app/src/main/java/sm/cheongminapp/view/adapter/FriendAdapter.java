@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import sm.cheongminapp.data.Friend;
 import sm.cheongminapp.R;
 
@@ -18,55 +20,40 @@ import sm.cheongminapp.R;
  * Created by Raye on 2017-05-16.
  */
 
-public class FriendAdapter extends BaseAdapter {
-    private ArrayList<Friend> itemArrayList = new ArrayList<Friend>() ;
+public class FriendAdapter extends AbstractAdapter<Friend> {
 
-    public FriendAdapter() {
-
+    public FriendAdapter(Context context) {
+        super(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
-        final Context context = parent.getContext();
+        ViewHolder viewHolder;
 
-        // Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.layout_friend_item, parent, false);
+            convertView = mInflator.inflate(R.layout.layout_friend_item, parent, false);
+
+            viewHolder = new ViewHolder();
+            viewHolder.imageProfile = (ImageView) convertView.findViewById(R.id.layout_friend_profile);
+            viewHolder.textName = (TextView)convertView.findViewById(R.id.layout_friend_name);
+
+            convertView.setTag(viewHolder);
+
+        } else {
+            viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.profile) ;
-        TextView nameTextView = (TextView) convertView.findViewById(R.id.name) ;
+        Friend item = adapterList.get(position);
 
-        Friend item = itemArrayList.get(position);
-
-        iconImageView.setImageDrawable(item.getIconDrawable());
-        nameTextView.setText(item.getName());
+        viewHolder.imageProfile.setImageDrawable(item.getIconDrawable());
+        viewHolder.textName.setText(item.getName());
 
         return convertView;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return itemArrayList.get(position) ;
-    }
-    @Override
-    public long getItemId(int position) {
-        return position ;
-    }
 
-    @Override
-    public int getCount() {
-        return itemArrayList.size() ;
-    }
-
-    public void addItem(Drawable icon, String name) {
-        Friend item = new Friend();
-
-        item.setIconDrawable(icon);
-        item.setName(name);
-
-        itemArrayList.add(item);
+    class ViewHolder {
+        ImageView imageProfile;
+        TextView textName;
     }
 }

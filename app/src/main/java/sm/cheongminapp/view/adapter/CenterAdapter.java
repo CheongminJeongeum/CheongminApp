@@ -19,6 +19,7 @@ public class CenterAdapter extends AbstractAdapter<Center> {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
+
         // General ListView optimization code.
         if (view == null) {
             view = mInflator.inflate(R.layout.listitem_center, viewGroup, false);
@@ -28,6 +29,7 @@ public class CenterAdapter extends AbstractAdapter<Center> {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
+
         final Center info = adapterList.get(i);
         if (info == null)
             return view;

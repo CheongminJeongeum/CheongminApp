@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sm.cheongminapp" >
+    package="sm.cheongminapp">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,7 +24,7 @@
         android:label="청민정음"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
         <!--
      Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -49,7 +49,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="청민정음" >
+            android:label="청민정음">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,12 +70,12 @@
             android:label="@string/title_activity_request_list" />
         <activity android:name=".ChatActivity" />
 
-        <service android:name=".service.MyFirebaseMessagingService" >
+        <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".service.MyFirebaseInstanceIDService" >
+        <service android:name=".service.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -83,8 +83,8 @@
 
         <activity
             android:name=".BTRetrieveActivity"
-            android:label="@string/title_activity_btretrieve" >
-        </activity>
+            android:label="@string/title_activity_btretrieve"></activity>
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

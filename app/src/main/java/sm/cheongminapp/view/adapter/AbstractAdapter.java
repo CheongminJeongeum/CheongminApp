@@ -26,6 +26,10 @@ public abstract class AbstractAdapter<T> extends BaseAdapter {
         adapterList.addAll(obj);
     }
 
+    public void addItem(T obj) {
+        adapterList.add(obj);
+    }
+
     public void clear() {
         adapterList.clear();
     }
