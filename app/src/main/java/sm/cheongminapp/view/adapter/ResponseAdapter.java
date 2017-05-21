@@ -8,8 +8,8 @@ import android.widget.TextView;
 import sm.cheongminapp.R;
 import sm.cheongminapp.data.ReservationList;
 
-public class RequestAdapter extends AbstractAdapter<ReservationList> {
-    public RequestAdapter(Context ctx) {
+public class ResponseAdapter extends AbstractAdapter<ReservationList> {
+    public ResponseAdapter(Context ctx) {
         super(ctx);
     }
 
@@ -21,7 +21,7 @@ public class RequestAdapter extends AbstractAdapter<ReservationList> {
             view = mInflator.inflate(R.layout.listitem_request, viewGroup, false);
             viewHolder = new ViewHolder();
             viewHolder.tvListItemLocation = (TextView) view.findViewById(R.id.location);
-            viewHolder.tvListItemCenterName = (TextView) view.findViewById(R.id.center_name);
+            viewHolder.tvListItemDate = (TextView) view.findViewById(R.id.date);
             viewHolder.tvListItemTime = (TextView) view.findViewById(R.id.time);
             view.setTag(viewHolder);
         } else {
@@ -32,14 +32,14 @@ public class RequestAdapter extends AbstractAdapter<ReservationList> {
             return view;
 
         viewHolder.tvListItemLocation.setText(info.location);
-        viewHolder.tvListItemCenterName.setText(info.centerName);
+        viewHolder.tvListItemDate.setText(info.date);
         viewHolder.tvListItemTime.setText(info.time);
         return view;
     }
 
     private class ViewHolder {
         TextView tvListItemLocation;
-        TextView tvListItemCenterName;
+        TextView tvListItemDate;
         TextView tvListItemTime;
 
     }

@@ -19,6 +19,8 @@ import sm.cheongminapp.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String id = "admin1";
+
     @BindView(R.id.main_toolbar)
     Toolbar toolbar;
 

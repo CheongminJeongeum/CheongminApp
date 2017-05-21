@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sm.cheongminapp.MapsActivity;
 import sm.cheongminapp.R;
 import sm.cheongminapp.RequestListActivity;
+import sm.cheongminapp.data.Center;
+import sm.cheongminapp.network.ApiServiceHelper;
+import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.view.adapter.AbstractAdapter;
 import sm.cheongminapp.view.adapter.CenterAdapter;
-import sm.cheongminapp.data.Center;
 
 
 /**
@@ -34,8 +41,9 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
     private Button bSearch, bRequestList;
     private ListView centerListView;
 
-    private ArrayList<Center> nearCenterList = new ArrayList<Center>();
-    private ArrayList<Center> searchCenterList = new ArrayList<Center>();
+    private ArrayList<Center> nearCenterList;
+    private ArrayList<Center> searchCenterList;
+    private List<Center> entireCenterList;
     private AbstractAdapter<Center> adapter;
 
     public CenterFragment() {
@@ -68,7 +76,31 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
             }
         });
         centerListView = (ListView) view.findViewById(R.id.list_center);
-        nearCenterList.add(new Center("서울 강남구 수화통역센터", 12.3, 31.2, "asdf", "feww"));
+
+        entireCenterList = new ArrayList<Center>();
+        IApiService apiService = ApiServiceHelper.getInstance().ApiService;
+
+        apiService.GetCenters().enqueue(new Callback<List<sm.cheongminapp.model.Center>>() {
+            @Override
+            public void onResponse(Call<List<sm.cheongminapp.model.Center>> call, Response<List<sm.cheongminapp.model.Center>> response) {
+                Log.i("사이즈", Integer.toString(response.body().size()));
+                for(int i=0; i<response.body().size(); i++) {
+                    sm.cheongminapp.model.Center center = response.body().get(i);
+                    entireCenterList.add(new Center(center.Name, center.Location.lat,
+                            center.Location.lng, center.Infomation, center.Tel));
+
+                    Log.i("센터들", center.Name);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<sm.cheongminapp.model.Center>> call, Throwable t) {
+
+            }
+        });
+
+        nearCenterList = new ArrayList<Center>();
+        nearCenterList.add(new Center("서울 강남구 수들화통역센터", 12.3, 31.2, "asdf", "feww"));
         nearCenterList.add(new Center("서울 관악구 수화통역센터", 15.3, 33.2, "asdf", "feww"));
         nearCenterList.get(0).center_id = 1;
 

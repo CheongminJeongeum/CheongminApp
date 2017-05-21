@@ -4,14 +4,14 @@ package sm.cheongminapp.data;
  * Created by user on 2017. 5. 15..
  */
 public class Reservation {
-    int request_id;
-    int center_id;
-    String member_id;
-    String day;
-    int start_time;
-    int end_time;
-    double lat, lng;
-    String reservation_info;
+    public int request_id;
+    public int center_id;
+    public String member_id;
+    public String day;
+    public int start_time;
+    public int end_time;
+    public double lat, lng;
+    public String reservation_info;
 
     public Reservation(int center_id, String member_id, String day, int start_time,
                        int end_time, double lat, double lng, String reservation_info) {
