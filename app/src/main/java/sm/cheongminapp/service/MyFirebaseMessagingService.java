@@ -5,6 +5,8 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import sm.cheongminapp.database.DBHelper;
+
 /**
  * Created by user on 2017. 5. 18..
  */
@@ -15,7 +17,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
-
+        DBHelper dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom()); // 서버 senderID이므로 아무런 쓸모 없음
@@ -29,6 +31,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody()); // 메시지
             Log.d(TAG, "Message Notification Title: " + remoteMessage.getNotification().getTitle()); // 방 번호
+
+            int room_id = Integer.parseInt(remoteMessage.getNotification().getTitle());
+            String contents = remoteMessage.getNotification().getBody();
+
+            dbHelper.insert(room_id, 1, contents);
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
