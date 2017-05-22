@@ -12,7 +12,7 @@ public class ChatInputVH extends BaseViewHolder {
 
     public ChatInputVH(View itemView) {
         super(itemView);
-        this.tvInputText = (TextView) itemView.findViewById(R.id.tv_input_text);
+        this.tvInputText = (TextView) itemView.findViewById(R.id.layout_chat_input_text);
     }
 
     @Override

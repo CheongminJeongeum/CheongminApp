@@ -10,6 +10,7 @@ public abstract class ChatObject {
 
     public static final int INPUT_OBJECT = 0;
     public static final int RESPONSE_OBJECT = 1;
+    public static final int SIGN_IMAGE_OBJECT = 2;
 
     private String text;
 

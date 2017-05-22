@@ -37,9 +37,6 @@ public class FriendFragment extends Fragment {
 
         adapter.addItem(friend1);
 
-        Intent intent = new Intent(getActivity(), ProfileActivity.class);
-        startActivity(intent);
-
         return view;
     }
 }

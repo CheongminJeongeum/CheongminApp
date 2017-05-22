@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import sm.cheongminapp.data.ChatSignData;
 import sm.cheongminapp.view.viewholder.BaseViewHolder;
 import sm.cheongminapp.data.ChatInput;
 import sm.cheongminapp.view.viewholder.ChatInputVH;
@@ -14,6 +15,7 @@ import sm.cheongminapp.data.ChatObject;
 import sm.cheongminapp.view.viewholder.ChatResponseVH;
 import sm.cheongminapp.R;
 import sm.cheongminapp.data.ChatResponse;
+import sm.cheongminapp.view.viewholder.ChatSignVH;
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -28,17 +30,24 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        // Create the ViewHolder based on the viewType
         View itemView;
+
         switch (viewType) {
+            // Input Item
             case ChatObject.INPUT_OBJECT:
                 itemView = inflater.inflate(R.layout.layout_chat_input, parent, false);
+
                 return new ChatInputVH(itemView);
-            case ChatObject.RESPONSE_OBJECT:
-                itemView = inflater.inflate(R.layout.layout_chat_response, parent, false);
-                return new ChatResponseVH(itemView);
+
+            case ChatObject.SIGN_IMAGE_OBJECT:
+                itemView = inflater.inflate(R.layout.layout_chat_sign, parent, false);
+
+                return new ChatSignVH(itemView);
+
+            // Response Item
             default:
                 itemView = inflater.inflate(R.layout.layout_chat_response, parent, false);
+
                 return new ChatResponseVH(itemView);
         }
     }
@@ -70,6 +79,10 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         input.setText(text);
 
         chatObjects.add(input);
+    }
+
+    public void addSign(ChatSignData data) {
+        chatObjects.add(data);
     }
 
 }

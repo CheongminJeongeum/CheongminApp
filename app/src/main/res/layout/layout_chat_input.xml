@@ -10,20 +10,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="0dp"
         android:paddingStart="10dp"
         android:paddingEnd="18dp"
         android:background="@drawable/chat_input_background">
 
         <TextView
-            android:id="@+id/tv_input_text"
+            android:id="@+id/layout_chat_input_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:textSize="16sp"
-            android:textColor="#FFF"
-            android:text="Input Text"/>
+            android:textColor="#FFF"/>
 
     </LinearLayout>
 

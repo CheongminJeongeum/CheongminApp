@@ -16,7 +16,7 @@ public class ChatResponseVH extends BaseViewHolder {
 
     public ChatResponseVH(View itemView) {
         super(itemView);
-        this.tvResponseText = (TextView) itemView.findViewById(R.id.tv_response_text);
+        this.tvResponseText = (TextView) itemView.findViewById(R.id.layout_chat_response_text);
     }
 
     @Override
