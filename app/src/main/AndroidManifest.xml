@@ -47,6 +47,14 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <receiver android:name="Chat">
+            <intent-filter>
+                <!-- 받아볼 Broadcast Action 정의 -->
+                <action android:name="chat">
+                </action>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".LoginActivity"
             android:label="청민정음">

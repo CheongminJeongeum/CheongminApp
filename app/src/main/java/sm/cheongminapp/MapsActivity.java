@@ -132,7 +132,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapClick(LatLng latLng) {
+    public void onMapClick(final LatLng latLng) {
         final String address = findAddress(latLng.latitude, latLng.longitude);
 
         AlertDialog.Builder dlg = new AlertDialog.Builder(MapsActivity.this);
@@ -143,6 +143,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("centerId", centerId);
                 returnIntent.putExtra("location", address);
+                returnIntent.putExtra("lat", latLng.latitude);
+                returnIntent.putExtra("lng", latLng.longitude);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }

@@ -41,11 +41,9 @@ public interface IApiService {
             @Field("start_time") int startTime,
             @Field("end_time") int endTime,
             @Field("info") String info,
-            @Field("lat") float lat,
-            @Field("lng") float lng);
+            @Field("lat") double lat,
+            @Field("lng") double lng);
 
     @GET("/reservations/member/{member_id}")
     Call<List<Reservation>> getMyReservations(@Path("member_id") String member_id);
-
-
 }
