@@ -16,7 +16,7 @@ public class ApiServiceHelper {
     public ApiServiceHelper()
     {
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://183.97.108.140:5000/api/")
+                .baseUrl("http://192.168.0.8:5000/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

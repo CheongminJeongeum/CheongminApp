@@ -43,7 +43,7 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
 
     private ArrayList<Center> nearCenterList;
     private ArrayList<Center> searchCenterList;
-    private List<Center> entireCenterList;
+    private ArrayList<Center> entireCenterList;
     private AbstractAdapter<Center> adapter;
 
     public CenterFragment() {
@@ -95,17 +95,12 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
 
             @Override
             public void onFailure(Call<List<sm.cheongminapp.model.Center>> call, Throwable t) {
-
+                Log.d("센터 실패", "ㄹㅇ");
             }
         });
 
-        nearCenterList = new ArrayList<Center>();
-        nearCenterList.add(new Center("서울 강남구 수들화통역센터", 12.3, 31.2, "asdf", "feww"));
-        nearCenterList.add(new Center("서울 관악구 수화통역센터", 15.3, 33.2, "asdf", "feww"));
-        nearCenterList.get(0).center_id = 1;
-
         adapter = new CenterAdapter(getActivity());
-        adapter.addOrderList(nearCenterList);
+        adapter.addOrderList(entireCenterList);
         centerListView.setAdapter(adapter);
         centerListView.setOnItemClickListener(this);
 

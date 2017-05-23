@@ -1,5 +1,6 @@
 package sm.cheongminapp.service;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -36,6 +37,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String contents = remoteMessage.getNotification().getBody();
 
             dbHelper.insert(room_id, 1, contents);
+
+            Intent dataIntent = new Intent("chat");
+            dataIntent.putExtra("room_id", room_id);
+            dataIntent.putExtra("contents", contents);
+            sendBroadcast(dataIntent);
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM

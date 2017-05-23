@@ -14,8 +14,14 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sm.cheongminapp.fragment.CenterFragment;
 import sm.cheongminapp.fragment.MainFragment;
+import sm.cheongminapp.model.Result;
+import sm.cheongminapp.network.ApiServiceHelper;
+import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.utility.PreferenceData;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,8 +69,21 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        if(!pref.getValue("regid", "").equals("")) {
+        String regId = pref.getValue("regid", "");
+        if(!regId.equals("")) {
             // regid 갱신하기(서버에 api만들어서)
+            IApiService apiService = ApiServiceHelper.getInstance().ApiService;
+            apiService.RegId(id, regId).enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "실패", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
