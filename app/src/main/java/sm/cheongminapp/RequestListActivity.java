@@ -11,8 +11,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.data.ReservationList;
+import sm.cheongminapp.model.Reservation;
 import sm.cheongminapp.network.ApiServiceHelper;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.view.adapter.AbstractAdapter;
@@ -33,19 +33,19 @@ public class RequestListActivity extends AppCompatActivity {
         IApiService apiService = ApiServiceHelper.getInstance().ApiService;
 
         apiService.getMyReservations(MainActivity.id).enqueue(new Callback<List<Reservation>>() {
-            @Override
-            public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
-                for(int i=0; i<response.body().size(); i++) {
-                    Reservation reserv = response.body().get(i);
-                    Log.i("예약 목록", reserv.reservation_info);
-                }
-            }
+              @Override
+              public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
+                  for(int i=0; i<response.body().size(); i++) {
+                      Reservation reserv = response.body().get(i);
+                      Log.i("예약 목록", reserv.reservation_info);
+                  }
+              }
 
-            @Override
-            public void onFailure(Call<List<Reservation>> call, Throwable t) {
+              @Override
+              public void onFailure(Call<List<Reservation>> call, Throwable t) {
 
-            }
-        });
+              }
+          });
 
         adapter = new ResponseAdapter(this);
 

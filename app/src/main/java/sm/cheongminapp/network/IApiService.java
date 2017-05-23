@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import sm.cheongminapp.data.Reservation;
+import sm.cheongminapp.model.Reservation;
 import sm.cheongminapp.model.Center;
 import sm.cheongminapp.model.Profile;
 import sm.cheongminapp.model.Result;
