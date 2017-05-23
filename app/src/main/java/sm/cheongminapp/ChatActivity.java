@@ -39,12 +39,18 @@ public class ChatActivity extends AppCompatActivity {
     @BindView(R.id.chat_send)
     Button button;
 
+    // 현재 방 번호 (나중에 인텐트 등으로 값 가져와야 함)
+    public int currentRoomId = 1;
+
+    // 채팅 액티비티를 활성화하고 있을 때만 호출됨.
     BroadcastReceiver chatReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals("chat")) {
-                int room_id = intent.getIntExtra("room_id", -1);
-                String contents = intent.getStringExtra("contents");
+                int room_id = intent.getIntExtra("room_id", -1); // 방 번호
+                if(currentRoomId != room_id) return; // (현재 방과 번호가 다른 경우 무시)
+
+                String contents = intent.getStringExtra("contents"); // 상대방 대화 내용
                 Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_SHORT).show();
             }
         }
@@ -81,8 +87,9 @@ public class ChatActivity extends AppCompatActivity {
         adapter.addSign(signData);
         adapter.addResponseInput("안녕하세요");
 
+        // 로컬 DB에서 채팅 기록 가져옴
         DBHelper dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
-        List<ChatObject> chatList = dbHelper.getResults();
+        List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
         for(int i=0; i<chatList.size(); i++) {
             /* 누구 채팅이냐에 따라 왼쪽 오른쪽 분기 */
         }
@@ -92,6 +99,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        // 리시버 등록
         IntentFilter filter = new IntentFilter();
         filter.addAction("chat");
         registerReceiver(chatReceiver, filter);
