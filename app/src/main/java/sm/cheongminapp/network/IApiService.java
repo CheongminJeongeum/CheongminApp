@@ -7,8 +7,9 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import sm.cheongminapp.data.Reservation;
+import sm.cheongminapp.model.Reservation;
 import sm.cheongminapp.model.Center;
 import sm.cheongminapp.model.data.LoginResult;
 import sm.cheongminapp.model.Profile;
@@ -24,6 +25,12 @@ public interface IApiService {
     Call<Result<LoginResult>> Login(
             @Field("id") String id,
             @Field("passwd") String password);
+
+    @FormUrlEncoded
+    @PUT("regid")
+    Call<Result> RegId(
+            @Field("id") String id,
+            @Field("regId") String regId);
 
     @GET("users/{id}")
     Call<Profile> GetProfile(@Path("id") String id);

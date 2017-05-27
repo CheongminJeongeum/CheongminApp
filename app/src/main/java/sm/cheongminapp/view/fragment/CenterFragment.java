@@ -1,4 +1,4 @@
-package sm.cheongminapp.view.fragment;
+package sm.cheongminapp.fragment;
 
 
 import android.app.AlertDialog;
@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,15 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sm.cheongminapp.MapsActivity;
 import sm.cheongminapp.R;
 import sm.cheongminapp.RequestListActivity;
 import sm.cheongminapp.data.Center;
+import sm.cheongminapp.network.ApiServiceHelper;
+import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.view.adapter.AbstractAdapter;
 import sm.cheongminapp.view.adapter.CenterAdapter;
 
@@ -72,8 +78,8 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
         centerListView = (ListView) view.findViewById(R.id.list_center);
 
         entireCenterList = new ArrayList<Center>();
-        /*
-        IApiService apiService = ApiService.getInstance().getService();
+        IApiService apiService = ApiServiceHelper.getInstance().ApiService;
+
         apiService.GetCenters().enqueue(new Callback<List<sm.cheongminapp.model.Center>>() {
             @Override
             public void onResponse(Call<List<sm.cheongminapp.model.Center>> call, Response<List<sm.cheongminapp.model.Center>> response) {
@@ -92,7 +98,7 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
 
             }
         });
-*/
+
         nearCenterList = new ArrayList<Center>();
         nearCenterList.add(new Center("서울 강남구 수들화통역센터", 12.3, 31.2, "asdf", "feww"));
         nearCenterList.add(new Center("서울 관악구 수화통역센터", 15.3, 33.2, "asdf", "feww"));

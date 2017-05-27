@@ -53,14 +53,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public List<ChatObject> getResults() {
+    public List<ChatObject> getResultsByRoomId(int room_id) {
         // 읽기가 가능하게 DB 열기
         SQLiteDatabase db = getReadableDatabase();
 
         List<ChatObject> chatLogList = new ArrayList<ChatObject>();
 
         // DB에 있는 데이터를 쉽게 처리하기 위해 Cursor를 사용하여 테이블에 있는 모든 데이터 출력
-        Cursor cursor = db.rawQuery("SELECT * FROM CHATLOG", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM CHATLOG WHERE room_id="+room_id, null);
         while (cursor.moveToNext()) {
             ChatObject obj = null;
             if(cursor.getInt(1) == 0) {
