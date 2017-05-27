@@ -1,5 +1,6 @@
 package sm.cheongminapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,6 +16,8 @@ import com.google.android.gms.common.api.Api;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import sm.cheongminapp.MainActivity;
+import sm.cheongminapp.ProfileActivity;
 import sm.cheongminapp.data.Friend;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
@@ -37,7 +40,11 @@ public class FriendFragment extends Fragment {
         lvFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "onItemClick", Toast.LENGTH_SHORT).show();
+                Friend friend = (Friend)adapter.getItem(position);
+
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                // intent에 프로필 정보를 넘기던가 처리해야함
+                startActivity(intent);
             }
         });
         adapter.addItem(new Friend("admin1", "박통역", ""));

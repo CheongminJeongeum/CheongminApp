@@ -50,7 +50,6 @@ public class FriendAdapter extends AbstractAdapter<Friend> {
 
         Friend item = adapterList.get(position);
 
-        // 프로필이 설정되있지 않다면 ic_account 아이콘을 그림
         if(item.getProfileUrl().isEmpty())
         {
             viewHolder.imageProfile.setImageResource(R.drawable.ic_account);

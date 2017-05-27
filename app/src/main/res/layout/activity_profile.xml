@@ -42,8 +42,6 @@
         android:layout_marginBottom="200dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:adjustViewBounds="false"
-        android:scaleType="fitCenter"
-        android:src="@color/colorLightGray" />
+        android:adjustViewBounds="false" />
 
 </RelativeLayout>
