@@ -13,7 +13,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.data.ReservationList;
-import sm.cheongminapp.network.ApiServiceHelper;
+import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.view.adapter.AbstractAdapter;
 import sm.cheongminapp.view.adapter.ResponseAdapter;
@@ -29,9 +29,8 @@ public class RequestListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request_list);
 
         listView = (ListView) findViewById(R.id.list_request);
-
-        IApiService apiService = ApiServiceHelper.getInstance().ApiService;
-
+/*
+        IApiService apiService = ApiService.getInstance().getService();
         apiService.getMyReservations(MainActivity.id).enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
@@ -46,7 +45,7 @@ public class RequestListActivity extends AppCompatActivity {
 
             }
         });
-
+*/
         adapter = new ResponseAdapter(this);
 
         ReservationList l1 = new ReservationList();

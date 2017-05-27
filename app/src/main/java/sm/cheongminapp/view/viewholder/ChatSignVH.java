@@ -1,5 +1,8 @@
 package sm.cheongminapp.view.viewholder;
 
+import android.media.MediaPlayer;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.VideoView;
 
@@ -24,9 +27,19 @@ public class ChatSignVH extends BaseViewHolder {
     @Override
     public void onBindView(ChatObject object) {
         ChatSignData signData = (ChatSignData) object;
+        videoView.setTag(signData);
 
-        // 0번째 비디오 경로를 설정
+        // 첫번째 영상 재생
         videoView.setVideoPath(signData.SignDataList.get(0).VideoPath);
+
+        // 영상 재생이 완료되면 다음 영상으로 넘기거나 정지
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+            }
+        });
+
+
         videoView.start();
     }
 }

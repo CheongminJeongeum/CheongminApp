@@ -1,6 +1,5 @@
-package sm.cheongminapp.fragment;
+package sm.cheongminapp.view.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import sm.cheongminapp.ProfileActivity;
 import sm.cheongminapp.data.Friend;
 import sm.cheongminapp.view.adapter.FriendAdapter;
 import sm.cheongminapp.R;

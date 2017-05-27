@@ -5,8 +5,10 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp">
+
     <VideoView
         android:id="@+id/layout_chat_sign_video"
-        android:layout_width="210dp"
-        android:layout_height="120dp" />
+        android:layout_width="match_parent"
+        android:layout_height="170dp" />
+
 </LinearLayout>

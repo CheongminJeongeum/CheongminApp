@@ -10,6 +10,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.model.Center;
+import sm.cheongminapp.model.data.LoginResult;
 import sm.cheongminapp.model.Profile;
 import sm.cheongminapp.model.Result;
 
@@ -20,7 +21,7 @@ import sm.cheongminapp.model.Result;
 public interface IApiService {
     @FormUrlEncoded
     @POST("users/login")
-    Call<Result> Login(
+    Call<Result<LoginResult>> Login(
             @Field("id") String id,
             @Field("passwd") String password);
 

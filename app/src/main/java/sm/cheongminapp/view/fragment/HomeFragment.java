@@ -1,4 +1,4 @@
-package sm.cheongminapp.fragment;
+package sm.cheongminapp.view.fragment;
 
 
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import butterknife.Unbinder;
 import sm.cheongminapp.view.adapter.ViewPagerAdapter;
 import sm.cheongminapp.R;
 
-public class MainFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     @BindView(R.id.fragment_main_tab_layout)
     TabLayout tabLayout;
@@ -23,17 +23,17 @@ public class MainFragment extends Fragment {
     @BindView(R.id.fragment_main_view_pager)
     ViewPager viewPager;
 
-    Unbinder unbinder;
+    private FriendFragment friendFragment = new FriendFragment();
+    private ChatFragment chatFragment = new ChatFragment();
 
-    FriendFragment friendFragment = new FriendFragment();
-    ChatFragment chatFragment = new ChatFragment();
+    private Unbinder unbinder;
 
-    public MainFragment() {
+    public HomeFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // 버터나이프 바인딩
         unbinder = ButterKnife.bind(this, view);

@@ -15,7 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.model.Result;
-import sm.cheongminapp.network.ApiServiceHelper;
+import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 
 public class RequestActivity extends AppCompatActivity {
@@ -69,7 +69,7 @@ public class RequestActivity extends AppCompatActivity {
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IApiService apiService = ApiServiceHelper.getInstance().ApiService;
+                IApiService apiService = ApiService.getInstance().getService();
 
                 apiService.RequestReservation(centerId, eDate.getText().toString(),
                         Integer.parseInt(eStartTime.getText().toString()),
@@ -77,7 +77,7 @@ public class RequestActivity extends AppCompatActivity {
                         eGoal.getText().toString(), lat, lng).enqueue(new Callback<Result>() {
                     @Override
                     public void onResponse(Call<Result> call, Response<Result> response) {
-                        if(response.body().IsSuccess) {
+                        if(response.body().IsSuccessful) {
                             Toast.makeText(getApplicationContext(), "요청에 성공하였습니다.", Toast.LENGTH_SHORT).show();
 
                         } else {
