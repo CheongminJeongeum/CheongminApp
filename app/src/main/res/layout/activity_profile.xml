@@ -35,7 +35,7 @@
 
     </RelativeLayout>
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -44,10 +44,6 @@
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="false"
         android:scaleType="fitCenter"
-        android:src="@color/colorLightGray"
-        app:riv_corner_radius="30dip"
-        app:riv_mutate_background="true"
-        app:riv_tile_mode="mirror"
-        app:riv_oval="true" />
+        android:src="@color/colorLightGray" />
 
 </RelativeLayout>

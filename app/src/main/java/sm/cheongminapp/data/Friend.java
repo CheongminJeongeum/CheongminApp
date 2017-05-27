@@ -7,20 +7,20 @@ import android.graphics.drawable.Drawable;
  */
 
 public class Friend {
-    private Drawable IconDrawable;
+    private String ProfileUrl;
     private String Name;
-
-    public Drawable getIconDrawable() {
-        return IconDrawable;
-    }
-    public void setIconDrawable(Drawable iconDrawable) {
-        IconDrawable = iconDrawable;
-    }
 
     public String getName() {
         return Name;
     }
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getProfileUrl() {
+        return ProfileUrl;
+    }
+    public void setProfileUrl(String profileUrl) {
+        ProfileUrl = profileUrl;
     }
 }

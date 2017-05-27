@@ -9,10 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import sm.cheongminapp.data.Friend;
 import sm.cheongminapp.R;
 
@@ -34,7 +38,7 @@ public class FriendAdapter extends AbstractAdapter<Friend> {
             convertView = mInflator.inflate(R.layout.layout_friend_item, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.imageProfile = (ImageView) convertView.findViewById(R.id.layout_friend_profile);
+            viewHolder.imageProfile = (CircleImageView) convertView.findViewById(R.id.layout_friend_profile);
             viewHolder.textName = (TextView)convertView.findViewById(R.id.layout_friend_name);
 
             convertView.setTag(viewHolder);
@@ -45,15 +49,17 @@ public class FriendAdapter extends AbstractAdapter<Friend> {
 
         Friend item = adapterList.get(position);
 
-        viewHolder.imageProfile.setImageDrawable(item.getIconDrawable());
+        Picasso.with(convertView.getContext())
+                .load(item.getProfileUrl())
+                .placeholder(convertView.getResources().getDrawable(R.drawable.ic_account))
+                .into(viewHolder.imageProfile);
         viewHolder.textName.setText(item.getName());
 
         return convertView;
     }
 
-
     class ViewHolder {
-        ImageView imageProfile;
+        CircleImageView imageProfile;
         TextView textName;
     }
 }
