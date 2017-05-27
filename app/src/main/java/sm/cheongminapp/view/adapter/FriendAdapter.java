@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -49,10 +50,18 @@ public class FriendAdapter extends AbstractAdapter<Friend> {
 
         Friend item = adapterList.get(position);
 
-        Picasso.with(convertView.getContext())
-                .load(item.getProfileUrl())
-                .placeholder(convertView.getResources().getDrawable(R.drawable.ic_account))
-                .into(viewHolder.imageProfile);
+        // 프로필이 설정되있지 않다면 ic_account 아이콘을 그림
+        if(item.getProfileUrl().isEmpty())
+        {
+            viewHolder.imageProfile.setImageResource(R.drawable.ic_account);
+        }
+        else
+        {
+            Picasso.with(convertView.getContext())
+                    .load(item.getProfileUrl())
+                    .into(viewHolder.imageProfile);
+        }
+
         viewHolder.textName.setText(item.getName());
 
         return convertView;

@@ -11,6 +11,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.model.Center;
+import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.model.data.LoginResult;
 import sm.cheongminapp.model.Profile;
 import sm.cheongminapp.model.Result;
@@ -26,17 +27,11 @@ public interface IApiService {
             @Field("id") String id,
             @Field("passwd") String password);
 
-    @FormUrlEncoded
-    @PUT("regid")
-    Call<Result> RegId(
-            @Field("id") String id,
-            @Field("regId") String regId);
+    @GET("users/")
+    Call<Profile> GetMyProfile();
 
     @GET("users/{id}")
     Call<Profile> GetProfile(@Path("id") String id);
-
-    @GET("users/")
-    Call<Profile> GetMyProfile();
 
     @GET("centers/")
     Call<List<Center>> GetCenters();
@@ -54,4 +49,10 @@ public interface IApiService {
 
     @GET("/reservations/member/{member_id}")
     Call<List<Reservation>> getMyReservations(@Path("member_id") String member_id);
+
+    @FormUrlEncoded
+    @PUT("regid")
+    Call<Result> RegId(
+            @Field("id") String id,
+            @Field("regId") String regId);
 }

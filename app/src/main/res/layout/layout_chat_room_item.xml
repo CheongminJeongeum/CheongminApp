@@ -48,7 +48,7 @@
         android:layout_alignTop="@id/layout_chat_room_name"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:text="10분전"
+        android:text=""
         android:textSize="15dp"/>
 
 </RelativeLayout>
