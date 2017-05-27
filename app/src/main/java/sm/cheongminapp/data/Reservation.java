@@ -1,4 +1,4 @@
-package sm.cheongminapp.model;
+package sm.cheongminapp.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,4 +1,4 @@
-package sm.cheongminapp.view.fragment;
+package sm.cheongminapp.fragment;
 
 
 import android.content.Intent;

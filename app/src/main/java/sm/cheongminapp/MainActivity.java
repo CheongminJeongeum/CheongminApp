@@ -15,7 +15,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sm.cheongminapp.fragment.CenterFragment;
-import sm.cheongminapp.fragment.MainFragment;
+import sm.cheongminapp.fragment.HomeFragment;
 import sm.cheongminapp.utility.PreferenceData;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_bottom_navigation)
     BottomNavigationView bottomNavigation;
 
-    MainFragment mainFragment = new MainFragment();
+    HomeFragment homeFragment = new HomeFragment();
     CenterFragment centerFragment = new CenterFragment();
 
     PreferenceData pref = new PreferenceData(this);
@@ -45,14 +45,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // 기본 페이지 설정
-        replaceFragment(new MainFragment());
+        replaceFragment(homeFragment);
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        replaceFragment(mainFragment);
+                        replaceFragment(homeFragment);
 
                         return true;
                     case R.id.navigation_dashboard:

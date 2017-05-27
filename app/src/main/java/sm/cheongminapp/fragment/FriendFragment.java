@@ -1,4 +1,4 @@
-package sm.cheongminapp.view.fragment;
+package sm.cheongminapp.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
