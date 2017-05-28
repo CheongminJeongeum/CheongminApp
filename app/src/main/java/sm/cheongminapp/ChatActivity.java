@@ -23,6 +23,7 @@ import sm.cheongminapp.data.ChatObject;
 import sm.cheongminapp.data.ChatSignData;
 import sm.cheongminapp.data.SignData;
 import sm.cheongminapp.database.DBHelper;
+import sm.cheongminapp.repository.SignVideoRepository;
 import sm.cheongminapp.view.adapter.ChatMessageAdapter;
 
 public class ChatActivity extends AppCompatActivity {
@@ -78,23 +79,40 @@ public class ChatActivity extends AppCompatActivity {
         adapter.addChatInput("안녕하세요!");
 
         // 받은 메세지
-        ChatSignData signData = new ChatSignData();
-        signData.SignDataList.add(
-                new SignData(
-                        "안녕",
-                        "android.resource://" + getPackageName() + "/" + R.raw.s00000001));
 
-        adapter.addSign(signData);
-        adapter.addResponseInput("안녕하세요");
+        // 받은 메세지를 수어로 변환합니다
+        // 괜찮습니다. 고맙습니다. -> 괜찮다/고맙다
+        // SignVideoRepository에 Map에 따라 괜찮다의 비디오를 가져옵니다
+
+        ChatSignData chatSignData = new ChatSignData();
+        chatSignData.getSignDataList().add(new SignData("괜찮다", SignVideoRepository.getInstance().getSignVideo("괜찮다")));
+        chatSignData.getSignDataList().add(new SignData("고맙다", SignVideoRepository.getInstance().getSignVideo("고맙다")));
+
+        adapter.addSign(chatSignData);
+        adapter.addResponseInput("괜찮아 고마워");
 
         // 로컬 DB에서 채팅 기록 가져옴
         DBHelper dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
+
         List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
         for(int i=0; i<chatList.size(); i++) {
-            /* 누구 채팅이냐에 따라 왼쪽 오른쪽 분기 */
+            ChatObject chat = chatList.get(i);
+            switch(chat.getType())
+            {
+                case ChatObject.INPUT_OBJECT:
+                    // 입력한 채팅
+                    adapter.addChatInput(chat.getText());
+                    break;
+                case ChatObject.RESPONSE_OBJECT:
+                    // 받은 채팅
+                    adapter.addResponseInput(chat.getText());
+                    break;
+                case ChatObject.SIGN_IMAGE_OBJECT:
+                    // 수화 영상
+                    break;
+            }
         }
 
-        // 설정
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());

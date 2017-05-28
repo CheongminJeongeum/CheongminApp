@@ -5,11 +5,27 @@ package sm.cheongminapp.data;
  */
 
 public class SignData {
-    public String Text;
-    public String VideoPath;
+    private String Text;
+    private String VideoPath;
 
     public SignData(String text, String videoPath) {
         this.Text = text;
         this.VideoPath = videoPath;
+    }
+
+    public String getText() {
+        return Text;
+    }
+
+    public void setText(String text) {
+        Text = text;
+    }
+
+    public String getVideoPath() {
+        return VideoPath;
+    }
+
+    public void setVideoPath(String videoPath) {
+        VideoPath = videoPath;
     }
 }

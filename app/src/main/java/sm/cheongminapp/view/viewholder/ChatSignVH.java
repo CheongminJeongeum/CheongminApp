@@ -26,16 +26,23 @@ public class ChatSignVH extends BaseViewHolder {
 
     @Override
     public void onBindView(ChatObject object) {
-        ChatSignData signData = (ChatSignData) object;
+        final ChatSignData signData = (ChatSignData) object;
         videoView.setTag(signData);
 
+        signData.setPlayIndex(0);
         // 첫번째 영상 재생
-        videoView.setVideoPath(signData.SignDataList.get(0).VideoPath);
+        videoView.setVideoPath(signData.getSignDataList().get(signData.getPlayIndex()).getVideoPath());
 
         // 영상 재생이 완료되면 다음 영상으로 넘기거나 정지
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                if(signData.getSignDataList().size() > signData.getPlayIndex() + 1)
+                {
+                    signData.setPlayIndex(signData.getPlayIndex() + 1);
+                    videoView.setVideoPath(signData.getSignDataList().get(signData.getPlayIndex()).getVideoPath());
+                    videoView.start();
+                }
             }
         });
 
