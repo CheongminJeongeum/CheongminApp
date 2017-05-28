@@ -74,6 +74,9 @@ public class ChatActivity extends AppCompatActivity {
 
         // 메세지 어댑터
         ChatMessageAdapter adapter = new ChatMessageAdapter(new ArrayList<ChatObject>());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // 내가 보낸 메세지
         adapter.addChatInput("안녕하세요!");
@@ -112,10 +115,6 @@ public class ChatActivity extends AppCompatActivity {
                     break;
             }
         }
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // 리시버 등록
         IntentFilter filter = new IntentFilter();
