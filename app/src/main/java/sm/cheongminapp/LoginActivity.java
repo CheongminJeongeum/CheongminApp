@@ -89,7 +89,8 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<Result<LoginResult>> call, Throwable t) {
-                Log.d("로그인", "실패");
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
