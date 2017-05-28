@@ -30,7 +30,6 @@ public class ChatSignVH extends BaseViewHolder {
         videoView.setTag(signData);
 
         signData.setPlayIndex(0);
-        // 첫번째 영상 재생
         videoView.setVideoPath(signData.getSignDataList().get(signData.getPlayIndex()).getVideoPath());
 
         // 영상 재생이 완료되면 다음 영상으로 넘기거나 정지
@@ -43,6 +42,18 @@ public class ChatSignVH extends BaseViewHolder {
                     videoView.setVideoPath(signData.getSignDataList().get(signData.getPlayIndex()).getVideoPath());
                     videoView.start();
                 }
+            }
+        });
+
+        // 터치시 처음 영상 재생
+        videoView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                signData.setPlayIndex(0);
+                videoView.setVideoPath(signData.getSignDataList().get(signData.getPlayIndex()).getVideoPath());
+                videoView.start();
+
+                return false;
             }
         });
 
