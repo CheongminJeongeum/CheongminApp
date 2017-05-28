@@ -11,10 +11,9 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.model.Center;
-import sm.cheongminapp.model.data.EmptyData;
-import sm.cheongminapp.model.data.LoginResult;
 import sm.cheongminapp.model.Profile;
 import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.data.LoginResult;
 
 /**
  * Created by Raye on 2017-05-02.
@@ -55,4 +54,18 @@ public interface IApiService {
     Call<Result> RegId(
             @Field("id") String id,
             @Field("regId") String regId);
+
+    @FormUrlEncoded
+    @POST("/api/chat/korean")
+    Call<Result> sendMessageOnKorean(
+            @Field("id") String id,
+            @Field("room") int room,
+            @Field("msg") String msg);
+
+    @FormUrlEncoded
+    @POST("/chat/sign")
+    Call<Result> sendMessageOnSign(
+            @Field("id") String id,
+            @Field("room") int room,
+            @Field("msg") String msg);
 }

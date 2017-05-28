@@ -12,15 +12,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sm.cheongminapp.fragment.CenterFragment;
 import sm.cheongminapp.fragment.HomeFragment;
+import sm.cheongminapp.model.Result;
+import sm.cheongminapp.network.ApiService;
+import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.utility.PreferenceData;
 
 public class MainActivity extends AppCompatActivity {
 
     public static String id = "admin1";
+    public static int mode = 1; // 0 : 농, 1 : 청
 
     @BindView(R.id.main_toolbar)
     Toolbar toolbar;
@@ -65,6 +74,20 @@ public class MainActivity extends AppCompatActivity {
         });
         if(!pref.getValue("regid", "").equals("")) {
             // regid 갱신하기(서버에 api만들어서)
+            IApiService apiService = ApiService.getInstance().getService();
+            apiService.RegId(MainActivity.id, FirebaseInstanceId.getInstance().getToken())
+                    .enqueue(new Callback<Result>() {
+                        @Override
+                        public void onResponse(Call<Result> call, Response<Result> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Result> call, Throwable t) {
+
+                        }
+                    });
+
         }
     }
 

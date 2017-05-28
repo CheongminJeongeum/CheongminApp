@@ -26,7 +26,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 새로운 테이블 생성
-        db.execSQL("CREATE TABLE CHATLOG (room_id INTEGER PRIMARY KEY, who INTEGER, contents TEXT);");
+        db.execSQL("CREATE TABLE CHATLOG (num INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "room_id INTEGER, who INTEGER, contents TEXT);");
     }
 
     // DB 업그레이드를 위해 버전이 변경될 때 호출되는 함수
@@ -41,7 +42,8 @@ public class DBHelper extends SQLiteOpenHelper {
         // 읽고 쓰기가 가능하게 DB 열기
         SQLiteDatabase db = getWritableDatabase();
         // DB에 입력한 값으로 행 추가
-        db.execSQL("INSERT INTO CHATLOG VALUES(" + room_id + ", " + who + ", '" + contents + "');");
+        db.execSQL("INSERT INTO CHATLOG(room_id, who, contents)" +
+                " VALUES(" + room_id + ", " + who + ", '" + contents + "');");
         db.close();
     }
 
@@ -63,12 +65,12 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM CHATLOG WHERE room_id="+room_id, null);
         while (cursor.moveToNext()) {
             ChatObject obj = null;
-            if(cursor.getInt(1) == 0) {
+            if(cursor.getInt(2) == 0) {
                 obj = new ChatInput();
             } else {
                 obj = new ChatResponse();
             }
-            obj.setText(cursor.getString(2));
+            obj.setText(cursor.getString(3));
             chatLogList.add(obj);
         }
 

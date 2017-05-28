@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ApiService {
-    private static String BASE_API_URL = "http://59.9.50.129:5000/api/";
+    private static String BASE_API_URL = "http://192.168.0.3:5000/api/";
 
     private IApiService service;
 

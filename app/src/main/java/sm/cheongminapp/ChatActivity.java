@@ -10,6 +10,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,10 +21,16 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sm.cheongminapp.data.ChatObject;
 import sm.cheongminapp.data.ChatSignData;
 import sm.cheongminapp.data.SignData;
 import sm.cheongminapp.database.DBHelper;
+import sm.cheongminapp.model.Result;
+import sm.cheongminapp.network.ApiService;
+import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.repository.SignVideoRepository;
 import sm.cheongminapp.view.adapter.ChatMessageAdapter;
 
@@ -52,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
                 if(currentRoomId != room_id) return; // (현재 방과 번호가 다른 경우 무시)
 
                 String contents = intent.getStringExtra("contents"); // 상대방 대화 내용
+                Log.d("ㅆㅂ", "ㅅㅂ");
                 Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_SHORT).show();
             }
         }
@@ -112,6 +121,28 @@ public class ChatActivity extends AppCompatActivity {
                     break;
             }
         }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(MainActivity.mode == 1) { // 청
+                    IApiService apiService = ApiService.getInstance().getService();
+                    apiService.sendMessageOnKorean(MainActivity.id, currentRoomId, "안녕ㅇㅇ")
+                            .enqueue(new Callback<Result>() {
+                                @Override
+                                public void onResponse(Call<Result> call, Response<Result> response) {
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<Result> call, Throwable t) {
+
+                                }
+                            });
+                } else { // 농
+                    IApiService apiService = ApiService.getInstance().getService();
+                }
+            }
+        });
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
