@@ -1,49 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="horizontal">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:descendantFocusability="blocksDescendants">
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:textSize="14dp"
-        android:textColor="#000000"
-        android:text="2017년 5월 22일"
-        android:layout_weight="7"
-        android:gravity="center_vertical"/>
+        android:layout_weight="0"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="#e0eef8">
+
+        <TextView
+            android:id="@+id/layout_request_time_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="0월"
+            android:textColor="#2561b0"
+            android:textSize="14dp"
+            android:ellipsize="middle"
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/layout_request_time_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="0일"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textColor="#2561b0"
+            android:textSize="16dp"
+            android:ellipsize="middle"
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/layout_request_time_day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="0요일"
+            android:textColor="#9298a1"
+            android:textSize="12dp"
+            android:ellipsize="middle"
+            android:maxLines="1"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="4">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/layout_request_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="아무데나통역"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#666666" />
+
+            android:text="주소"
+            android:textColor="#262b33"
+            android:textSize="16dp" />
+
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/layout_request_location_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="오후 1시~3시"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#000000" />
+            android:text="상세 주소"
+            android:textColor="#626971"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/layout_request_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간"
+            android:textColor="#9298a1"
+            android:textSize="14dp" />
 
     </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/layout_request_result"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="7"
-        android:layout_gravity="center_vertical"
-        android:textSize="10dp"
-        android:text="응답 대기 중"/>
+        android:layout_weight="0"
+        android:layout_gravity="center"
+        android:textSize="14dp"
+        android:text="대기 중"
+        android:layout_marginRight="24dp"/>
 
 </LinearLayout>

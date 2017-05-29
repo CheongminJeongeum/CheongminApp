@@ -2,12 +2,15 @@ package sm.cheongminapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,14 +22,23 @@ import sm.cheongminapp.view.adapter.AbstractAdapter;
 import sm.cheongminapp.view.adapter.ResponseAdapter;
 
 public class RequestListActivity extends AppCompatActivity {
+
     ListView listView;
     AbstractAdapter<ReservationList> adapter;
     ArrayList<ReservationList> reqList = new ArrayList<ReservationList>();
+
+    @BindView(R.id.request_list_toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
+
+        ButterKnife.bind(this);
+
+        // 툴바 설정
+        setSupportActionBar(toolbar);
 
         listView = (ListView) findViewById(R.id.list_request);
 /*

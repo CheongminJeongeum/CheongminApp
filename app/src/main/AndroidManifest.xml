@@ -62,13 +62,13 @@
             android:label="청민정음" />
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="통역 장소 선택" />
         <activity
             android:name=".RequestActivity"
-            android:label="@string/title_activity_request" />
+            android:label="예약" />
         <activity
             android:name=".RequestListActivity"
-            android:label="@string/title_activity_request_list" />
+            android:label="예약 목록" />
         <activity android:name=".ChatActivity" />
 
         <service android:name=".service.MyFirebaseMessagingService">

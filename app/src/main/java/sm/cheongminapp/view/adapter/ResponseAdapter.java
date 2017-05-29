@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import sm.cheongminapp.R;
 import sm.cheongminapp.data.ReservationList;
 
@@ -19,28 +21,48 @@ public class ResponseAdapter extends AbstractAdapter<ReservationList> {
         // General ListView optimization code.
         if (view == null) {
             view = mInflator.inflate(R.layout.listitem_request, viewGroup, false);
-            viewHolder = new ViewHolder();
-            viewHolder.tvListItemLocation = (TextView) view.findViewById(R.id.location);
-            viewHolder.tvListItemDate = (TextView) view.findViewById(R.id.date);
-            viewHolder.tvListItemTime = (TextView) view.findViewById(R.id.time);
+
+            viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
+
         final ReservationList info = adapterList.get(i);
         if (info == null)
             return view;
 
-        viewHolder.tvListItemLocation.setText(info.location);
-        viewHolder.tvListItemDate.setText(info.date);
-        viewHolder.tvListItemTime.setText(info.time);
+        viewHolder.tvLocation.setText(info.location);
+        //viewHolder.tvListItemDate.setText(info.date);
+        //viewHolder.tvListItemTime.setText(info.time);
         return view;
     }
 
-    private class ViewHolder {
-        TextView tvListItemLocation;
-        TextView tvListItemDate;
-        TextView tvListItemTime;
+    class ViewHolder {
+        @BindView(R.id.layout_request_time_month)
+        TextView tvTimeMonth;
+
+        @BindView(R.id.layout_request_time_day)
+        TextView tvTimeDay;
+
+        @BindView(R.id.layout_request_time_day_text)
+        TextView tvTimeDayText;
+
+        @BindView(R.id.layout_request_location)
+        TextView tvLocation;
+
+        @BindView(R.id.layout_request_location_detail)
+        TextView tvLocationDetail;
+
+        @BindView(R.id.layout_request_time_text)
+        TextView tvTimeText;
+
+        @BindView(R.id.layout_request_result)
+        TextView tvResult;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
 
     }
 }
