@@ -1,8 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/request_list_layout">
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.sm.cheongminapp.RequestListActivity">
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/request_list_toolbar"
@@ -21,3 +24,18 @@
     </ListView>
 
 </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/gps_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예약"/>
+    </RelativeLayout>
+</FrameLayout>

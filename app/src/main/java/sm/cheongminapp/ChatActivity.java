@@ -129,7 +129,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(MainActivity.mode == 1) { // 청
                     IApiService apiService = ApiService.getInstance().getService();
-                    apiService.sendMessageOnKorean(MainActivity.id, currentRoomId, "안녕ㅇㅇ")
+                    apiService.sendMessageOnKorean(MainActivity.id, currentRoomId,
+                            editText.getText().toString())
                             .enqueue(new Callback<Result>() {
                                 @Override
                                 public void onResponse(Call<Result> call, Response<Result> response) {

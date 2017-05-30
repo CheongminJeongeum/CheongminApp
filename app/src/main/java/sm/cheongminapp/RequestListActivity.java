@@ -49,6 +49,15 @@ public class RequestListActivity extends AppCompatActivity {
                     rl.location = address;
 
                     reqList.add(rl);
+                    reqList.add(rl);
+                    reqList.add(rl);
+                    reqList.add(rl);
+                    reqList.add(rl);
+                    reqList.add(rl);
+                    reqList.add(rl);
+                    adapter.clear();
+                    adapter.addOrderList(reqList);
+                    listView.setAdapter(adapter);
                 }
 
             }

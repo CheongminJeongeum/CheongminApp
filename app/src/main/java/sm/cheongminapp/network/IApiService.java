@@ -36,7 +36,7 @@ public interface IApiService {
     Call<List<Center>> GetCenters();
 
     @FormUrlEncoded
-    @POST("/centers/{id}/requests")
+    @POST("centers/{id}/requests")
     Call<Result> RequestReservation(
             @Path("id") int centerID,
             @Field("day") String day,
@@ -46,7 +46,7 @@ public interface IApiService {
             @Field("lat") double lat,
             @Field("lng") double lng);
 
-    @GET("/reservations/member/{member_id}")
+    @GET("reservations/member/{member_id}")
     Call<List<Reservation>> getMyReservations(@Path("member_id") String member_id);
 
     @FormUrlEncoded
@@ -56,14 +56,14 @@ public interface IApiService {
             @Field("regId") String regId);
 
     @FormUrlEncoded
-    @POST("/chat/korean")
+    @POST("chat/korean")
     Call<Result> sendMessageOnKorean(
             @Field("id") String id,
             @Field("room") int room,
             @Field("msg") String msg);
 
     @FormUrlEncoded
-    @POST("/chat/sign")
+    @POST("chat/sign")
     Call<Result> sendMessageOnSign(
             @Field("id") String id,
             @Field("room") int room,
