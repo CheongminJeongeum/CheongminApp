@@ -56,7 +56,7 @@ public interface IApiService {
             @Field("regId") String regId);
 
     @FormUrlEncoded
-    @POST("/api/chat/korean")
+    @POST("/chat/korean")
     Call<Result> sendMessageOnKorean(
             @Field("id") String id,
             @Field("room") int room,
