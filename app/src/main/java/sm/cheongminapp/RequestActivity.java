@@ -5,12 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,6 +22,10 @@ import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 
 public class RequestActivity extends AppCompatActivity {
+
+    @BindView(R.id.request_toolbar)
+    Toolbar request_toolbar;
+
     private EditText eLocation, eDate, eStartTime, eEndTime, eGoal;
     private Button bDatePicker, bSubmit;
     private DatePicker dpPicker;
@@ -30,6 +37,10 @@ public class RequestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
+
+        ButterKnife.bind(this);
+
+        setSupportActionBar(request_toolbar);
 
         Intent intent = getIntent();
         centerId = intent.getIntExtra("centerId", -1);
