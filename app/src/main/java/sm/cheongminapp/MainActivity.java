@@ -21,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.fragment.CenterFragment;
 import sm.cheongminapp.fragment.HomeFragment;
+import sm.cheongminapp.fragment.RequestFragment;
 import sm.cheongminapp.model.Result;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
 
     HomeFragment homeFragment = new HomeFragment();
-    CenterFragment centerFragment = new CenterFragment();
+    RequestFragment requestFragment;
 
     PreferenceData pref = new PreferenceData(this);
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 기본 페이지 설정
         replaceFragment(homeFragment);
+        requestFragment = new RequestFragment(this);
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                         return true;
                     case R.id.navigation_dashboard:
-                        replaceFragment(centerFragment);
+                        replaceFragment(requestFragment);
                         return true;
                 }
 

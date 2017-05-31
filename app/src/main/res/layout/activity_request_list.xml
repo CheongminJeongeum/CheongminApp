@@ -1,38 +1,45 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/request_list_layout">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.CenterFragment">
+
+    <Button
+        android:id="@+id/btn_request_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="나의 통역 요청 목록"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/request_list_toolbar"
+        <EditText
+            android:id="@+id/center_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        <ListView
-            android:id="@+id/request_list_list_view"
+            android:layout_weight="3"
+            android:hint="수화통역센터를 찾아보세요"/>
+        <Button
+            android:id="@+id/btn_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </ListView>
-
+            android:layout_height="wrap_content"
+            android:text="검색"
+            android:layout_weight="7"/>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/request_list_request_button"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:src="@android:drawable/ic_dialog_alert" />
+        android:text="근처 수화 통역 센터"/>
 
-</android.support.design.widget.CoordinatorLayout>
+    <ListView
+        android:id="@+id/list_center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+</LinearLayout>
