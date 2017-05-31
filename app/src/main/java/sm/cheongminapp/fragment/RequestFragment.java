@@ -3,6 +3,7 @@ package sm.cheongminapp.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -50,12 +51,9 @@ public class RequestFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_request, container, false);
 
-        //ButterKnife.bind(getActivity());
-        //
         ButterKnife.bind(this, view);
 
         adapter = new ResponseAdapter(ctx);
@@ -67,6 +65,12 @@ public class RequestFragment extends Fragment {
         apiService.getMyReservations(MainActivity.id).enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
+                // 요청 실패
+                // errorBody를 통해 정보를 얻어 올 수 있음
+                if(response.isSuccessful() == false) {
+                    return;
+                }
+
                 for (int i = 0; i < response.body().size(); i++) {
                     Reservation reservation = response.body().get(i);
 
@@ -74,9 +78,7 @@ public class RequestFragment extends Fragment {
                     rl.date = reservation.day;
                     rl.time = reservation.start_time + " ~ " + reservation.end_time + "시";
 
-                    Log.d("ㅅㅂ", rl.time);
                     GPSModule gps = new GPSModule(ctx);
-
                     rl.location = gps.findAddress(reservation.lat, reservation.lng);
 
                     reqList.add(rl);
@@ -95,7 +97,7 @@ public class RequestFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Reservation>> call, Throwable t) {
-
+                Log.e("onFailure", "getMyReservations");
             }
         });
 
