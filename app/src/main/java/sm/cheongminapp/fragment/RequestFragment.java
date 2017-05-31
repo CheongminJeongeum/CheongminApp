@@ -88,7 +88,6 @@ public class RequestFragment extends Fragment {
 
                 for (int i = 0; i < response.body().size(); i++) {
                     Reservation reservation = response.body().get(i);
-
                     ReservationList rl = new ReservationList();
                     rl.Date = reservation.day;
                     rl.Time = reservation.start_time + " ~ " + reservation.end_time + "시";

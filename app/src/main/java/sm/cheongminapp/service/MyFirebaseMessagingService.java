@@ -19,7 +19,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
         DBHelper dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
-        // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom()); // 서버 senderID이므로 아무런 쓸모 없음
 
