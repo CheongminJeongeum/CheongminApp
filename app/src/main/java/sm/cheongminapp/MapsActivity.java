@@ -5,17 +5,28 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +49,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -48,6 +60,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // 선택한 센터 정보를 받아옴
         Intent intent = getIntent();
         centerId = intent.getIntExtra("centerId", -1);
+
+        // 검색 설정
+        etSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch (actionId)
+                {
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        onSearchMap(v.getText().toString());
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -98,13 +124,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+
+        LatLng latLng = new LatLng(37.56667, 126.97806);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
 
         // 내 위치 버튼을 활성화하려면 위치 권한을 확인해야함
         if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -143,5 +174,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         dlg.show();
 
 
+    }
+
+    public void onSearchMap(String address) {
+        Geocoder geocoder =new Geocoder(this);
+        try {
+            List<Address> addressList = geocoder.getFromLocationName(address, 10);
+            if(addressList.size() > 0)
+            {
+                Address firstAddress = addressList.get(0);
+
+                LatLng latLng = new LatLng(firstAddress.getLatitude(), firstAddress.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
