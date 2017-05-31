@@ -35,11 +35,9 @@ import sm.cheongminapp.view.adapter.ResponseAdapter;
  * Created by user on 2017. 5. 31..
  */
 public class RequestFragment extends Fragment {
-    //@BindView(R.id.request_list_list_view)
-    ListView lvRequestList;
 
-    @BindView(R.id.request_list_toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.fragment_request_list_view)
+    ListView lvRequestList;
 
     AbstractAdapter<ReservationList> adapter;
     ArrayList<ReservationList> reqList = new ArrayList<>();
@@ -47,7 +45,6 @@ public class RequestFragment extends Fragment {
     Context ctx;
 
     public RequestFragment(Context ctx) {
-        // Required empty public constructor
         this.ctx = ctx;
     }
 
@@ -57,12 +54,13 @@ public class RequestFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_request, container, false);
 
-        ButterKnife.bind(getActivity());
+        //ButterKnife.bind(getActivity());
+        //
+        ButterKnife.bind(this, view);
 
         adapter = new ResponseAdapter(ctx);
         adapter.addOrderList(reqList);
 
-        lvRequestList = (ListView) view.findViewById(R.id.request_list_list_view);
         lvRequestList.setAdapter(adapter);
 
         IApiService apiService = ApiService.getInstance().getService();
@@ -104,7 +102,7 @@ public class RequestFragment extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.request_list_request_button)
+    @OnClick(R.id.fragment_request_request_button)
     void onRequestButton() {
         Intent intent = new Intent(getActivity(), RequestActivity.class);
         startActivity(intent);
