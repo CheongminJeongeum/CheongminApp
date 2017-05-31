@@ -19,7 +19,6 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,36 +38,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:hint="통역 사유를 입력해주세요"
-                android:textColorHint="#9298a1"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:text="주소"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:textColor="#58bcf5"/>
-
-            <EditText
-                android:id="@+id/request_location_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:hint=""/>
-
-            <EditText
-                android:id="@+id/request_location_detail_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:hint="상세 주소를 입력하세요 (층수, 동)"
                 android:textColorHint="#9298a1"/>
 
         </LinearLayout>
@@ -138,13 +107,45 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:text="주소"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:textColor="#58bcf5"/>
+
+            <EditText
+                android:id="@+id/request_location_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint=""/>
+
+            <EditText
+                android:id="@+id/request_location_detail_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="상세 주소를 입력하세요 (층수, 동)"
+                android:textColorHint="#9298a1"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/request_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="예약 신청"/>
+            android:layout_margin="30dp"
+            android:background="@drawable/rounded_button_background"
+            android:text="예약 신청"
+            android:textSize="14dp"
+            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
 </LinearLayout>
