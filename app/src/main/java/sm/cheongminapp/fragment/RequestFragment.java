@@ -22,6 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.MainActivity;
+import sm.cheongminapp.MapsActivity;
 import sm.cheongminapp.R;
 import sm.cheongminapp.RequestActivity;
 import sm.cheongminapp.data.Reservation;
@@ -61,12 +62,20 @@ public class RequestFragment extends Fragment {
 
         lvRequestList.setAdapter(adapter);
 
+        // 샘플 예제
+        ReservationList sampleItem = new ReservationList();
+        sampleItem.location = "서울특별시 어딘가 어딘가";
+        sampleItem.centerName = "센터 이름?";
+        sampleItem.time = "1시~3시";
+        sampleItem.date = "date?";
+
+        adapter.addItem(sampleItem);
+
         IApiService apiService = ApiService.getInstance().getService();
         apiService.getMyReservations(MainActivity.id).enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
-                // 요청 실패
-                // errorBody를 통해 정보를 얻어 올 수 있음
+                // 요청 실패 (errorBody를 통해 정보를 얻어 올 수 있음)
                 if(response.isSuccessful() == false) {
                     return;
                 }
@@ -106,7 +115,8 @@ public class RequestFragment extends Fragment {
 
     @OnClick(R.id.fragment_request_request_button)
     void onRequestButton() {
-        Intent intent = new Intent(getActivity(), RequestActivity.class);
-        startActivity(intent);
+        //센터 검색 액티비티 시작
+        //Intent intent = new Intent(getActivity(), MapsActivity.class);
+        //startActivity(intent);
     }
 }

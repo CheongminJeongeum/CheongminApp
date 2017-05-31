@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
 
     HomeFragment homeFragment = new HomeFragment();
-    RequestFragment requestFragment;
+    RequestFragment requestFragment = new RequestFragment(this);
 
     PreferenceData pref = new PreferenceData(this);
 
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         // 기본 페이지 설정
         replaceFragment(homeFragment);
-        requestFragment = new RequestFragment(this);
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -74,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        // regid 갱신하기(서버에 api만들어서)
         if(!pref.getValue("regid", "").equals("")) {
-            // regid 갱신하기(서버에 api만들어서)
             IApiService apiService = ApiService.getInstance().getService();
             apiService.RegId(MainActivity.id, FirebaseInstanceId.getInstance().getToken())
                     .enqueue(new Callback<Result>() {
