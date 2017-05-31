@@ -59,7 +59,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="청민정음"></activity>
+            android:label="청민정음" />
         <activity
             android:name=".MapsActivity"
             android:label="통역 장소 선택" />
@@ -70,10 +70,12 @@
             android:name=".RequestListActivity"
             android:label="예약 목록" />
         <activity android:name=".ChatActivity" />
-
-        <activity android:name=".CenterActivity"
-            android:label="통역 센터 선택">
-        </activity>
+        <activity
+            android:name=".CenterActivity"
+            android:label="통역 센터 선택"></activity>
+        <activity
+            android:name=".ReserveInfoActivity"
+            android:label="예약 정보"></activity>
 
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,6 +28,7 @@ import sm.cheongminapp.MainActivity;
 import sm.cheongminapp.MapsActivity;
 import sm.cheongminapp.R;
 import sm.cheongminapp.RequestActivity;
+import sm.cheongminapp.ReserveInfoActivity;
 import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.data.ReservationList;
 import sm.cheongminapp.network.ApiService;
@@ -65,10 +68,12 @@ public class RequestFragment extends Fragment {
 
         // 샘플 예제
         ReservationList sampleItem = new ReservationList();
-        sampleItem.location = "서울특별시 어딘가 어딘가";
-        sampleItem.centerName = "센터 이름?";
-        sampleItem.time = "1시~3시";
-        sampleItem.date = "date?";
+        sampleItem.CenterName = "센터 이름?";
+        sampleItem.Reason = "왜 안사유";
+        sampleItem.Time = "1시~3시";
+        sampleItem.Date = "2017년 5월 1일";
+        sampleItem.Location = "서울특별시 어딘가 어딘가";
+        sampleItem.LocationDetail = "몇층 몇동?";
 
         adapter.addItem(sampleItem);
 
@@ -85,11 +90,11 @@ public class RequestFragment extends Fragment {
                     Reservation reservation = response.body().get(i);
 
                     ReservationList rl = new ReservationList();
-                    rl.date = reservation.day;
-                    rl.time = reservation.start_time + " ~ " + reservation.end_time + "시";
+                    rl.Date = reservation.day;
+                    rl.Time = reservation.start_time + " ~ " + reservation.end_time + "시";
 
                     GPSModule gps = new GPSModule(ctx);
-                    rl.location = gps.findAddress(reservation.lat, reservation.lng);
+                    rl.Location = gps.findAddress(reservation.lat, reservation.lng);
 
                     reqList.add(rl);
                     reqList.add(rl);
@@ -113,6 +118,17 @@ public class RequestFragment extends Fragment {
 
         return view;
     }
+
+    @OnItemClick(R.id.fragment_request_list_view)
+    void onItemClick(AdapterView<?> parent, int position) {
+        ReservationList reserve = (ReservationList)adapter.getItem(position);
+
+        Intent intent = new Intent(getActivity(), ReserveInfoActivity.class);
+        intent.putExtra("ReservationList", reserve);
+
+        startActivity(intent);
+    }
+
 
     @OnClick(R.id.fragment_request_request_button)
     void onRequestButton() {

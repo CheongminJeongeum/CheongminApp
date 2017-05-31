@@ -32,9 +32,11 @@ public class ResponseAdapter extends AbstractAdapter<ReservationList> {
         if (info == null)
             return view;
 
-        viewHolder.tvLocation.setText(info.location);
-        //viewHolder.tvListItemDate.setText(info.date);
-        //viewHolder.tvListItemTime.setText(info.time);
+        viewHolder.tvLocation.setText(info.Location);
+        viewHolder.tvLocationDetail.setText(info.LocationDetail);
+
+        viewHolder.tvTimeText.setText(info.Time);
+
         return view;
     }
 
