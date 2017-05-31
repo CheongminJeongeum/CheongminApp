@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sm.cheongminapp.CenterActivity;
 import sm.cheongminapp.MainActivity;
 import sm.cheongminapp.MapsActivity;
 import sm.cheongminapp.R;
@@ -116,7 +117,7 @@ public class RequestFragment extends Fragment {
     @OnClick(R.id.fragment_request_request_button)
     void onRequestButton() {
         //센터 검색 액티비티 시작
-        //Intent intent = new Intent(getActivity(), MapsActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(getActivity(), CenterActivity.class);
+        startActivity(intent);
     }
 }
