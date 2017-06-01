@@ -118,6 +118,12 @@ public class RequestActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        // TODO:: 신청하는 액티비티(CenterActivitiy, MapsActivity, RequestActivity를 종료하고 MainActivity로 돌아가야함
+        //Intent intent = new Intent(RequestActivity.this, MainActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //startActivity(intent);
         finish();
     }
 }

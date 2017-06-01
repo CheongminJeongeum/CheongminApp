@@ -22,15 +22,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
 
             <TextView
-                android:text="통역 사유"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
-                android:textColor="#58bcf5"/>
+                android:text="통역 사유"
+                android:textColor="#58bcf5" />
 
             <EditText
                 android:id="@+id/request_reason_text"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:hint="통역 사유를 입력해주세요"
-                android:textColorHint="#9298a1"/>
+                android:textColorHint="#9298a1" />
 
         </LinearLayout>
 
@@ -48,10 +48,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="날짜"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
+                android:text="날짜"
                 android:textColor="#58bcf5" />
 
             <LinearLayout
@@ -63,14 +63,17 @@
                     android:id="@+id/request_date_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"/>
+                    android:layout_weight="1" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/request_date_pick_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="선택"/>
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="0"
+                    android:src="@drawable/icon_calendar3"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/flat_button_background" />
 
             </LinearLayout>
 
@@ -82,50 +85,53 @@
             android:orientation="horizontal">
 
             <TextView
-                android:text="시간"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="6.5"
+                android:text="시간"
                 android:textColor="#58bcf5" />
+
             <EditText
                 android:id="@+id/request_start_time_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"/>
+                android:layout_weight="5"
+                android:inputType="number" />
 
             <TextView
-                android:text="~"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="7.5"/>
+                android:layout_weight="7.5"
+                android:text="~" />
 
             <EditText
                 android:id="@+id/request_end_time_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"/>
+                android:layout_weight="5"
+                android:inputType="number" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
 
             <TextView
-                android:text="주소"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
-                android:textColor="#58bcf5"/>
+                android:text="주소"
+                android:textColor="#58bcf5" />
 
             <EditText
                 android:id="@+id/request_location_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:hint=""/>
+                android:hint="" />
 
             <EditText
                 android:id="@+id/request_location_detail_text"
@@ -133,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:hint="상세 주소를 입력하세요 (층수, 동)"
-                android:textColorHint="#9298a1"/>
+                android:textColorHint="#9298a1" />
 
         </LinearLayout>
 
@@ -144,8 +150,8 @@
             android:layout_margin="30dp"
             android:background="@drawable/rounded_button_background"
             android:text="예약 신청"
-            android:textSize="14dp"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:textSize="14dp" />
 
     </LinearLayout>
 </LinearLayout>

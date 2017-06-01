@@ -158,29 +158,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         final String address = gps.findAddress(latLng.latitude, latLng.longitude);
 
         AlertDialog.Builder dlg = new AlertDialog.Builder(MapsActivity.this);
-        dlg.setMessage("선택하신 장소가 "+address+"입니까?");
+        dlg.setMessage("선택하신 장소가 "+address+" 입니까?");
         dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("centerId", centerId);
-                returnIntent.putExtra("location", address);
-                returnIntent.putExtra("lat", latLng.latitude);
-                returnIntent.putExtra("lng", latLng.longitude);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
+                Intent intent = new Intent(MapsActivity.this, RequestActivity.class);
+                intent.putExtra("centerId", centerId);
+                intent.putExtra("location", address);
+                intent.putExtra("lat", latLng.latitude);
+                intent.putExtra("lng", latLng.longitude);
+
+                startActivity(intent);
             }
         });
         dlg.setNegativeButton("취소", null);
         dlg.show();
-
-
     }
 
     public void onSearchMap(String address) {
         Geocoder geocoder =new Geocoder(this);
         try {
-            List<Address> addressList = geocoder.getFromLocationName(address, 10);
+            List<Address> addressList = geocoder.getFromLocationName(address, 1);
             if(addressList.size() > 0)
             {
                 Address firstAddress = addressList.get(0);
