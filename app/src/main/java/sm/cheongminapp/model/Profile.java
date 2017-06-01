@@ -35,4 +35,8 @@ public class Profile {
     @SerializedName("is_translator")
     @Expose
     public boolean IsTranslator;
+
+    @SerializedName("option")
+    @Expose
+    public int option;
 }

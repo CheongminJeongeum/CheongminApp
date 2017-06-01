@@ -48,6 +48,8 @@ public class ChatActivity extends AppCompatActivity {
     @BindView(R.id.chat_send)
     Button button;
 
+    DBHelper dbHelper;
+
     // 현재 방 번호 (나중에 인텐트 등으로 값 가져와야 함)
     public int currentRoomId = 1;
 
@@ -82,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("김농인님과 대화");
 
         // 메세지 어댑터
-        ChatMessageAdapter adapter = new ChatMessageAdapter(new ArrayList<ChatObject>());
+        final ChatMessageAdapter adapter = new ChatMessageAdapter(new ArrayList<ChatObject>());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -104,7 +106,7 @@ public class ChatActivity extends AppCompatActivity {
         adapter.addResponseInput("괜찮아 고마워");
 
         // 로컬 DB에서 채팅 기록 가져옴
-        DBHelper dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
+        dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
 
         List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
         for(int i=0; i<chatList.size(); i++) {
@@ -144,7 +146,23 @@ public class ChatActivity extends AppCompatActivity {
                             });
                 } else { // 농
                     IApiService apiService = ApiService.getInstance().getService();
+                    apiService.sendMessageOnSign(MainActivity.id, currentRoomId,
+                            editText.getText().toString())
+                            .enqueue(new Callback<Result>() {
+                                @Override
+                                public void onResponse(Call<Result> call, Response<Result> response) {
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<Result> call, Throwable t) {
+
+                                }
+                            });
                 }
+
+                dbHelper.insert(currentRoomId, 0, editText.getText().toString());
+                adapter.addChatInput(editText.getText().toString());
             }
         });
 

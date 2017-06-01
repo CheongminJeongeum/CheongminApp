@@ -22,6 +22,7 @@ import retrofit2.Response;
 import sm.cheongminapp.fragment.CenterFragment;
 import sm.cheongminapp.fragment.HomeFragment;
 import sm.cheongminapp.fragment.RequestFragment;
+import sm.cheongminapp.model.Profile;
 import sm.cheongminapp.model.Result;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
         // 기본 페이지 설정
         replaceFragment(homeFragment);
+
+        Intent infoIntent = getIntent();
+        id = infoIntent.getStringExtra("id");
+        getAndSetMode();
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -109,6 +114,21 @@ public class MainActivity extends AppCompatActivity {
                 //만약 반환값이 없을 경우의 코드를 여기에 작성하세요.
             }
         }
+    }
+
+    private void getAndSetMode() {
+        IApiService apiService = ApiService.getInstance().getService();
+        apiService.GetProfile(id).enqueue(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                mode = response.body().option;
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable t) {
+
+            }
+        });
     }
 
     private void replaceFragment(Fragment fragment)

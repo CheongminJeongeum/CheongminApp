@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -15,8 +14,8 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sm.cheongminapp.model.data.LoginResult;
 import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.data.LoginResult;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 
@@ -81,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (isSuccessful) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("id", mEmailView.getText().toString());
                     startActivity(intent);
                 } else {
                     mPasswordView.setError("비밀번호를 다시 확인해주세요");
