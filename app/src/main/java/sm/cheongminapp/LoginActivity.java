@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("id", mEmailView.getText().toString());
                     startActivity(intent);
+
                 } else {
                     mPasswordView.setError("비밀번호를 다시 확인해주세요");
                     mPasswordView.requestFocus();

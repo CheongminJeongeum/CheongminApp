@@ -27,10 +27,10 @@ public interface IApiService {
             @Field("passwd") String password);
 
     @GET("users/")
-    Call<Profile> GetMyProfile();
+    Call<Result<Profile>> GetMyProfile();
 
     @GET("users/{id}")
-    Call<Profile> GetProfile(@Path("id") String id);
+    Call<Result<Profile>> GetProfile(@Path("id") String id);
 
     @GET("centers/")
     Call<List<Center>> GetCenters();

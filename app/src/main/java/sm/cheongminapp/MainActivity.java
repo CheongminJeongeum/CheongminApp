@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -118,14 +119,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void getAndSetMode() {
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.GetProfile(id).enqueue(new Callback<Profile>() {
+        apiService.GetProfile(id).enqueue(new Callback<Result<Profile>>() {
             @Override
-            public void onResponse(Call<Profile> call, Response<Profile> response) {
-                mode = response.body().option;
+            public void onResponse(Call<Result<Profile>> call, Response<Result<Profile>> response) {
+                if(response.isSuccessful() == false)
+                {
+                    Log.e("error", String.valueOf(response.code()));
+                    return;
+                }
+
+                Log.d("UserMode", String.valueOf(response.body().Data.option));
             }
 
             @Override
-            public void onFailure(Call<Profile> call, Throwable t) {
+            public void onFailure(Call<Result<Profile>> call, Throwable t) {
 
             }
         });

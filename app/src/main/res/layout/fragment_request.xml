@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
-        app:backgroundTint="#2561b0"/>
+        app:backgroundTint="#2561b0"
+        android:src="@drawable/icon_calendar3"/>
 
 </android.support.design.widget.CoordinatorLayout>

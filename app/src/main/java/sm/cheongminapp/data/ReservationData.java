@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by user on 2017. 5. 15..
  */
-public class ReservationList implements Serializable {
+public class ReservationData implements Serializable {
     public String CenterName;
 
     public String Reason;

@@ -3,43 +3,57 @@ package sm.cheongminapp.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 2017. 5. 23..
  */
-public class Reservation {
+public class Reservation implements Serializable {
+
     @SerializedName("request_id")
     @Expose
-    public int request_id;
+    public int RequestID;
 
     @SerializedName("center_id")
     @Expose
-    public int center_id;
+    public int CenterID;
 
     @SerializedName("member_id")
     @Expose
-    public String member_id;
+    public String MemberID;
 
     @SerializedName("day")
     @Expose
-    public String day;
+    public String Date;
 
     @SerializedName("start_time")
     @Expose
-    public int start_time;
+    public int StartTime;
 
     @SerializedName("end_time")
     @Expose
-    public int end_time;
+    public int EndTime;
 
     @SerializedName("lat")
     @Expose
-    public double lat;
+    public double Lat;
 
     @SerializedName("lng")
     @Expose
-    public double lng;
+    public double Lng;
 
     @SerializedName("reservation_info")
     @Expose
-    public String reservation_info;
+    public String Reason;
+
+
+    public String getTimeRangeText() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(StartTime);
+        builder.append(" ~ ");
+        builder.append(EndTime);
+        builder.append("시");
+
+        return builder.toString();
+    }
 }

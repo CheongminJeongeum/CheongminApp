@@ -8,7 +8,8 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import sm.cheongminapp.data.ReservationList;
+import sm.cheongminapp.data.Reservation;
+import sm.cheongminapp.data.ReservationData;
 
 public class ReserveInfoActivity extends AppCompatActivity {
 
@@ -46,14 +47,14 @@ public class ReserveInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
-        ReservationList reservation = (ReservationList)intent.getSerializableExtra("ReservationList");
+        Reservation reservation = (Reservation)intent.getSerializableExtra("Reservation");
 
-        tvCenterName.setText(reservation.CenterName);
+        tvCenterName.setText("센터 이름");
         tvReason.setText(reservation.Reason);
         tvDate.setText(reservation.Date);
-        tvTime.setText(reservation.Time);
-        tvLocation.setText(reservation.Location);
-        tvLocationDetail.setText(reservation.LocationDetail);
+        tvTime.setText(reservation.getTimeRangeText());
+        //tvLocation.setText(reservation.Location);
+        //tvLocationDetail.setText(reservation.LocationDetail);
 
         // TODO:: Lat, Lng를 사용해 맵에 보여줘야함
     }
