@@ -49,6 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     Button button;
 
     DBHelper dbHelper;
+    ChatMessageAdapter adapter;
 
     // 현재 방 번호 (나중에 인텐트 등으로 값 가져와야 함)
     public int currentRoomId = 1;
@@ -64,6 +65,7 @@ public class ChatActivity extends AppCompatActivity {
                 String contents = intent.getStringExtra("contents"); // 상대방 대화 내용
                 Log.d("ㅆㅂ", "ㅅㅂ");
                 Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_SHORT).show();
+                adapter.addResponseInput(contents);
             }
         }
     };
@@ -84,7 +86,7 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("김농인님과 대화");
 
         // 메세지 어댑터
-        final ChatMessageAdapter adapter = new ChatMessageAdapter(new ArrayList<ChatObject>());
+        adapter = new ChatMessageAdapter(new ArrayList<ChatObject>());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
