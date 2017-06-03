@@ -4,15 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B1B1B1"
     tools:context="sm.cheongminapp.ProfileActivity">
-    
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/profile_bg"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:scaleType="fitStart"/>
+
     <RelativeLayout
         android:id="@+id/profile_layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_alignParentBottom="true"
-        android:background="#EBEBEB">
+        android:background="#FFFFFF">
 
         <TextView
             android:id="@+id/profile_text_name"
@@ -23,12 +30,15 @@
             android:layout_marginTop="70dp"
             android:text="이름"
             android:textSize="25dp"
+            android:textColor="#262b33"
             android:textAlignment="center"/>
 
-        <Button
-            android:layout_width="80dp"
+        <ImageButton
+            android:layout_width="100dp"
             android:layout_height="50dp"
-            android:text="대화"
+            android:src="@drawable/bt_chat_on"
+            android:scaleType="fitCenter"
+            android:background="@drawable/flat_button_background"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp" />
@@ -42,6 +52,7 @@
         android:layout_marginBottom="200dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:adjustViewBounds="false" />
+        android:adjustViewBounds="false"
+        android:src="@drawable/profile"/>
 
 </RelativeLayout>

@@ -234,7 +234,6 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-
         return true;
     }
 
