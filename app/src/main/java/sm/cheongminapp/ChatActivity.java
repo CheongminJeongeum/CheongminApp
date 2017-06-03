@@ -4,7 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +15,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -47,6 +54,13 @@ public class ChatActivity extends AppCompatActivity {
 
     @BindView(R.id.chat_send)
     Button button;
+
+    private String[] navItems = {"Brown", "Cadet Blue", "Dark Olive Green",
+            "Dark Orange", "Golden Rod"};
+    private ListView lvNavList;
+    private FrameLayout flContainer;
+    private DrawerLayout dlDrawer;
+    private ActionBarDrawerToggle dtToggle;
 
     DBHelper dbHelper;
     ChatMessageAdapter adapter;
@@ -85,11 +99,49 @@ public class ChatActivity extends AppCompatActivity {
         // 대화방 이름 설정
         getSupportActionBar().setTitle("김농인님과 대화");
 
+        //lvNavList = (ListView)findViewById(R.id.lv_activity_chat_nav_list);
+        flContainer = (FrameLayout)findViewById(R.id.fl_activity_chat_container);
+
+        //lvNavList.setAdapter(
+                //new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
+        //lvNavList.setOnItemClickListener(new DrawerItemClickListener());
+        dlDrawer = (DrawerLayout)findViewById(R.id.dl_activity_chat_drawer);
+        dtToggle = new ActionBarDrawerToggle(this, dlDrawer,
+                R.drawable.ic_drawer, R.string.open_drawer, R.string.close_drawer){
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+        };
+        dlDrawer.setDrawerListener(dtToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // 메세지 어댑터
         adapter = new ChatMessageAdapter(new ArrayList<ChatObject>());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        List<String> list = new ArrayList<String>();
+        list.add("dfsdss");
+        list.add("fkfkww");
+        list.add("dfsdss");
+        list.add("fkfkww");
+        list.add("dfsdss");
+        list.add("fkfkww");
+        list.add("dfsdss");
+        list.add("fkfkww");
+        list.add("dfsdss");
+        list.add("fkfkww");
+        lvNavList = (ListView) findViewById(R.id.list_shortcuts);
+        ArrayAdapter<String> tempAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        lvNavList.setAdapter(tempAdapter);
 
         // 내가 보낸 메세지
         adapter.addChatInput("안녕하세요!");
@@ -131,6 +183,8 @@ public class ChatActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("이모티콘", editText.getText().toString());
+
                 if(MainActivity.mode == 1) { // 청
                     IApiService apiService = ApiService.getInstance().getService();
                     apiService.sendMessageOnKorean(MainActivity.id, currentRoomId,
@@ -185,5 +239,32 @@ public class ChatActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(chatReceiver);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapter, View view, int position,
+                                long id) {
+            switch (position) {
+                case 0:
+                    flContainer.setBackgroundColor(Color.parseColor("#A52A2A"));
+                    break;
+                case 1:
+                    flContainer.setBackgroundColor(Color.parseColor("#5F9EA0"));
+                    break;
+                case 2:
+                    flContainer.setBackgroundColor(Color.parseColor("#556B2F"));
+                    break;
+                case 3:
+                    flContainer.setBackgroundColor(Color.parseColor("#FF8C00"));
+                    break;
+                case 4:
+                    flContainer.setBackgroundColor(Color.parseColor("#DAA520"));
+                    break;
+
+            }
+
+        }
     }
 }
