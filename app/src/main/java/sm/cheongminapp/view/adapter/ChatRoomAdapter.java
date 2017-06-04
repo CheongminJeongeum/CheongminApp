@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import sm.cheongminapp.R;
 import sm.cheongminapp.data.ChatRoom;
 
@@ -18,54 +20,49 @@ import sm.cheongminapp.data.ChatRoom;
  * Created by Raye on 2017-05-18.
  */
 
-public class ChatRoomAdapter extends BaseAdapter {
-    private ArrayList<ChatRoom> itemArrayList = new ArrayList<ChatRoom>() ;
+public class ChatRoomAdapter extends AbstractAdapter<ChatRoom> {
+
+    public ChatRoomAdapter(Context ctx) {
+        super(ctx);
+    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
-        final Context context = parent.getContext();
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        ViewHolder viewHolder;
 
-        // Layout을 inflate하여 convertView 참조 획득.
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.layout_chat_room_item, parent, false);
+        // General ListView optimization code.
+        if (view == null) {
+            view = mInflator.inflate(R.layout.layout_chat_room_item, viewGroup, false);
+
+            viewHolder = new ViewHolder(view);
+            view.setTag(viewHolder);
+
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
         }
 
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.layout_chat_room_icon);
-        TextView tvName = (TextView) convertView.findViewById(R.id.layout_chat_room_name);
-        TextView tvLastChat = (TextView) convertView.findViewById(R.id.layout_chat_room_message);
+        final ChatRoom chatRoom = adapterList.get(i);
+        if (chatRoom == null)
+            return view;
 
-        ChatRoom item = itemArrayList.get(position);
+        viewHolder.tvName.setText(chatRoom.Name);
 
-        imgIcon.setImageDrawable(item.getIconDrawable());
-        tvName.setText(item.getName());
-        tvLastChat.setText(item.getLastChat());
-
-        return convertView;
+        return view;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return itemArrayList.get(position) ;
-    }
-    @Override
-    public long getItemId(int position) {
-        return position ;
-    }
+    class ViewHolder {
 
-    @Override
-    public int getCount() {
-        return itemArrayList.size() ;
-    }
+        @BindView(R.id.layout_chat_room_icon)
+        ImageView ivIcon;
 
-    public void addItem(Drawable icon, String name, String lastChat) {
-        ChatRoom item = new ChatRoom();
+        @BindView(R.id.layout_chat_room_name)
+        TextView tvName;
 
-        item.setIconDrawable(icon);
-        item.setName(name);
-        item.setLastChat(lastChat);
+        @BindView(R.id.layout_chat_room_message)
+        TextView tvMessage;
 
-        itemArrayList.add(item);
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

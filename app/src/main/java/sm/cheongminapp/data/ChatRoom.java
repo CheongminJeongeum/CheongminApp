@@ -2,6 +2,9 @@ package sm.cheongminapp.data;
 
 import android.graphics.drawable.Drawable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -9,31 +12,12 @@ import java.io.Serializable;
  */
 
 public class ChatRoom implements Serializable {
-    private Drawable iconDrawable;
-    private String name;
-    private String lastChat;
 
-    public String getLastChat() {
-        return lastChat;
-    }
+    @Expose
+    @SerializedName("room_id")
+    public int ID;
 
-    public void setLastChat(String lastChat) {
-        this.lastChat = lastChat;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Drawable getIconDrawable() {
-        return iconDrawable;
-    }
-
-    public void setIconDrawable(Drawable iconDrawable) {
-        this.iconDrawable = iconDrawable;
-    }
+    @Expose
+    @SerializedName("room_name")
+    public String Name;
 }
