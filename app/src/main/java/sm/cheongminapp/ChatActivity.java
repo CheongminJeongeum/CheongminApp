@@ -35,6 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.data.ChatObject;
+import sm.cheongminapp.data.ChatRoom;
 import sm.cheongminapp.data.ChatSignData;
 import sm.cheongminapp.data.SignData;
 import sm.cheongminapp.database.DBHelper;
@@ -45,7 +46,7 @@ import sm.cheongminapp.repository.SignVideoRepository;
 import sm.cheongminapp.view.adapter.ChatMessageAdapter;
 
 /*
-    채팅하기까지의 흐름
+    TODO: 채팅 과정 구현
     친구 프로필 페이지에서 대화방 생성 -> /chat/room (POST)로 요청함.
     리턴값은 Room객체(추가해야 함). 응답이 오는 즉시 ChatActivity로 이동함(인텐트로 방 번호, 방 이름을 전달)
 
@@ -82,6 +83,8 @@ public class ChatActivity extends AppCompatActivity {
     DBHelper dbHelper;
     ChatMessageAdapter adapter;
 
+    ChatRoom chatRoom;
+
     // 현재 방 번호 (나중에 인텐트 등으로 값 가져와야 함)
     public int currentRoomId = 1;
 
@@ -113,8 +116,15 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        // 넘겨받은 채팅방 정보
+        chatRoom = (ChatRoom)getIntent().getSerializableExtra("ChatRoom");
+
+        // 방 번호 설정
+        currentRoomId = chatRoom.ID;
+
         // 대화방 이름 설정
-        getSupportActionBar().setTitle("김농인님과 대화");
+        getSupportActionBar().setTitle(chatRoom.Name);
+
 
         //lvNavList = (ListView)findViewById(R.id.lv_activity_chat_nav_list);
         flContainer = (FrameLayout)findViewById(R.id.fl_activity_chat_container);

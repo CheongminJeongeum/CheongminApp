@@ -54,6 +54,7 @@ public class ChatFragment extends Fragment {
                 ChatRoom chatRoom = (ChatRoom)chatRoomAdapter.getItem(position);
 
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("ChatRoom", chatRoom);
                 startActivity(intent);
             }
         });
