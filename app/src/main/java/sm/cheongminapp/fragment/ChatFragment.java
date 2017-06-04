@@ -43,7 +43,6 @@ public class ChatFragment extends Fragment {
         adapter.addItem(getContext().getDrawable(R.drawable.ic_account), "농옹", "안녕하세요");
 
         listView.setAdapter(adapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

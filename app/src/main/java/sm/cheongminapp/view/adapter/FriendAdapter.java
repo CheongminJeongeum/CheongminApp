@@ -50,6 +50,8 @@ public class FriendAdapter extends AbstractAdapter<Friend> {
 
         Friend item = adapterList.get(position);
 
+        /*
+        TODO: 프로필 구현 안됨
         if(item.getProfileUrl().isEmpty())
         {
             viewHolder.imageProfile.setImageResource(R.drawable.ic_account);
@@ -59,9 +61,9 @@ public class FriendAdapter extends AbstractAdapter<Friend> {
             Picasso.with(convertView.getContext())
                     .load(item.getProfileUrl())
                     .into(viewHolder.imageProfile);
-        }
+        }*/
 
-        viewHolder.textName.setText(item.getName());
+        viewHolder.textName.setText(item.Name);
 
         return convertView;
     }

@@ -14,11 +14,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.Api;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sm.cheongminapp.MainActivity;
 import sm.cheongminapp.ProfileActivity;
 import sm.cheongminapp.data.Friend;
+import sm.cheongminapp.model.Result;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.view.adapter.FriendAdapter;
@@ -43,12 +49,47 @@ public class FriendFragment extends Fragment {
                 Friend friend = (Friend)adapter.getItem(position);
 
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                // intent에 프로필 정보를 넘기던가 처리해야함
+                intent.putExtra("Friend", friend);
                 startActivity(intent);
             }
         });
-        adapter.addItem(new Friend("admin1", "박통역", ""));
-        adapter.addItem(new Friend("admin2", "김수화", ""));
+
+
+        IApiService service = ApiService.getInstance().getService();
+        service.getFriends().enqueue(new Callback<Result<List<Friend>>>() {
+            @Override
+            public void onResponse(Call<Result<List<Friend>>> call, Response<Result<List<Friend>>> response) {
+                if(response.isSuccessful() == false) {
+                    Toast.makeText(getActivity(), "친구목록 요청 실패", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                List<Friend> responseData = response.body().Data;
+                if(responseData.size() <= 0) {
+                    Toast.makeText(getActivity(), "친구가 없음", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                adapter.clear();
+                for(int i = 0; i < responseData.size(); i++) {
+                    adapter.addItem(responseData.get(i));
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<Result<List<Friend>>> call, Throwable t) {
+                Toast.makeText(getActivity(), "친구목록 요청 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // TODO: 임시 친구 삭제
+        Friend friend1 = new Friend();
+        friend1.ID = "admin1";
+        friend1.Name = "친구1";
+
+        adapter.addItem(friend1);
+        adapter.notifyDataSetChanged();
 
         return view;
     }

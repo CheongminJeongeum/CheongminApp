@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import sm.cheongminapp.data.Friend;
 import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.model.Center;
 import sm.cheongminapp.model.Profile;
@@ -27,13 +28,16 @@ public interface IApiService {
             @Field("passwd") String password);
 
     @GET("users/")
-    Call<Result<Profile>> GetMyProfile();
+    Call<Result<Profile>> getMyProfile();
 
     @GET("users/{id}")
-    Call<Result<Profile>> GetProfile(@Path("id") String id);
+    Call<Result<Profile>> getProfile(@Path("id") String id);
+
+    @GET("friends")
+    Call<Result<List<Friend>>> getFriends();
 
     @GET("centers/")
-    Call<List<Center>> GetCenters();
+    Call<List<Center>> getCenters();
 
     @FormUrlEncoded
     @POST("centers/{id}/requests")

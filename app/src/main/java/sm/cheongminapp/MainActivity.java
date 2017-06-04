@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getAndSetMode() {
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.GetProfile(id).enqueue(new Callback<Result<Profile>>() {
+        apiService.getProfile(id).enqueue(new Callback<Result<Profile>>() {
             @Override
             public void onResponse(Call<Result<Profile>> call, Response<Result<Profile>> response) {
                 if(response.isSuccessful() == false)

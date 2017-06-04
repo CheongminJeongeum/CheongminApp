@@ -72,13 +72,13 @@ public class RequestFragment extends Fragment {
                     return;
                 }
 
+                adapter.clear();
+
                 for (int i = 0; i < response.body().size(); i++) {
                     Reservation reservation = response.body().get(i);
-                    reservationsList.add(reservation);
+                    adapter.addItem(reservation);
                 }
 
-                adapter.clear();
-                adapter.addOrderList(reservationsList);
                 adapter.notifyDataSetChanged();
             }
 
