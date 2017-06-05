@@ -16,7 +16,6 @@ import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.model.Center;
 import sm.cheongminapp.model.Profile;
 import sm.cheongminapp.model.Result;
-import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.model.data.LoginResult;
 
 /**
@@ -67,7 +66,7 @@ public interface IApiService {
 
     @FormUrlEncoded
     @POST("chat/room")
-    Call<Result<EmptyData>> createChatRoom(
+    Call<Result> createChatRoom(
             @Field("member1") String memberID,
             @Field("member2") String targetID);
 

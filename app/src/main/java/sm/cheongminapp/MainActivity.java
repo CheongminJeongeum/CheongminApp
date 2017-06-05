@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("error", String.valueOf(response.code()));
                     return;
                 }
-
+                mode = response.body().Data.option;
                 Log.d("UserMode", String.valueOf(response.body().Data.option));
             }
 

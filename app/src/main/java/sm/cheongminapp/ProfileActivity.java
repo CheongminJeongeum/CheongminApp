@@ -1,16 +1,22 @@
 package sm.cheongminapp;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sm.cheongminapp.data.ChatRoom;
 import sm.cheongminapp.data.Friend;
+import sm.cheongminapp.model.Result;
+import sm.cheongminapp.network.ApiService;
+import sm.cheongminapp.network.IApiService;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -38,8 +44,21 @@ public class ProfileActivity extends AppCompatActivity {
 
     @OnClick(R.id.profile_open_chat_btn)
     void openChat() {
-        // TODO: 친구와 대화 시작
-        Toast.makeText(this, "대화 시작", Toast.LENGTH_SHORT).show();
+        IApiService apiService = ApiService.getInstance().getService();
+        apiService.createChatRoom(MainActivity.id, friend.ID).enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                ChatRoom room = (ChatRoom)response.body().Data;
+                Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
+                intent.putExtra("ChatRoom", room);
+
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+
+            }
+        });
     }
 
 }
