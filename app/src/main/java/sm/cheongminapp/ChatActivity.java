@@ -31,6 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +54,6 @@ import sm.cheongminapp.view.adapter.ChatMessageAdapter;
     대화 목록창을 누르면 생성된 방들을 모두 가져옴. -> /chat/room (GET)으로 요청.
     리스트 중 하나를 누르면 ChatActivity로 이동함(인텐트로 방 번호, 방 이름을 전달)
 
-
     방 생성 시 중복체크 할 때가 조금 귀찮은데
     Primary key 값을 자동 증가값으로 하지 말고, 차라리 두 사용자의 아이디값으로 지정하는것이 어떤가?
  */
@@ -74,10 +74,18 @@ public class ChatActivity extends AppCompatActivity {
 
     private String[] navItems = {"Brown", "Cadet Blue", "Dark Olive Green",
             "Dark Orange", "Golden Rod"};
-    private ListView lvNavList;
-    private FrameLayout flContainer;
-    private DrawerLayout dlDrawer;
-    private ActionBarDrawerToggle dtToggle;
+
+    @BindView(R.id.list_shortcuts)
+    ListView lvNavList;
+
+    @BindView(R.id.fl_activity_chat_container)
+    FrameLayout flContainer;
+
+    @BindView(R.id.dl_activity_chat_drawer)
+    DrawerLayout dlDrawer;
+
+    ActionBarDrawerToggle dtToggle;
+
     ArrayAdapter<String> emoAdapter;
 
     DBHelper dbHelper;
@@ -116,23 +124,13 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        // 넘겨받은 채팅방 정보
+        // 채팅방 정보 설정
         chatRoom = (ChatRoom)getIntent().getSerializableExtra("ChatRoom");
-
-        // 방 번호 설정
         currentRoomId = chatRoom.ID;
 
-        // 대화방 이름 설정
         getSupportActionBar().setTitle(chatRoom.Name);
 
-
-        //lvNavList = (ListView)findViewById(R.id.lv_activity_chat_nav_list);
-        flContainer = (FrameLayout)findViewById(R.id.fl_activity_chat_container);
-
-        //lvNavList.setAdapter(
-                //new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
-        //lvNavList.setOnItemClickListener(new DrawerItemClickListener());
-        dlDrawer = (DrawerLayout)findViewById(R.id.dl_activity_chat_drawer);
+        // 네비게이션 메뉴 설정
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer,
                 R.drawable.ic_drawer, R.string.open_drawer, R.string.close_drawer){
 
@@ -147,38 +145,24 @@ public class ChatActivity extends AppCompatActivity {
             }
 
         };
+
         dlDrawer.setDrawerListener(dtToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // 메세지 어댑터
-        adapter = new ChatMessageAdapter(new ArrayList<ChatObject>());
+
+        // 채팅 메세지 어댑터 설정
+        adapter = new ChatMessageAdapter();
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        // recyclerView.scrollToPosition(adapter.getItemCount() - 1);
 
-        List<String> list = new ArrayList<String>();
-        list.add("dfsdss");
-        list.add("fkfkww");
-        list.add("dfsdss");
-        list.add("fkfkww");
-        list.add("dfsdss");
-        list.add("fkfkww");
-        list.add("dfsdss");
-        list.add("fkfkww");
-        list.add("dfsdss");
-        list.add("fkfkww");
-        lvNavList = (ListView) findViewById(R.id.list_shortcuts);
-        emoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-        lvNavList.setAdapter(emoAdapter);
+        // 단축키 불러오기
+        loadEmoji();
 
-        // 내가 보낸 메세지
+        // 이전 채팅 내용 불러오기
+        loadChatLog();
+
+        // TODO: 임시 메세지 삭제
         adapter.addChatInput("안녕하세요!");
-
-        // 받은 메세지
-
-        // 받은 메세지를 수어로 변환합니다
-        // 괜찮습니다. 고맙습니다. -> 괜찮다/고맙다
-        // SignVideoRepository에 Map에 따라 괜찮다의 비디오를 가져옵니다
 
         ChatSignData chatSignData = new ChatSignData();
         chatSignData.getSignDataList().add(new SignData("괜찮다", SignVideoRepository.getInstance().getSignVideo("괜찮다")));
@@ -187,73 +171,8 @@ public class ChatActivity extends AppCompatActivity {
         adapter.addSign(chatSignData);
         adapter.addResponseInput("괜찮아 고마워");
 
-        // 로컬 DB에서 채팅 기록 가져옴
-        dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
-
-        List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
-        for(int i=0; i<chatList.size(); i++) {
-            ChatObject chat = chatList.get(i);
-            switch(chat.getType())
-            {
-                case ChatObject.INPUT_OBJECT:
-                    // 입력한 채팅
-                    adapter.addChatInput(chat.getText());
-                    break;
-                case ChatObject.RESPONSE_OBJECT:
-                    // 받은 채팅
-                    adapter.addResponseInput(chat.getText());
-                    break;
-                case ChatObject.SIGN_IMAGE_OBJECT:
-                    // 수화 영상
-                    break;
-            }
-        }
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("이모티콘", editText.getText().toString());
-
-                if(MainActivity.mode == 1) { // 청
-                    IApiService apiService = ApiService.getInstance().getService();
-                    apiService.sendMessageOnKorean(MainActivity.id, currentRoomId,
-                            editText.getText().toString())
-                            .enqueue(new Callback<Result>() {
-                                @Override
-                                public void onResponse(Call<Result> call, Response<Result> response) {
-
-                                }
-
-                                @Override
-                                public void onFailure(Call<Result> call, Throwable t) {
-
-                                }
-                            });
-                } else { // 농
-                    IApiService apiService = ApiService.getInstance().getService();
-                    apiService.sendMessageOnSign(MainActivity.id, currentRoomId,
-                            editText.getText().toString())
-                            .enqueue(new Callback<Result>() {
-                                @Override
-                                public void onResponse(Call<Result> call, Response<Result> response) {
-
-                                }
-
-                                @Override
-                                public void onFailure(Call<Result> call, Throwable t) {
-
-                                }
-                            });
-                }
-
-                dbHelper.insert(currentRoomId, 0, editText.getText().toString());
-                adapter.addChatInput(editText.getText().toString());
-            }
-        });
-
         // 리시버 등록
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("chat");
-        registerReceiver(chatReceiver, filter);
+        setupReceiver();
     }
 
     @Override
@@ -285,6 +204,88 @@ public class ChatActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    void loadEmoji() {
+        List<String> list = new ArrayList<String>();
+        list.add("단축키1");
+        list.add("단축키2");
+
+        emoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        lvNavList.setAdapter(emoAdapter);
+    }
+
+    void loadChatLog() {
+        // 로컬 DB에서 채팅 기록 가져옴
+        dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
+
+        List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
+        for(int i=0; i<chatList.size(); i++) {
+            ChatObject chat = chatList.get(i);
+            switch(chat.getType())
+            {
+                case ChatObject.INPUT_OBJECT:
+                    // 입력한 채팅
+                    adapter.addChatInput(chat.getText());
+                    break;
+                case ChatObject.RESPONSE_OBJECT:
+                    // 받은 채팅
+                    adapter.addResponseInput(chat.getText());
+                    break;
+                case ChatObject.SIGN_IMAGE_OBJECT:
+                    // 수화 영상
+                    break;
+            }
+        }
+    }
+
+    void setupReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("chat");
+
+        registerReceiver(chatReceiver, filter);
+    }
+
+    @OnClick(R.id.chat_send)
+    void clickSend() {
+        Log.d("이모티콘", editText.getText().toString());
+
+        if(MainActivity.mode == 1) { // 청
+            IApiService apiService = ApiService.getInstance().getService();
+            apiService.sendMessageOnKorean(MainActivity.id, currentRoomId,
+                    editText.getText().toString())
+                    .enqueue(new Callback<Result>() {
+                        @Override
+                        public void onResponse(Call<Result> call, Response<Result> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Result> call, Throwable t) {
+
+                        }
+                    });
+        } else { // 농
+            IApiService apiService = ApiService.getInstance().getService();
+            apiService.sendMessageOnSign(MainActivity.id, currentRoomId,
+                    editText.getText().toString())
+                    .enqueue(new Callback<Result>() {
+                        @Override
+                        public void onResponse(Call<Result> call, Response<Result> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Result> call, Throwable t) {
+
+                        }
+                    });
+        }
+
+        dbHelper.insert(currentRoomId, 0, editText.getText().toString());
+        adapter.addChatInput(editText.getText().toString());
+    }
+
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 

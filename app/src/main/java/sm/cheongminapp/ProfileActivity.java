@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,10 +49,14 @@ public class ProfileActivity extends AppCompatActivity {
         apiService.createChatRoom(MainActivity.id, friend.ID).enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
+                if(response.isSuccessful() == false) {
+                    Toast.makeText(ProfileActivity.this, "방 생성 요청 실패", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 ChatRoom room = (ChatRoom)response.body().Data;
                 Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
                 intent.putExtra("ChatRoom", room);
-
             }
 
             @Override

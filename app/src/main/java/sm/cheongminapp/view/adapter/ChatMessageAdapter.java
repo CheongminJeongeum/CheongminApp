@@ -19,12 +19,7 @@ import sm.cheongminapp.view.viewholder.ChatSignVH;
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
-    private ArrayList<ChatObject> chatObjects;
-
-    public ChatMessageAdapter(ArrayList<ChatObject> arrayList)
-    {
-        chatObjects = arrayList;
-    }
+    private ArrayList<ChatObject> chatObjects = new ArrayList<>();
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
