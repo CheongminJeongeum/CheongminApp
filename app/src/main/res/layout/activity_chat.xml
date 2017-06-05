@@ -78,107 +78,83 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/lv_activity_chat_nav_layout"
         android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:id="@+id/lv_activity_chat_nav_layout"
-        android:layout_gravity="end"
-        android:choiceMode="singleChoice"
+        android:background="#ffffff"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:background="#EDEDED"
+        android:choiceMode="singleChoice"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+            android:layout_height="50dp"
+            android:background="#efefef">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="장소 선택"/>
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:text="장소 선택"
+                android:textSize="18dp" />
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_centerInParent="true"
-            android:background="#FFFFFF"/>
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="18dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:orientation="vertical" >
 
             <RadioButton
                 android:id="@+id/option1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="병원" />
 
             <RadioButton
                 android:id="@+id/option2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="은행" />
 
             <RadioButton
                 android:id="@+id/option3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="관공서" />
+
         </RadioGroup>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_centerInParent="true"
-            android:background="#FFFFFF"/>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp">
-            <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:background="@drawable/add_emo"/>
+            android:layout_height="50dp"
+            android:background="#efefef">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="20dp"
-                android:text="새 단축키 등록"/>
-            </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:text="단축키 목록"
+                android:textSize="18dp" />
+
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_centerInParent="true"
-            android:background="#FFFFFF"/>
 
         <ListView
             android:id="@+id/list_shortcuts"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingTop="8dp" />
 
-        </ListView>
     </LinearLayout>
-<!--
-    <ListView android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/lv_activity_chat_nav_list"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="#EDEDED"/>
--->
+
 </android.support.v4.widget.DrawerLayout>

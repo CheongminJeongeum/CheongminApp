@@ -171,6 +171,8 @@ public class ChatActivity extends AppCompatActivity {
         adapter.addSign(chatSignData);
         adapter.addResponseInput("괜찮아 고마워");
 
+        adapter.notifyDataSetChanged();
+
         // 리시버 등록
         setupReceiver();
     }
