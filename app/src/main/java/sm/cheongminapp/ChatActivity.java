@@ -1,7 +1,9 @@
 package sm.cheongminapp;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -302,7 +305,26 @@ public class ChatActivity extends AppCompatActivity {
 
     @OnClick(R.id.chat_add_hotkey)
     public void clickAddHotkey() {
-        Toast.makeText(this, "새 핫키 추가", Toast.LENGTH_SHORT).show();
+        View dialogView = View.inflate(ChatActivity.this, R.layout.dialog_hotkey, null);
+
+        final EditText etName = (EditText) dialogView.findViewById(R.id.dialog_hotkey_name);
+        final EditText etContent = (EditText) dialogView.findViewById(R.id.dialog_hotkey_content);
+
+        AlertDialog.Builder dlg = new AlertDialog.Builder(ChatActivity.this);
+        dlg.setView(dialogView);
+        dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                HotKey hotkey = new HotKey();
+                hotkey.Name = etName.getText().toString();
+                hotkey.Content = etContent.getText().toString();
+
+                hotKeyAdapter.addItem(hotkey);
+                hotKeyAdapter.notifyDataSetChanged();
+            }
+        });
+        dlg.setNegativeButton("취소", null);
+        dlg.show();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
