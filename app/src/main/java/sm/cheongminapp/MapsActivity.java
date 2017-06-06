@@ -164,6 +164,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 intent.putExtra("lng", latLng.longitude);
 
                 startActivity(intent);
+                finish();
             }
         });
         dlg.setNegativeButton("취소", null);
