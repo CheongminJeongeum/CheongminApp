@@ -32,12 +32,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.data.ChatObject;
 import sm.cheongminapp.data.ChatRoom;
 import sm.cheongminapp.data.ChatSignData;
+import sm.cheongminapp.data.HotKey;
 import sm.cheongminapp.data.SignData;
 import sm.cheongminapp.database.DBHelper;
 import sm.cheongminapp.model.Result;
@@ -45,6 +47,7 @@ import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.repository.SignVideoRepository;
 import sm.cheongminapp.view.adapter.ChatMessageAdapter;
+import sm.cheongminapp.view.adapter.HotKeyAdapter;
 
 /*
     TODO: 채팅 과정 구현
@@ -76,7 +79,7 @@ public class ChatActivity extends AppCompatActivity {
             "Dark Orange", "Golden Rod"};
 
     @BindView(R.id.list_shortcuts)
-    ListView lvNavList;
+    ListView lvHotkeyList;
 
     @BindView(R.id.fl_activity_chat_container)
     FrameLayout flContainer;
@@ -86,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
 
     ActionBarDrawerToggle dtToggle;
 
-    ArrayAdapter<String> emoAdapter;
+    HotKeyAdapter hotKeyAdapter;
 
     DBHelper dbHelper;
     ChatMessageAdapter adapter;
@@ -155,9 +158,6 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        // 단축키 불러오기
-        loadEmoji();
-
         // 이전 채팅 내용 불러오기
         loadChatLog();
 
@@ -172,6 +172,9 @@ public class ChatActivity extends AppCompatActivity {
         adapter.addResponseInput("괜찮아 고마워");
 
         adapter.notifyDataSetChanged();
+
+        // 단축키 불러오기
+        setupHotkeyList();
 
         // 리시버 등록
         setupReceiver();
@@ -208,16 +211,18 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    void loadEmoji() {
-        List<String> list = new ArrayList<String>();
-        list.add("단축키1");
-        list.add("단축키2");
+    public void setupHotkeyList() {
+        hotKeyAdapter = new HotKeyAdapter(this);
+        lvHotkeyList.setAdapter(hotKeyAdapter);
 
-        emoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-        lvNavList.setAdapter(emoAdapter);
+        HotKey hotKey1 = new HotKey();
+        hotKey1.Name = "핫키1";
+        hotKey1.Content = "내용1";
+
+        hotKeyAdapter.addItem(hotKey1);
     }
 
-    void loadChatLog() {
+    public void loadChatLog() {
         // 로컬 DB에서 채팅 기록 가져옴
         dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
 
@@ -241,7 +246,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    void setupReceiver() {
+    public void setupReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("chat");
 
@@ -249,7 +254,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.chat_send)
-    void clickSend() {
+    public void clickSend() {
         Log.d("이모티콘", editText.getText().toString());
 
         if(MainActivity.mode == 1) { // 청
@@ -288,6 +293,17 @@ public class ChatActivity extends AppCompatActivity {
         adapter.addChatInput(editText.getText().toString());
     }
 
+    @OnItemClick(R.id.list_shortcuts)
+    public void onItemClick(AdapterView<?> parent, int position) {
+        HotKey hotKey = (HotKey)hotKeyAdapter.getItem(position);
+
+        Toast.makeText(this, hotKey.Content, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.chat_add_hotkey)
+    public void clickAddHotkey() {
+        Toast.makeText(this, "새 핫키 추가", Toast.LENGTH_SHORT).show();
+    }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
