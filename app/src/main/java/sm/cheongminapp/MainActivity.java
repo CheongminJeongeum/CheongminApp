@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
         id = infoIntent.getStringExtra("id");
         getAndSetMode();
 
+        //if(mode == 0) {
+            startActivity(new Intent(MainActivity.this, BTRetrieveActivity.class));
+        //}
+
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
