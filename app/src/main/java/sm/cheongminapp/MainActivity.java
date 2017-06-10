@@ -1,6 +1,7 @@
 package sm.cheongminapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sm.cheongminapp.blutooth.BTConnector;
 import sm.cheongminapp.fragment.CenterFragment;
 import sm.cheongminapp.fragment.HomeFragment;
 import sm.cheongminapp.fragment.RequestFragment;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static String id = "admin1";
     public static int mode = 1; // 0 : 농, 1 : 청
+    public static Context context = null;
 
     @BindView(R.id.main_toolbar)
     Toolbar toolbar;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     RequestFragment requestFragment = new RequestFragment(this);
 
     PreferenceData pref = new PreferenceData(this);
+    BTConnector btc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +63,15 @@ public class MainActivity extends AppCompatActivity {
         // 기본 페이지 설정
         replaceFragment(homeFragment);
 
+        context = this;
         Intent infoIntent = getIntent();
         id = infoIntent.getStringExtra("id");
         getAndSetMode();
 
+        btc = new BTConnector(this);
+
         //if(mode == 0) {
-            startActivity(new Intent(MainActivity.this, BTRetrieveActivity.class));
+            btc.checkBluetooth();
         //}
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -118,6 +125,15 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_CANCELED) {
                 //만약 반환값이 없을 경우의 코드를 여기에 작성하세요.
             }
+        } else if(requestCode == BTConnector.REQUEST_ENABLE_BT) {
+            if(resultCode == RESULT_OK) { // 블루투스 활성화 상태
+                btc.selectDevice();
+            }
+            else if(resultCode == RESULT_CANCELED) { // 블루투스 비활성화 상태 (종료)
+                Toast.makeText(getApplicationContext(), "블루투수를 사용할 수 없어 프로그램을 종료합니다",
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
     }
 
@@ -152,9 +168,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         //if(mode == 0) {
-            unbindService(BTRetrieveActivity.conn);
+            unbindService(btc.conn);
         //}
+        try{
+            unregisterReceiver(btc.mBackgroundReceiver);
+        }catch(Exception e){}
     }
 }

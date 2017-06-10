@@ -7,8 +7,8 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -41,6 +41,12 @@ public class BTService extends Service {
 
     public void setBluetoothSocket(BluetoothSocket mSocket) {
         this.mSocket = mSocket;
+
+        try {
+            mInputStream = mSocket.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -104,12 +110,25 @@ public class BTService extends Service {
                         }
 
                     } catch (Exception e) {    // 데이터 수신 중 오류 발생.
-                        Toast.makeText(getApplicationContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
+
                     }
                 }
             }
 
         });
         mWorkerThread.start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mWorkerThread.interrupt();
+        try {
+            mInputStream.close();
+            mSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
