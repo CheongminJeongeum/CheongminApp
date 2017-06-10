@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="0월"
+            android:text="월"
             android:textColor="#2561b0"
             android:textSize="14dp"
             android:ellipsize="middle"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="0일"
+            android:text="일"
             android:textAllCaps="true"
             android:textStyle="bold"
             android:textColor="#2561b0"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="0요일"
+            android:text="요일"
             android:textColor="#9298a1"
             android:textSize="12dp"
             android:ellipsize="middle"
@@ -91,8 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:layout_gravity="center"
-        android:textSize="14dp"
-        android:text="대기 중"
+        android:textSize="16dp"
+        android:text="결과"
         android:layout_marginRight="24dp"/>
 
 </LinearLayout>

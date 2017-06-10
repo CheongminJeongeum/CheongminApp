@@ -9,11 +9,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
-import sm.cheongminapp.data.Center;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sm.cheongminapp.model.CenterModel;
+import sm.cheongminapp.model.ResultModel;
+import sm.cheongminapp.network.ApiService;
+import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.view.adapter.CenterAdapter;
 
 public class CenterActivity extends AppCompatActivity {
@@ -30,7 +37,9 @@ public class CenterActivity extends AppCompatActivity {
     ListView lvCenterList;
 
     private CenterAdapter centerAdapter;
-    private ArrayList<Center> recentCenterList = new ArrayList<>();
+    private ArrayList<CenterModel> recentCenterModelList = new ArrayList<>();
+
+    private ArrayList<CenterModel> centerModelList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +53,39 @@ public class CenterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // DB로 부터 최근 요청한 센터 목록을 받아옴
-        Center sampleCenter = new Center("임시 통역 센터", 0, 0, "정보", "010-1234-1234");
-        recentCenterList.add(sampleCenter);
+        CenterModel centerModel = new CenterModel();
+        centerModel.Name = "최근 통역 센터1";
+        centerModel.ID = 0;
+
+        recentCenterModelList.add(centerModel);
 
         // 어댑터 설정
         centerAdapter = new CenterAdapter(this);
-        centerAdapter.addOrderList(recentCenterList);
+        //centerAdapter.addOrderList(recentCenterModelList);
 
         lvCenterList.setAdapter(centerAdapter);
+
+        // 센터 요청
+        IApiService apiService = ApiService.getInstance().getService();
+        apiService.getCenters().enqueue(new Callback<ResultModel<List<CenterModel>>>() {
+            @Override
+            public void onResponse(Call<ResultModel<List<CenterModel>>> call, Response<ResultModel<List<CenterModel>>> response) {
+                if(response.isSuccessful() == false)
+                {
+                    return;
+                }
+
+                List<CenterModel> centerModelList = response.body().Data;
+                for(int i = 0; i < centerModelList.size(); i++) {
+                    centerModelList.add(centerModelList.get(i));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultModel<List<CenterModel>>> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -62,10 +96,10 @@ public class CenterActivity extends AppCompatActivity {
 
     @OnItemClick(R.id.center_list_view)
     public void onItemClick(AdapterView<?> parent, int position) {
-        Center center = (Center)centerAdapter.getItem(position);
+        CenterModel centerModel = (CenterModel)centerAdapter.getItem(position);
 
         Intent intent = new Intent(CenterActivity.this, MapsActivity.class);
-        intent.putExtra("centerId", center.center_id);
+        //intent.putExtra("centerId", centerModel.center_id);
 
         startActivityForResult(intent, requestCode);
         finish();

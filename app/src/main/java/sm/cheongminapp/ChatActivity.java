@@ -21,15 +21,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,7 +42,7 @@ import sm.cheongminapp.data.ChatSignData;
 import sm.cheongminapp.data.HotKey;
 import sm.cheongminapp.data.SignData;
 import sm.cheongminapp.database.DBHelper;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.repository.SignVideoRepository;
@@ -264,14 +261,14 @@ public class ChatActivity extends AppCompatActivity {
             IApiService apiService = ApiService.getInstance().getService();
             apiService.sendMessageOnKorean(MainActivity.id, currentRoomId,
                     editText.getText().toString())
-                    .enqueue(new Callback<Result>() {
+                    .enqueue(new Callback<ResultModel>() {
                         @Override
-                        public void onResponse(Call<Result> call, Response<Result> response) {
+                        public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
 
                         }
 
                         @Override
-                        public void onFailure(Call<Result> call, Throwable t) {
+                        public void onFailure(Call<ResultModel> call, Throwable t) {
 
                         }
                     });
@@ -279,14 +276,14 @@ public class ChatActivity extends AppCompatActivity {
             IApiService apiService = ApiService.getInstance().getService();
             apiService.sendMessageOnSign(MainActivity.id, currentRoomId,
                     editText.getText().toString())
-                    .enqueue(new Callback<Result>() {
+                    .enqueue(new Callback<ResultModel>() {
                         @Override
-                        public void onResponse(Call<Result> call, Response<Result> response) {
+                        public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
 
                         }
 
                         @Override
-                        public void onFailure(Call<Result> call, Throwable t) {
+                        public void onFailure(Call<ResultModel> call, Throwable t) {
 
                         }
                     });

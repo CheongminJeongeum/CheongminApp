@@ -13,9 +13,9 @@ import retrofit2.http.Query;
 import sm.cheongminapp.data.ChatRoom;
 import sm.cheongminapp.data.Friend;
 import sm.cheongminapp.data.Reservation;
-import sm.cheongminapp.model.Center;
-import sm.cheongminapp.model.Profile;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.CenterModel;
+import sm.cheongminapp.model.ProfileModel;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.model.data.LoginResult;
 
@@ -26,26 +26,26 @@ import sm.cheongminapp.model.data.LoginResult;
 public interface IApiService {
     @FormUrlEncoded
     @POST("users/login")
-    Call<Result<LoginResult>> Login(
+    Call<ResultModel<LoginResult>> Login(
             @Field("id") String id,
             @Field("passwd") String password);
 
     @GET("users/")
-    Call<Result<Profile>> getMyProfile();
+    Call<ResultModel<ProfileModel>> getMyProfile();
 
     @GET("users/{id}")
-    Call<Result<Profile>> getProfile(
+    Call<ResultModel<ProfileModel>> getProfile(
             @Path("id") String id);
 
     @GET("friends")
-    Call<Result<List<Friend>>> getFriends();
+    Call<ResultModel<List<Friend>>> getFriends();
 
     @GET("centers")
-    Call<Result<List<Center>>> getCenters();
+    Call<ResultModel<List<CenterModel>>> getCenters();
 
     @FormUrlEncoded
     @POST("centers/{id}/requests")
-    Call<Result<EmptyData>> requestReservation(
+    Call<ResultModel<EmptyData>> requestReservation(
             @Path("id") int centerID,
             @Field("id") String userID,
             @Field("day") String day,
@@ -56,36 +56,36 @@ public interface IApiService {
             @Field("lng") double lng);
 
     @GET("reservations/member/{member_id}")
-    Call<Result<List<Reservation>>> getMyReservations(
+    Call<ResultModel<List<Reservation>>> getMyReservations(
             @Path("member_id") String member_id);
 
     @FormUrlEncoded
     @PUT("regid")
-    Call<Result> RegId(
+    Call<ResultModel> RegId(
             @Field("id") String id,
             @Field("regId") String regId);
 
 
     @FormUrlEncoded
     @POST("chat/room")
-    Call<Result> createChatRoom(
+    Call<ResultModel> createChatRoom(
             @Field("member1") String memberID,
             @Field("member2") String targetID);
 
     @GET("chat/room")
-    Call<Result<List<ChatRoom>>> getChatRooms(
+    Call<ResultModel<List<ChatRoom>>> getChatRooms(
             @Query("id") String memberID);
 
     @FormUrlEncoded
     @POST("chat/korean")
-    Call<Result> sendMessageOnKorean(
+    Call<ResultModel> sendMessageOnKorean(
             @Field("id") String id,
             @Field("room") int room,
             @Field("msg") String msg);
 
     @FormUrlEncoded
     @POST("chat/sign")
-    Call<Result> sendMessageOnSign(
+    Call<ResultModel> sendMessageOnSign(
             @Field("id") String id,
             @Field("room") int room,
             @Field("msg") String msg);

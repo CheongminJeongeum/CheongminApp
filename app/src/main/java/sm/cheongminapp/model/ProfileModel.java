@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Raye on 2017-05-21.
  */
 
-public class Profile {
+public class ProfileModel {
     @SerializedName("id")
     @Expose
     public String ID;
@@ -38,5 +38,5 @@ public class Profile {
 
     @SerializedName("option")
     @Expose
-    public int option;
+    public int Option;
 }

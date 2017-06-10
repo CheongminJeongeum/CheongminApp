@@ -17,7 +17,7 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
@@ -105,9 +105,9 @@ public class RequestActivity extends AppCompatActivity {
                 eDate.getText().toString(),
                 Integer.parseInt(eStartTime.getText().toString()),
                 Integer.parseInt(eEndTime.getText().toString()),
-                eGoal.getText().toString(), lat, lng).enqueue(new Callback<Result<EmptyData>>() {
+                eGoal.getText().toString(), lat, lng).enqueue(new Callback<ResultModel<EmptyData>>() {
             @Override
-            public void onResponse(Call<Result<EmptyData>> call, Response<Result<EmptyData>> response) {
+            public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
                 if(response.body().IsSuccessful) {
                     Toast.makeText(getApplicationContext(), "요청에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                     finish();
@@ -118,7 +118,7 @@ public class RequestActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Result<EmptyData>> call, Throwable t) {
+            public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
 
             }
         });

@@ -10,19 +10,11 @@ import java.io.Serializable;
  */
 public class Reservation implements Serializable {
 
-    @SerializedName("request_id")
+    @SerializedName("center_name")
     @Expose
-    public int RequestID;
+    public String CenterName;
 
-    @SerializedName("center_id")
-    @Expose
-    public int CenterID;
-
-    @SerializedName("member_id")
-    @Expose
-    public String MemberID;
-
-    @SerializedName("day")
+    @SerializedName("date")
     @Expose
     public String Date;
 
@@ -34,6 +26,18 @@ public class Reservation implements Serializable {
     @Expose
     public int EndTime;
 
+    @SerializedName("reservation_info")
+    @Expose
+    public String Reason;
+
+    @SerializedName("reservation_result")
+    @Expose
+    public int Result;
+
+    @SerializedName("location_detail")
+    @Expose
+    public String Location;
+
     @SerializedName("lat")
     @Expose
     public double Lat;
@@ -41,10 +45,6 @@ public class Reservation implements Serializable {
     @SerializedName("lng")
     @Expose
     public double Lng;
-
-    @SerializedName("reservation_info")
-    @Expose
-    public String Reason;
 
 
     public String getTimeRangeText() {

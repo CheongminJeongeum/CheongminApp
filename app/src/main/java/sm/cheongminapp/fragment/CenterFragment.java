@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +17,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import sm.cheongminapp.MapsActivity;
 import sm.cheongminapp.R;
 import sm.cheongminapp.RequestListActivity;
-import sm.cheongminapp.data.Center;
-import sm.cheongminapp.network.ApiService;
-import sm.cheongminapp.network.IApiService;
+import sm.cheongminapp.model.CenterModel;
 import sm.cheongminapp.view.adapter.AbstractAdapter;
 import sm.cheongminapp.view.adapter.CenterAdapter;
 
@@ -43,10 +35,10 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
     private Button bSearch, bRequestList;
     private ListView centerListView;
 
-    private ArrayList<Center> nearCenterList;
-    private ArrayList<Center> searchCenterList;
-    private List<Center> entireCenterList;
-    private AbstractAdapter<Center> adapter;
+    private ArrayList<CenterModel> nearCenterList;
+    private ArrayList<CenterModel> searchCenterList;
+    private List<CenterModel> entireCenterList;
+    private AbstractAdapter<CenterModel> adapter;
 
     public CenterFragment() {
         // Required empty public constructor
@@ -79,33 +71,33 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
         });
         centerListView = (ListView) view.findViewById(R.id.list_center);
 
-        entireCenterList = new ArrayList<Center>();
+        entireCenterList = new ArrayList<CenterModel>();
         /*
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.GetCenters().enqueue(new Callback<List<sm.cheongminapp.model.Center>>() {
+        apiService.GetCenters().enqueue(new Callback<List<sm.cheongminapp.model.CenterModel>>() {
             @Override
-            public void onResponse(Call<List<sm.cheongminapp.model.Center>> call, Response<List<sm.cheongminapp.model.Center>> response) {
+            public void onResponse(Call<List<sm.cheongminapp.model.CenterModel>> call, Response<List<sm.cheongminapp.model.CenterModel>> response) {
                 Log.i("사이즈", Integer.toString(response.body().size()));
                 for(int i=0; i<response.body().size(); i++) {
-                    sm.cheongminapp.model.Center center = response.body().get(i);
-                    entireCenterList.add(new Center(center.Name, center.Location.lat,
-                            center.Location.lng, center.Infomation, center.Tel));
+                    sm.cheongminapp.model.CenterModel center = response.body().get(i);
+                    entireCenterList.add(new CenterModel(center.Name, center.LocationModel.lat,
+                            center.LocationModel.lng, center.Infomation, center.Tel));
 
                     Log.i("센터들", center.Name);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<sm.cheongminapp.model.Center>> call, Throwable t) {
+            public void onFailure(Call<List<sm.cheongminapp.model.CenterModel>> call, Throwable t) {
 
             }
         });
-*/
-        nearCenterList = new ArrayList<Center>();
-        nearCenterList.add(new Center("서울 강남구 수들화통역센터", 12.3, 31.2, "asdf", "feww"));
+
+        nearCenterList = new ArrayList<CenterModel>();
+        nearCenterList.add(new CenterModel("서울 강남구 수들화통역센터", 12.3, 31.2, "asdf", "feww"));
         nearCenterList.add(new Center("서울 관악구 수화통역센터", 15.3, 33.2, "asdf", "feww"));
         nearCenterList.get(0).center_id = 1;
-
+*/
         adapter = new CenterAdapter(getActivity());
         adapter.addOrderList(nearCenterList);
         centerListView.setAdapter(adapter);
@@ -116,7 +108,7 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
 
-    public void openDialog() {
+    public void openDialog() {/*
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         final String[] centerList = new String[searchCenterList.size()];
@@ -134,13 +126,13 @@ public class CenterFragment extends Fragment implements AdapterView.OnItemClickL
                     }
                 })
                 .setView(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_centerlist, null));
-        builder.show();
+        builder.show();*/
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {/*
         Intent intent = new Intent(getActivity(), MapsActivity.class);
         intent.putExtra("centerId", nearCenterList.get(position).center_id);
-        getActivity().startActivityForResult(intent, reqCode);
+        getActivity().startActivityForResult(intent, reqCode);*/
     }
 }

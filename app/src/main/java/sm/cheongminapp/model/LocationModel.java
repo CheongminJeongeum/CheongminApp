@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName;
  * Created by Raye on 2017-05-21.
  */
 
-public class Location {
+public class LocationModel {
     @SerializedName("lat")
-    public float lat;
+    public float Lat;
 
     @SerializedName("lng")
-    public float lng;
+    public float Lng;
 }

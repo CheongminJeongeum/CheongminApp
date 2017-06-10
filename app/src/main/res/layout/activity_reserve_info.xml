@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="강남구 수화 통역 센터"
+            android:text=""
             android:textSize="18dp"/>
 
         <TextView
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="병원 진료를 위한 통역이 필요합니다"
+            android:text=""
             android:textSize="18dp"/>
 
         <TextView
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="2017년 5월 22일"
+            android:text=""
             android:textSize="18dp"/>
 
         <TextView
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="오후 1:00 ~ 오후 3:30"
+            android:text=""
             android:textSize="18dp"/>
 
         <TextView
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="서울특별시 서초구 반포대로 222"
+            android:text=""
             android:textSize="18dp"/>
 
         <TextView
@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="카톨릭대학교 서울 성모병원 1층 로비"
+            android:text=""
             android:textSize="18dp"/>
 
         <fragment

@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.MainActivity;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.view.adapter.ChatRoomAdapter;
@@ -61,9 +61,9 @@ public class ChatFragment extends Fragment {
 
         // 방 목록 받아오기
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.getChatRooms(MainActivity.id).enqueue(new Callback<Result<List<ChatRoom>>>() {
+        apiService.getChatRooms(MainActivity.id).enqueue(new Callback<ResultModel<List<ChatRoom>>>() {
             @Override
-            public void onResponse(Call<Result<List<ChatRoom>>> call, Response<Result<List<ChatRoom>>> response) {
+            public void onResponse(Call<ResultModel<List<ChatRoom>>> call, Response<ResultModel<List<ChatRoom>>> response) {
                 if(response.isSuccessful() == false) {
                     Toast.makeText(getActivity(), "채팅방 목록 요청 실패", Toast.LENGTH_SHORT).show();
                     return;
@@ -86,7 +86,7 @@ public class ChatFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Result<List<ChatRoom>>> call, Throwable t) {
+            public void onFailure(Call<ResultModel<List<ChatRoom>>> call, Throwable t) {
                 Toast.makeText(getActivity(), "채팅방 목록 요청 실패", Toast.LENGTH_SHORT).show();
             }
         });

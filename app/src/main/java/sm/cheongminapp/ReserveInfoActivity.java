@@ -60,7 +60,7 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
         tvReason.setText(reservation.Reason);
         tvDate.setText(reservation.Date);
         tvTime.setText(reservation.getTimeRangeText());
-        //tvLocation.setText(reservation.Location);
+        //tvLocation.setText(reservation.LocationModel);
         //tvLocationDetail.setText(reservation.LocationDetail);
 
         // TODO:: Lat, Lng를 사용해 맵에 보여줘야함

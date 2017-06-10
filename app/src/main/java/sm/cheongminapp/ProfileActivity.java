@@ -15,7 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.data.ChatRoom;
 import sm.cheongminapp.data.Friend;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 
@@ -46,9 +46,9 @@ public class ProfileActivity extends AppCompatActivity {
     @OnClick(R.id.profile_open_chat_btn)
     void openChat() {
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.createChatRoom(MainActivity.id, friend.ID).enqueue(new Callback<Result>() {
+        apiService.createChatRoom(MainActivity.id, friend.ID).enqueue(new Callback<ResultModel>() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
                 if(response.isSuccessful() == false) {
                     Toast.makeText(ProfileActivity.this, "방 생성 요청 실패", Toast.LENGTH_SHORT).show();
                     return;
@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Result> call, Throwable t) {
+            public void onFailure(Call<ResultModel> call, Throwable t) {
 
             }
         });

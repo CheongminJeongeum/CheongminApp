@@ -25,8 +25,8 @@ import sm.cheongminapp.blutooth.BTConnector;
 import sm.cheongminapp.fragment.CenterFragment;
 import sm.cheongminapp.fragment.HomeFragment;
 import sm.cheongminapp.fragment.RequestFragment;
-import sm.cheongminapp.model.Profile;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.ProfileModel;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.utility.PreferenceData;
@@ -98,14 +98,14 @@ public class MainActivity extends AppCompatActivity {
         if(!pref.getValue("regid", "").equals("")) {
             IApiService apiService = ApiService.getInstance().getService();
             apiService.RegId(MainActivity.id, FirebaseInstanceId.getInstance().getToken())
-                    .enqueue(new Callback<Result>() {
+                    .enqueue(new Callback<ResultModel>() {
                         @Override
-                        public void onResponse(Call<Result> call, Response<Result> response) {
+                        public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
 
                         }
 
                         @Override
-                        public void onFailure(Call<Result> call, Throwable t) {
+                        public void onFailure(Call<ResultModel> call, Throwable t) {
 
                         }
                     });
@@ -142,19 +142,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void getAndSetMode() {
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.getProfile(id).enqueue(new Callback<Result<Profile>>() {
+        apiService.getProfile(id).enqueue(new Callback<ResultModel<ProfileModel>>() {
             @Override
-            public void onResponse(Call<Result<Profile>> call, Response<Result<Profile>> response) {
+            public void onResponse(Call<ResultModel<ProfileModel>> call, Response<ResultModel<ProfileModel>> response) {
                 if (response.isSuccessful() == false) {
                     Log.e("error", String.valueOf(response.code()));
                     return;
                 }
-                mode = response.body().Data.option;
-                Log.d("UserMode", String.valueOf(response.body().Data.option));
+                mode = response.body().Data.Option;
+                Log.d("UserMode", String.valueOf(response.body().Data.Option));
             }
 
             @Override
-            public void onFailure(Call<Result<Profile>> call, Throwable t) {
+            public void onFailure(Call<ResultModel<ProfileModel>> call, Throwable t) {
 
             }
         });

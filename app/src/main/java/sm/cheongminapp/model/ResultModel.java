@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Raye on 2017-05-02.
  */
 
-public class Result<T> {
+public class ResultModel<T> {
     @SerializedName("result")
     @Expose
     public boolean IsSuccessful;

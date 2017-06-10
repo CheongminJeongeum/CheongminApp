@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +26,10 @@ import sm.cheongminapp.MainActivity;
 import sm.cheongminapp.R;
 import sm.cheongminapp.ReserveInfoActivity;
 import sm.cheongminapp.data.Reservation;
-import sm.cheongminapp.data.ReservationData;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
-import sm.cheongminapp.utility.GPSModule;
-import sm.cheongminapp.view.adapter.AbstractAdapter;
-import sm.cheongminapp.view.adapter.ResponseAdapter;
+import sm.cheongminapp.view.adapter.ReservationAdapter;
 
 /**
  * Created by user on 2017. 5. 31..
@@ -42,8 +39,7 @@ public class RequestFragment extends Fragment {
     @BindView(R.id.fragment_request_list_view)
     ListView lvRequestList;
 
-    ResponseAdapter adapter;
-    ArrayList<Reservation> reservationsList = new ArrayList<>();
+    ReservationAdapter reservationAdapter;
 
     Context ctx;
 
@@ -58,36 +54,36 @@ public class RequestFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        adapter = new ResponseAdapter(ctx);
-        adapter.addOrderList(reservationsList);
+        reservationAdapter = new ReservationAdapter(ctx);
 
-        lvRequestList.setAdapter(adapter);
+        lvRequestList.setAdapter(reservationAdapter);
 
-        // 사용자의 예약 목록 요청
+        // 예약 목록
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.getMyReservations(MainActivity.id).enqueue(new Callback<Result<List<Reservation>>>() {
+        apiService.getMyReservations(MainActivity.id).enqueue(new Callback<ResultModel<List<Reservation>>>() {
             @Override
-            public void onResponse(Call<Result<List<Reservation>>> call, Response<Result<List<Reservation>>> response) {
+            public void onResponse(Call<ResultModel<List<Reservation>>> call, Response<ResultModel<List<Reservation>>> response) {
                 // 요청 실패 (errorBody를 통해 정보를 얻어 올 수 있음)
                 if(response.isSuccessful() == false) {
+                    Toast.makeText(ctx, "요청 실패", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 List<Reservation> reservationList = response.body().Data;
 
-                adapter.clear();
+                reservationAdapter.clear();
 
                 for (int i = 0; i < reservationList.size(); i++) {
                     Reservation reservation = reservationList.get(i);
-                    adapter.addItem(reservation);
+                    reservationAdapter.addItem(reservation);
                 }
 
-                adapter.notifyDataSetChanged();
+                reservationAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<Result<List<Reservation>>> call, Throwable t) {
-
+            public void onFailure(Call<ResultModel<List<Reservation>>> call, Throwable t) {
+                Toast.makeText(ctx, "요청 실패", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -96,7 +92,7 @@ public class RequestFragment extends Fragment {
 
     @OnItemClick(R.id.fragment_request_list_view)
     void onItemClick(AdapterView<?> parent, int position) {
-        Reservation reservation = (Reservation)adapter.getItem(position);
+        Reservation reservation = (Reservation)reservationAdapter.getItem(position);
 
         Intent intent = new Intent(getActivity(), ReserveInfoActivity.class);
         intent.putExtra("Reservation", reservation);

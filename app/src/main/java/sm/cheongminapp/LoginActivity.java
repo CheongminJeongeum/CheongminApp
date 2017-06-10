@@ -14,7 +14,7 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.model.data.LoginResult;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
@@ -73,9 +73,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.Login(email, password).enqueue(new Callback<Result<LoginResult>>() {
+        apiService.Login(email, password).enqueue(new Callback<ResultModel<LoginResult>>() {
             @Override
-            public void onResponse(Call<Result<LoginResult>> call, Response<Result<LoginResult>> response) {
+            public void onResponse(Call<ResultModel<LoginResult>> call, Response<ResultModel<LoginResult>> response) {
                 boolean isSuccessful = response.body().IsSuccessful;
 
                 if (isSuccessful) {
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<Result<LoginResult>> call, Throwable t) {
+            public void onFailure(Call<ResultModel<LoginResult>> call, Throwable t) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }

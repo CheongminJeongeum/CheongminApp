@@ -5,13 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import sm.cheongminapp.data.Center;
 import sm.cheongminapp.R;
+import sm.cheongminapp.model.CenterModel;
 
 /**
  * Created by user on 2017. 5. 14..
  */
-public class CenterAdapter extends AbstractAdapter<Center> {
+public class CenterAdapter extends AbstractAdapter<CenterModel> {
     public CenterAdapter(Context ctx) {
         super(ctx);
     }
@@ -25,16 +25,18 @@ public class CenterAdapter extends AbstractAdapter<Center> {
             view = mInflator.inflate(R.layout.listitem_center, viewGroup, false);
             viewHolder = new ViewHolder();
             viewHolder.tvListItemCenterName = (TextView) view.findViewById(R.id.center_name);
+
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        final Center info = adapterList.get(i);
+        final CenterModel info = adapterList.get(i);
         if (info == null)
             return view;
 
-        viewHolder.tvListItemCenterName.setText(info.name);
+        viewHolder.tvListItemCenterName.setText(info.Name);
+
         return view;
     }
 

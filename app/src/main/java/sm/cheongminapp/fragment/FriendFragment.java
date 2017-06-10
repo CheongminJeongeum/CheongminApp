@@ -3,16 +3,12 @@ package sm.cheongminapp.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.google.android.gms.common.api.Api;
 
 import java.util.List;
 
@@ -21,10 +17,9 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sm.cheongminapp.MainActivity;
 import sm.cheongminapp.ProfileActivity;
 import sm.cheongminapp.data.Friend;
-import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.view.adapter.FriendAdapter;
@@ -56,9 +51,9 @@ public class FriendFragment extends Fragment {
 
 
         IApiService service = ApiService.getInstance().getService();
-        service.getFriends().enqueue(new Callback<Result<List<Friend>>>() {
+        service.getFriends().enqueue(new Callback<ResultModel<List<Friend>>>() {
             @Override
-            public void onResponse(Call<Result<List<Friend>>> call, Response<Result<List<Friend>>> response) {
+            public void onResponse(Call<ResultModel<List<Friend>>> call, Response<ResultModel<List<Friend>>> response) {
                 if(response.isSuccessful() == false) {
                     Toast.makeText(getActivity(), "친구목록 요청 실패", Toast.LENGTH_SHORT).show();
                     return;
@@ -78,7 +73,7 @@ public class FriendFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Result<List<Friend>>> call, Throwable t) {
+            public void onFailure(Call<ResultModel<List<Friend>>> call, Throwable t) {
                 Toast.makeText(getActivity(), "친구목록 요청 실패", Toast.LENGTH_SHORT).show();
             }
         });
