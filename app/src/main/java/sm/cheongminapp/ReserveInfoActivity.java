@@ -42,6 +42,8 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
 
     private GoogleMap mMap;
 
+    private Reservation reservation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +55,9 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Intent intent = getIntent();
-        Reservation reservation = (Reservation)intent.getSerializableExtra("Reservation");
+        reservation = (Reservation)getIntent().getSerializableExtra("Reservation");
 
-        tvCenterName.setText("센터 이름");
+        tvCenterName.setText(reservation.CenterName);
         tvReason.setText(reservation.Reason);
         tvDate.setText(reservation.Date);
         tvTime.setText(reservation.getTimeRangeText());
@@ -93,7 +94,8 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void setUpMap() {
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(reservation.Lat, reservation.Lng)));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
 
