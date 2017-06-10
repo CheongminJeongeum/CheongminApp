@@ -18,6 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 
@@ -98,12 +99,15 @@ public class RequestActivity extends AppCompatActivity {
     void Submit() {
         IApiService apiService = ApiService.getInstance().getService();
 
-        apiService.RequestReservation(centerId, eDate.getText().toString(),
+        apiService.requestReservation(
+                centerId,
+                MainActivity.id,
+                eDate.getText().toString(),
                 Integer.parseInt(eStartTime.getText().toString()),
                 Integer.parseInt(eEndTime.getText().toString()),
-                eGoal.getText().toString(), lat, lng).enqueue(new Callback<Result>() {
+                eGoal.getText().toString(), lat, lng).enqueue(new Callback<Result<EmptyData>>() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
+            public void onResponse(Call<Result<EmptyData>> call, Response<Result<EmptyData>> response) {
                 if(response.body().IsSuccessful) {
                     Toast.makeText(getApplicationContext(), "요청에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                     finish();
@@ -114,8 +118,8 @@ public class RequestActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<Result<EmptyData>> call, Throwable t) {
+
             }
         });
 

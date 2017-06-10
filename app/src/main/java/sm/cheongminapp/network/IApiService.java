@@ -16,6 +16,7 @@ import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.model.Center;
 import sm.cheongminapp.model.Profile;
 import sm.cheongminapp.model.Result;
+import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.model.data.LoginResult;
 
 /**
@@ -40,12 +41,13 @@ public interface IApiService {
     Call<Result<List<Friend>>> getFriends();
 
     @GET("centers")
-    Call<List<Center>> getCenters();
+    Call<Result<List<Center>>> getCenters();
 
     @FormUrlEncoded
     @POST("centers/{id}/requests")
-    Call<Result> RequestReservation(
+    Call<Result<EmptyData>> requestReservation(
             @Path("id") int centerID,
+            @Field("id") String userID,
             @Field("day") String day,
             @Field("start_time") int startTime,
             @Field("end_time") int endTime,
@@ -54,7 +56,7 @@ public interface IApiService {
             @Field("lng") double lng);
 
     @GET("reservations/member/{member_id}")
-    Call<List<Reservation>> getMyReservations(
+    Call<Result<List<Reservation>>> getMyReservations(
             @Path("member_id") String member_id);
 
     @FormUrlEncoded

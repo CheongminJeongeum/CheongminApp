@@ -27,6 +27,7 @@ import sm.cheongminapp.R;
 import sm.cheongminapp.ReserveInfoActivity;
 import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.data.ReservationData;
+import sm.cheongminapp.model.Result;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.utility.GPSModule;
@@ -64,18 +65,20 @@ public class RequestFragment extends Fragment {
 
         // 사용자의 예약 목록 요청
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.getMyReservations(MainActivity.id).enqueue(new Callback<List<Reservation>>() {
+        apiService.getMyReservations(MainActivity.id).enqueue(new Callback<Result<List<Reservation>>>() {
             @Override
-            public void onResponse(Call<List<Reservation>> call, Response<List<Reservation>> response) {
+            public void onResponse(Call<Result<List<Reservation>>> call, Response<Result<List<Reservation>>> response) {
                 // 요청 실패 (errorBody를 통해 정보를 얻어 올 수 있음)
                 if(response.isSuccessful() == false) {
                     return;
                 }
 
+                List<Reservation> reservationList = response.body().Data;
+
                 adapter.clear();
 
-                for (int i = 0; i < response.body().size(); i++) {
-                    Reservation reservation = response.body().get(i);
+                for (int i = 0; i < reservationList.size(); i++) {
+                    Reservation reservation = reservationList.get(i);
                     adapter.addItem(reservation);
                 }
 
@@ -83,8 +86,8 @@ public class RequestFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Reservation>> call, Throwable t) {
-                Log.e("onFailure", "getMyReservations");
+            public void onFailure(Call<Result<List<Reservation>>> call, Throwable t) {
+
             }
         });
 

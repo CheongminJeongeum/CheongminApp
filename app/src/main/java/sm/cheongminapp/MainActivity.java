@@ -68,11 +68,14 @@ public class MainActivity extends AppCompatActivity {
         id = infoIntent.getStringExtra("id");
         getAndSetMode();
 
+/*
+        TODO: 블루투스 작업시 주석 해제
         btc = new BTConnector(this);
 
         //if(mode == 0) {
-            btc.checkBluetooth();
+        btc.checkBluetooth();
         //}
+*/
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -130,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 btc.selectDevice();
             }
             else if(resultCode == RESULT_CANCELED) { // 블루투스 비활성화 상태 (종료)
-                Toast.makeText(getApplicationContext(), "블루투수를 사용할 수 없어 프로그램을 종료합니다",
+                Toast.makeText(getApplicationContext(), "블루투스를 사용할 수 없어 프로그램을 종료합니다",
                         Toast.LENGTH_LONG).show();
                 finish();
             }
