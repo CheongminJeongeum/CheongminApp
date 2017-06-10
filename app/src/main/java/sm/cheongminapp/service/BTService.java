@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -33,7 +34,7 @@ public class BTService extends Service {
     }
 
     public class MyLocalBinder extends Binder {
-        BTService getService() {
+        public BTService getService() {
             return BTService.this;
         }
     }
@@ -66,13 +67,24 @@ public class BTService extends Service {
                     try {
                         // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
                         int byteAvailable = mInputStream.available();   // 수신 데이터 확인
+                        /*
+                        int bytes = mInputStream.read(readBuffer, curLength, readBuffer.length - curLength);
+                        if (bytes > 0) {
+                            // still reading
+                            curLength += bytes;
+                            Log.d("byteNum", Integer.toString(bytes));
+                            Log.d("payload", new String(readBuffer, "US-ASCII"));
+                        }
+                        */
                         if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
                             byte[] packetBytes = new byte[byteAvailable];
+                            Log.d("byteAv", Integer.toString(byteAvailable));
                             // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
                             mInputStream.read(packetBytes);
                             for(int i=0; i<byteAvailable; i++) {
                                 byte b = packetBytes[i];
                                 if(b == mCharDelimiter) {
+                                    Log.d("line", "line");
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     //  System.arraycopy(복사할 배열, 복사시작점, 복사된 배열, 붙이기 시작점, 복사할 개수)
                                     //  readBuffer 배열을 처음 부터 끝까지 encodedBytes 배열로 복사.
@@ -80,15 +92,10 @@ public class BTService extends Service {
 
                                     final String data = new String(encodedBytes, "US-ASCII");
                                     readBufferPosition = 0;
+                                    Log.d("blue", data);
 
-                                    handler.post(new Runnable(){
-                                        // 수신된 문자열 데이터에 대한 처리.
-                                        @Override
-                                        public void run() {
-                                            // mStrDelimiter = '\n';
-                                        }
+                                    // 콤마 단위로 스플릿
 
-                                    });
                                 }
                                 else {
                                     readBuffer[readBufferPosition++] = b;
@@ -103,6 +110,6 @@ public class BTService extends Service {
             }
 
         });
-
+        mWorkerThread.start();
     }
 }

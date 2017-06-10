@@ -126,8 +126,7 @@ public class MainActivity extends AppCompatActivity {
         apiService.getProfile(id).enqueue(new Callback<Result<Profile>>() {
             @Override
             public void onResponse(Call<Result<Profile>> call, Response<Result<Profile>> response) {
-                if(response.isSuccessful() == false)
-                {
+                if (response.isSuccessful() == false) {
                     Log.e("error", String.valueOf(response.code()));
                     return;
                 }
@@ -148,5 +147,14 @@ public class MainActivity extends AppCompatActivity {
         transition.replace(R.id.main_frame_layout, fragment);
         transition.addToBackStack(null);
         transition.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //if(mode == 0) {
+            unbindService(BTRetrieveActivity.conn);
+        //}
     }
 }

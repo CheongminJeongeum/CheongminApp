@@ -4,11 +4,17 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import sm.cheongminapp.service.BTService;
 
 public class BTRetrieveActivity extends AppCompatActivity {
     // 사용자 정의 함수로 블루투스 활성 상태의 변경 결과를 App으로 알려줄때 식별자로 사용됨(0보다 커야함)
@@ -49,6 +57,25 @@ public class BTRetrieveActivity extends AppCompatActivity {
 
     EditText mEditReceive;
 
+    BTService ms; // 서비스 객체
+
+    public static ServiceConnection conn = new ServiceConnection() {
+        public void onServiceConnected(ComponentName name,
+                                       IBinder service) {
+    // 서비스와 연결되었을 때 호출되는 메서드
+    // 서비스 객체를 전역변수로 저장
+            BTService.MyLocalBinder mb = (BTService.MyLocalBinder) service;
+            BTService ms = mb.getService(); // 서비스가 제공하는 메소드 호출하여
+    // 서비스쪽 객체를 전달받을수 있슴
+
+            ms.beginListenForData();
+        }
+        public void onServiceDisconnected(ComponentName name) {
+    // 서비스와 연결이 끊겼을 때 호출되는 메서드
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +85,7 @@ public class BTRetrieveActivity extends AppCompatActivity {
         mEditReceive = (EditText)findViewById(R.id.receiveString);
 
         // 블루투스 활성화 시키는 메소드
+        registerReceiver(mBackgroundReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         checkBluetooth();
     }
 
@@ -102,7 +130,8 @@ public class BTRetrieveActivity extends AppCompatActivity {
             mInputStream = mSocket.getInputStream();
 
             // 데이터 수신 준비.
-            beginListenForData();
+            bindService(new Intent(BTRetrieveActivity.this, BTService.class), conn,
+                    Context.BIND_AUTO_CREATE);
 
         }catch(Exception e) { // 블루투스 연결 중 오류 발생
             Toast.makeText(getApplicationContext(),
@@ -113,30 +142,40 @@ public class BTRetrieveActivity extends AppCompatActivity {
 
     // 데이터 수신(쓰레드 사용 수신된 메시지를 계속 검사함)
     void beginListenForData() {
-        final Handler handler = new Handler();
-
         readBufferPosition = 0;                 // 버퍼 내 수신 문자 저장 위치.
         readBuffer = new byte[1024];            // 수신 버퍼.
+        Log.d("진입", "ㄹㄹㄹ");
 
         // 문자열 수신 쓰레드.
-        mWorkerThread = new Thread(new Runnable()
-        {
+        mWorkerThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 // interrupt() 메소드를 이용 스레드를 종료시키는 예제이다.
                 // interrupt() 메소드는 하던 일을 멈추는 메소드이다.
                 // isInterrupted() 메소드를 사용하여 멈추었을 경우 반복문을 나가서 스레드가 종료하게 된다.
-                while(!Thread.currentThread().isInterrupted()) {
+                int curLength = 0;
+                while(!mWorkerThread.isInterrupted()) {
                     try {
                         // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
                         int byteAvailable = mInputStream.available();   // 수신 데이터 확인
+                        /*
+                        int bytes = mInputStream.read(readBuffer, curLength, readBuffer.length - curLength);
+                        if (bytes > 0) {
+                            // still reading
+                            curLength += bytes;
+                            Log.d("byteNum", Integer.toString(bytes));
+                            Log.d("payload", new String(readBuffer, "US-ASCII"));
+                        }
+                        */
                         if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
                             byte[] packetBytes = new byte[byteAvailable];
+                            Log.d("byteAv", Integer.toString(byteAvailable));
                             // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
                             mInputStream.read(packetBytes);
                             for(int i=0; i<byteAvailable; i++) {
                                 byte b = packetBytes[i];
                                 if(b == mCharDelimiter) {
+                                    Log.d("line", "line");
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     //  System.arraycopy(복사할 배열, 복사시작점, 복사된 배열, 붙이기 시작점, 복사할 개수)
                                     //  readBuffer 배열을 처음 부터 끝까지 encodedBytes 배열로 복사.
@@ -144,16 +183,10 @@ public class BTRetrieveActivity extends AppCompatActivity {
 
                                     final String data = new String(encodedBytes, "US-ASCII");
                                     readBufferPosition = 0;
+                                    Log.d("blue", data);
 
-                                    handler.post(new Runnable(){
-                                        // 수신된 문자열 데이터에 대한 처리.
-                                        @Override
-                                        public void run() {
-                                            // mStrDelimiter = '\n';
-                                            mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
-                                        }
+                                    // 콤마 단위로 스플릿
 
-                                    });
                                 }
                                 else {
                                     readBuffer[readBufferPosition++] = b;
@@ -162,14 +195,19 @@ public class BTRetrieveActivity extends AppCompatActivity {
                         }
 
                     } catch (Exception e) {    // 데이터 수신 중 오류 발생.
-                        Toast.makeText(getApplicationContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
                         finish();            // App 종료.
                     }
                 }
             }
 
         });
+        mWorkerThread.start();
+    }
 
+
+    void selectDevice2() {
+        mBluetoothAdapter.startDiscovery();
     }
 
     // 블루투스 지원하며 활성 상태인 경우.
@@ -265,6 +303,7 @@ public class BTRetrieveActivity extends AppCompatActivity {
             mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
             mInputStream.close();
             mSocket.close();
+            unregisterReceiver(mBackgroundReceiver);
         }catch(Exception e){}
         super.onDestroy();
     }
@@ -299,4 +338,16 @@ public class BTRetrieveActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private BroadcastReceiver mBackgroundReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(BluetoothDevice.ACTION_FOUND)) {
+                BluetoothDevice searchedDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Log.d("device", searchedDevice.getName());
+            }
+        }
+    };
+
 }
