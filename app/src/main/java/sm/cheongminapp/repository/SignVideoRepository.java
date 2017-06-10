@@ -17,8 +17,8 @@ public class SignVideoRepository {
     SignVideoRepository() {
         // TODO: DB에서 수화 매핑 정보를 오도록 수정해야함
         // 수어 <-> 경로
-        signFileMap.put("괜찮다",  "android.resource://" + packageName + "/" + R.raw.mov000249438);
-        signFileMap.put("고맙다", "android.resource://" + packageName + "/" + R.raw.mov000250232);
+        //signFileMap.put("괜찮다",  "android.resource://" + packageName + "/" + R.raw.mov000249438);
+        //signFileMap.put("고맙다", "android.resource://" + packageName + "/" + R.raw.mov000250232);
     }
 
     public String getSignVideo(String text) {
