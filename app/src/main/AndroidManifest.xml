@@ -66,9 +66,6 @@
         <activity
             android:name=".RequestActivity"
             android:label="예약" />
-        <activity
-            android:name=".RequestListActivity"
-            android:label="예약 목록" />
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".CenterActivity"

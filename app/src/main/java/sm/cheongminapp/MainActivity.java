@@ -1,6 +1,5 @@
 package sm.cheongminapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.blutooth.BTConnector;
-import sm.cheongminapp.fragment.CenterFragment;
 import sm.cheongminapp.fragment.HomeFragment;
 import sm.cheongminapp.fragment.RequestFragment;
 import sm.cheongminapp.model.ProfileModel;
@@ -36,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     public static String id = "admin1";
     public static int mode = 1; // 0 : 농, 1 : 청
     public static Context context = null;
+
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long   backPressedTime = 0;
 
     @BindView(R.id.main_toolbar)
     Toolbar toolbar;
@@ -115,20 +116,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO:디버그용 토스트 메세지 삭제
         Toast.makeText(MainActivity.this, Integer.toString(requestCode), Toast.LENGTH_SHORT).show();
-        if (requestCode == CenterFragment.reqCode) {
-            if(resultCode == Activity.RESULT_OK){
-                String location = data.getStringExtra("location");
-                int centerId = data.getIntExtra("centerId", -1);
-                Intent intent = new Intent(MainActivity.this, RequestActivity.class);
-                intent.putExtra("centerId", centerId);
-                intent.putExtra("location", location);
-                startActivity(intent);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //만약 반환값이 없을 경우의 코드를 여기에 작성하세요.
-            }
-        } else if(requestCode == BTConnector.REQUEST_ENABLE_BT) {
+
+        if(requestCode == BTConnector.REQUEST_ENABLE_BT) {
             if(resultCode == RESULT_OK) { // 블루투스 활성화 상태
                 btc.selectDevice();
             }
@@ -171,11 +162,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        //TODO: 블루투스 작업시 주석 해제
+        /*
         //if(mode == 0) {
             unbindService(btc.conn);
         //}
         try{
             unregisterReceiver(btc.mBackgroundReceiver);
-        }catch(Exception e){}
+        }catch(Exception e){}*/
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
+        {
+            // java.lang.NullPointerException: Attempt to read from field 'android.content.ServiceConnection sm.cheongminapp.blutooth.BTConnector.conn' on a null object reference
+            finish();
+        }
+        else
+        {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
+        }
     }
 }
