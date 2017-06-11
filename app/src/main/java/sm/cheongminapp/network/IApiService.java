@@ -53,6 +53,7 @@ public interface IApiService {
             @Field("start_time") int startTime,
             @Field("end_time") int endTime,
             @Field("info") String info,
+            @Field("detail_location") String location,
             @Field("lat") double lat,
             @Field("lng") double lng);
 

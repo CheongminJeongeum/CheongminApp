@@ -2,6 +2,7 @@ package sm.cheongminapp.view.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.icu.util.TimeZone;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import sm.cheongminapp.R;
 import sm.cheongminapp.data.Reservation;
 import sm.cheongminapp.data.ReservationData;
+import sm.cheongminapp.utility.DateHelper;
 import sm.cheongminapp.utility.GPSModule;
 
 public class ReservationAdapter extends AbstractAdapter<Reservation> {
@@ -43,45 +45,24 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
         if (reservation == null)
             return view;
 
-        if(reservation.Location != null)
-        {
+        if (reservation.Location != null) {
             String[] location = reservation.Location.split("\n");
-            if(location.length > 0) {
+            if (location.length > 1) {
                 viewHolder.tvLocation.setText(location[0]);
                 viewHolder.tvLocationDetail.setText(location[1]);
             }
+        } else {
+            viewHolder.tvLocation.setText("주소");
+            viewHolder.tvLocationDetail.setText("상세 주소");
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat ("EEE, dd MMM yyyy hh:mm:ss", Locale.ENGLISH );
-        Date date = dateFormat.parse (reservation.Date,  new ParsePosition(0));
-        long utcTime = date.getTime();
+        Date localDate = DateHelper.getUTCStringToLocalDate(reservation.Date);
 
-        TimeZone timeZone = TimeZone.getDefault();
-        int timeOffset = timeZone.getOffset(date.getTime());
+        String[] localDateText = new SimpleDateFormat("MM-dd").format(localDate).split("-");
 
-        long localTime = date.getTime() + timeOffset;
-
-        Date localDate = new Date(localTime);
-        SimpleDateFormat localFormat = new SimpleDateFormat("MM-dd");
-
-        String[] localDateText = localFormat.format(localDate).split("-");
         viewHolder.tvTimeMonth.setText(localDateText[0] + "월");
         viewHolder.tvTimeDay.setText(localDateText[1] + "일");
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(localDate);
-
-        String dayText = "";
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        if(day == 1) dayText = "일요일";
-        else if(day == 2) dayText = "월요일";
-        else if(day == 3) dayText = "화요일";
-        else if(day == 4) dayText = "수요일";
-        else if(day == 5) dayText = "목요일";
-        else if(day == 6) dayText = "금요일";
-        else if(day == 7) dayText = "토요일";
-
-        viewHolder.tvTimeDayText.setText(dayText);
+        viewHolder.tvTimeDayText.setText(DateHelper.getDayStringForDate(localDate));
         viewHolder.tvTimeText.setText(reservation.getTimeRangeText());
 
         int result = reservation.Result;
@@ -90,9 +71,16 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
             viewHolder.tvResult.setText("대기중");
             viewHolder.tvResult.setTextColor(view.getResources().getColor(R.color.colorBlueGray3));
         } else {
-            viewHolder.ivResultIcon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_event_available));
-            viewHolder.tvResult.setText("예약됨");
-            viewHolder.tvResult.setTextColor(view.getResources().getColor(R.color.colorPrimary));
+            // 예약된 아이템 중 이미 지났으면 처리된 예약으로 변경
+            if (new Date().getTime() > localDate.getTime()) {
+                viewHolder.ivResultIcon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_event_blue));
+                viewHolder.tvResult.setText("처리됨");
+                viewHolder.tvResult.setTextColor(view.getResources().getColor(R.color.colorLightBlue));
+            } else {
+                viewHolder.ivResultIcon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_event_available));
+                viewHolder.tvResult.setText("예약됨");
+                viewHolder.tvResult.setTextColor(view.getResources().getColor(R.color.colorPrimary));
+            }
         }
 
         return view;

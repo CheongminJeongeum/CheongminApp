@@ -50,7 +50,7 @@ public class Reservation implements Serializable {
     public String getTimeRangeText() {
         StringBuilder builder = new StringBuilder();
         builder.append(StartTime);
-        builder.append(" ~ ");
+        builder.append("시 ~ ");
         builder.append(EndTime);
         builder.append("시");
 

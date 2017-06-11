@@ -2,6 +2,7 @@ package sm.cheongminapp;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +14,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sm.cheongminapp.data.Reservation;
+import sm.cheongminapp.utility.DateHelper;
 
 public class ReserveInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -57,14 +61,23 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
 
         reservation = (Reservation)getIntent().getSerializableExtra("Reservation");
 
-        tvCenterName.setText(reservation.CenterName);
+        tvCenterName.setText(reservation.CenterName + " 수화 통역 센터");
         tvReason.setText(reservation.Reason);
-        tvDate.setText(reservation.Date);
-        tvTime.setText(reservation.getTimeRangeText());
-        //tvLocation.setText(reservation.LocationModel);
-        //tvLocationDetail.setText(reservation.LocationDetail);
 
-        // TODO:: Lat, Lng를 사용해 맵에 보여줘야함
+        Date localDate = DateHelper.getUTCStringToLocalDate(reservation.Date);
+        String localDateText = new SimpleDateFormat("yyyy년 MM월 dd일").format(localDate).toString();
+
+        tvDate.setText(localDateText);
+        tvTime.setText(reservation.getTimeRangeText());
+
+        if(reservation.Location != null) {
+            String[] location = reservation.Location.split("\n");
+            if(location.length > 1)
+            {
+                tvLocation.setText(location[0]);
+                tvLocationDetail.setText(location[1]);
+            }
+        }
     }
 
     @Override
@@ -95,7 +108,7 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
 
     private void setUpMap() {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(reservation.Lat, reservation.Lng)));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
     }
 
 

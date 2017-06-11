@@ -105,7 +105,9 @@ public class RequestActivity extends AppCompatActivity {
                 eDate.getText().toString(),
                 Integer.parseInt(eStartTime.getText().toString()),
                 Integer.parseInt(eEndTime.getText().toString()),
-                eGoal.getText().toString(), lat, lng).enqueue(new Callback<ResultModel<EmptyData>>() {
+                eGoal.getText().toString(),
+                eLocation.getText().toString() + "\n" + eLocationDetail.getText().toString(),
+                lat, lng).enqueue(new Callback<ResultModel<EmptyData>>() {
             @Override
             public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
                 if(response.isSuccessful() == false)
