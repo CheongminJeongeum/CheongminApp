@@ -82,7 +82,7 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
         viewHolder.tvTimeDayText.setText(dayText);
         viewHolder.tvTimeText.setText(reservation.getTimeRangeText());
 
-        viewHolder.tvResult.setText("결과1");
+        //viewHolder.tvResult.setText("결과1");
 
         return view;
     }

@@ -33,12 +33,13 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/center_header_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:paddingBottom="10dp"
             android:text="최근 요청한 통역 센터"
-            android:textColor="#58bcf7" />
+            android:textColor="#58bcf5" />
 
         <ListView
             android:id="@+id/center_list_view"

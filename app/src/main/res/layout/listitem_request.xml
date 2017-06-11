@@ -85,14 +85,29 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/layout_request_result"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:layout_gravity="center"
-        android:textSize="16dp"
-        android:text="결과"
-        android:layout_marginRight="24dp"/>
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_event_available" />
+
+        <TextView
+            android:id="@+id/layout_request_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="24dp"
+            android:paddingLeft="5dp"
+            android:text="예약됨"
+            android:textSize="16dp"
+            android:textColor="#2561b0"/>
+
+    </LinearLayout>
 
 </LinearLayout>

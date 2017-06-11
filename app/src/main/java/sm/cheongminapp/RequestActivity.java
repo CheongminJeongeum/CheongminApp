@@ -108,6 +108,12 @@ public class RequestActivity extends AppCompatActivity {
                 eGoal.getText().toString(), lat, lng).enqueue(new Callback<ResultModel<EmptyData>>() {
             @Override
             public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
+                if(response.isSuccessful() == false)
+                {
+                    Toast.makeText(getApplicationContext(), "요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(response.body().IsSuccessful) {
                     Toast.makeText(getApplicationContext(), "요청에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                     finish();
@@ -119,7 +125,7 @@ public class RequestActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
-
+                Toast.makeText(getApplicationContext(), "요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 

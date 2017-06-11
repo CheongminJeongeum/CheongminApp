@@ -40,8 +40,9 @@ public interface IApiService {
     @GET("friends")
     Call<ResultModel<List<Friend>>> getFriends();
 
+    // TODO: ResultModel로 수정
     @GET("centers")
-    Call<ResultModel<List<CenterModel>>> getCenters();
+    Call<List<CenterModel>> getCenters();
 
     @FormUrlEncoded
     @POST("centers/{id}/requests")
