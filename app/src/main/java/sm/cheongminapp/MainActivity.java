@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
         {
-            // java.lang.NullPointerException: Attempt to read from field 'android.content.ServiceConnection sm.cheongminapp.blutooth.BTConnector.conn' on a null object reference
             finish();
         }
         else

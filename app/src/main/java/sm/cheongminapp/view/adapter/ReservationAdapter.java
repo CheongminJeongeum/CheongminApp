@@ -1,11 +1,13 @@
 package sm.cheongminapp.view.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.icu.util.TimeZone;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.ParsePosition;
@@ -82,7 +84,16 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
         viewHolder.tvTimeDayText.setText(dayText);
         viewHolder.tvTimeText.setText(reservation.getTimeRangeText());
 
-        //viewHolder.tvResult.setText("결과1");
+        int result = reservation.Result;
+        if(result == 0) {
+            viewHolder.ivResultIcon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_event));
+            viewHolder.tvResult.setText("대기중");
+            viewHolder.tvResult.setTextColor(view.getResources().getColor(R.color.colorBlueGray3));
+        } else {
+            viewHolder.ivResultIcon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_event_available));
+            viewHolder.tvResult.setText("예약됨");
+            viewHolder.tvResult.setTextColor(view.getResources().getColor(R.color.colorPrimary));
+        }
 
         return view;
     }
@@ -105,6 +116,9 @@ public class ReservationAdapter extends AbstractAdapter<Reservation> {
 
         @BindView(R.id.layout_request_time_text)
         TextView tvTimeText;
+
+        @BindView(R.id.layout_request_result_icon)
+        ImageView ivResultIcon;
 
         @BindView(R.id.layout_request_result)
         TextView tvResult;

@@ -2,6 +2,7 @@ package sm.cheongminapp.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,8 +12,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.ParsePosition;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,26 +65,48 @@ public class RequestFragment extends Fragment {
 
         lvRequestList.setAdapter(reservationAdapter);
 
-        // 예약 목록
+        final ArrayList<Reservation> reservationList = new ArrayList<>();
+
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.getMyReservations(MainActivity.id).enqueue(new Callback<ResultModel<List<Reservation>>>() {
+
+        Callback<ResultModel<List<Reservation>>> callback = new Callback<ResultModel<List<Reservation>>>() {
             @Override
             public void onResponse(Call<ResultModel<List<Reservation>>> call, Response<ResultModel<List<Reservation>>> response) {
-                // 요청 실패 (errorBody를 통해 정보를 얻어 올 수 있음)
-                if(response.isSuccessful() == false) {
+                if(response.isSuccessful() == false && response.body() == null) {
                     Toast.makeText(ctx, "요청 실패", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                List<Reservation> reservationList = response.body().Data;
-
-                reservationAdapter.clear();
-
-                for (int i = 0; i < reservationList.size(); i++) {
-                    Reservation reservation = reservationList.get(i);
-                    reservationAdapter.addItem(reservation);
+                for(Reservation reservation : response.body().Data) {
+                    reservationList.add(reservation);
                 }
 
+                Collections.sort(reservationList, new Comparator<Reservation>() {
+                    @Override
+                    public int compare(Reservation o1, Reservation o2) {
+                        // 결과로 정렬
+                        /*
+                        if(o1.Result > o2.Result) {
+                            return -1;
+                        } else if(o1.Result < o2.Result) {
+                            return 1;
+                        }
+                        */
+
+                        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
+
+                        Date date1 = format.parse(o1.Date, new ParsePosition(0));
+                        long dateTime1 = date1.getTime();
+
+                        Date date2 = format.parse(o2.Date, new ParsePosition(0));
+                        long dateTime2 = date2.getTime();
+
+                        return dateTime1 < dateTime2 ? 1 : -1;
+                    }
+                });
+
+                reservationAdapter.clear();
+                reservationAdapter.addOrderList(reservationList);
                 reservationAdapter.notifyDataSetChanged();
             }
 
@@ -85,7 +114,12 @@ public class RequestFragment extends Fragment {
             public void onFailure(Call<ResultModel<List<Reservation>>> call, Throwable t) {
                 Toast.makeText(ctx, "요청 실패", Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+
+        apiService.getMyReservations(MainActivity.id).enqueue(callback);
+        apiService.getMyRequests(MainActivity.id).enqueue(callback);
+
+
 
         return view;
     }

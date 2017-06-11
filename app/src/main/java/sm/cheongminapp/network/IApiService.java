@@ -58,7 +58,11 @@ public interface IApiService {
 
     @GET("reservations/member/{member_id}")
     Call<ResultModel<List<Reservation>>> getMyReservations(
-            @Path("member_id") String member_id);
+            @Path("member_id") String memberId);
+
+    @GET("requests/member/{member_id}")
+    Call<ResultModel<List<Reservation>>> getMyRequests(
+            @Path("member_id") String memberId);
 
     @FormUrlEncoded
     @PUT("regid")
