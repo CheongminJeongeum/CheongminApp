@@ -46,21 +46,23 @@ public class ProfileActivity extends AppCompatActivity {
     @OnClick(R.id.profile_open_chat_btn)
     void openChat() {
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.createChatRoom(MainActivity.id, friend.ID).enqueue(new Callback<ResultModel>() {
+        apiService.createChatRoom(MainActivity.id, friend.ID).enqueue(new Callback<ResultModel<ChatRoom>>() {
             @Override
-            public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+            public void onResponse(Call<ResultModel<ChatRoom>> call, Response<ResultModel<ChatRoom>> response) {
                 if(response.isSuccessful() == false) {
                     Toast.makeText(ProfileActivity.this, "방 생성 요청 실패", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                ChatRoom room = (ChatRoom)response.body().Data;
+                ChatRoom room = response.body().Data;
+
                 Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
                 intent.putExtra("ChatRoom", room);
+                startActivity(intent);
             }
 
             @Override
-            public void onFailure(Call<ResultModel> call, Throwable t) {
+            public void onFailure(Call<ResultModel<ChatRoom>> call, Throwable t) {
 
             }
         });

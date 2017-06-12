@@ -1,15 +1,10 @@
 package sm.cheongminapp.view.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +40,7 @@ public class ChatRoomAdapter extends AbstractAdapter<ChatRoom> {
         if (chatRoom == null)
             return view;
 
-        viewHolder.tvName.setText(chatRoom.Name);
+        viewHolder.tvName.setText(chatRoom.room_name);
 
         return view;
     }

@@ -1,7 +1,5 @@
 package sm.cheongminapp.data;
 
-import android.graphics.drawable.Drawable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,9 +13,9 @@ public class ChatRoom implements Serializable {
 
     @Expose
     @SerializedName("room_id")
-    public int ID;
+    public int room_id;
 
     @Expose
     @SerializedName("room_name")
-    public String Name;
+    public String room_name;
 }

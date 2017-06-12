@@ -129,9 +129,9 @@ public class ChatActivity extends AppCompatActivity {
 
         // 채팅방 정보 설정
         chatRoom = (ChatRoom)getIntent().getSerializableExtra("ChatRoom");
-        currentRoomId = chatRoom.ID;
+        currentRoomId = chatRoom.room_id;
 
-        getSupportActionBar().setTitle(chatRoom.Name);
+        getSupportActionBar().setTitle(chatRoom.room_name);
 
         // 네비게이션 메뉴 설정
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer,

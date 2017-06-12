@@ -74,7 +74,7 @@ public interface IApiService {
 
     @FormUrlEncoded
     @POST("chat/room")
-    Call<ResultModel> createChatRoom(
+    Call<ResultModel<ChatRoom>> createChatRoom(
             @Field("member1") String memberID,
             @Field("member2") String targetID);
 
