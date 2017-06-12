@@ -262,8 +262,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
             });
         } else { // 농
-            apiService.sendMessageOnSign(MainActivity.id, currentRoomId, sendText)
-                    .enqueue(new Callback<ResultModel<EmptyData>>() {
+            apiService.sendMessageOnSign(MainActivity.id, currentRoomId, sendText).enqueue(new Callback<ResultModel<EmptyData>>() {
                         @Override
                         public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
 

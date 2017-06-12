@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment("친구", friendFragment);
-        adapter.addFragment("채팅", chatFragment);
+        adapter.addFragment("대화", chatFragment);
 
         viewPager.setAdapter(adapter);
 
