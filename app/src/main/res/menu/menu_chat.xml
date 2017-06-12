@@ -6,6 +6,6 @@
         android:id="@+id/menu_chat_open_menu"
         android:icon="@drawable/ic_menu_white"
         app:showAsAction="ifRoom|withText"
-        android:title="메뉴 열기">
+        android:title="">
     </item>
 </menu>

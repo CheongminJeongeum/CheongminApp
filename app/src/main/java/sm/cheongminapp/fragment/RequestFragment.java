@@ -68,12 +68,11 @@ public class RequestFragment extends Fragment {
         final ArrayList<Reservation> reservationList = new ArrayList<>();
 
         IApiService apiService = ApiService.getInstance().getService();
-
         Callback<ResultModel<List<Reservation>>> callback = new Callback<ResultModel<List<Reservation>>>() {
             @Override
             public void onResponse(Call<ResultModel<List<Reservation>>> call, Response<ResultModel<List<Reservation>>> response) {
-                if(response.isSuccessful() == false && response.body() == null) {
-                    Toast.makeText(ctx, "요청 실패", Toast.LENGTH_SHORT).show();
+                if(response.isSuccessful() == false || response.body() == null) {
+                    Toast.makeText(ctx, "getReservations() : Fail", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -84,15 +83,6 @@ public class RequestFragment extends Fragment {
                 Collections.sort(reservationList, new Comparator<Reservation>() {
                     @Override
                     public int compare(Reservation o1, Reservation o2) {
-                        // 결과로 정렬
-                        /*
-                        if(o1.Result > o2.Result) {
-                            return -1;
-                        } else if(o1.Result < o2.Result) {
-                            return 1;
-                        }
-                        */
-
                         SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss", Locale.ENGLISH);
 
                         Date date1 = format.parse(o1.Date, new ParsePosition(0));
@@ -112,14 +102,13 @@ public class RequestFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResultModel<List<Reservation>>> call, Throwable t) {
-                Toast.makeText(ctx, "요청 실패", Toast.LENGTH_SHORT).show();
+                // List<Reservation> 형태로 변환하지 못하면 onFailure가 호출되는 듯함
+                // 즉, Json에 데이터가 비어있을때에도 호출됨
             }
         };
 
         apiService.getMyReservations(MainActivity.id).enqueue(callback);
         apiService.getMyRequests(MainActivity.id).enqueue(callback);
-
-
 
         return view;
     }

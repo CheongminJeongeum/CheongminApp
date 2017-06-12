@@ -25,6 +25,7 @@ import sm.cheongminapp.fragment.HomeFragment;
 import sm.cheongminapp.fragment.RequestFragment;
 import sm.cheongminapp.model.ProfileModel;
 import sm.cheongminapp.model.ResultModel;
+import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.utility.PreferenceData;
@@ -99,14 +100,14 @@ public class MainActivity extends AppCompatActivity {
         if(!pref.getValue("regid", "").equals("")) {
             IApiService apiService = ApiService.getInstance().getService();
             apiService.RegId(MainActivity.id, FirebaseInstanceId.getInstance().getToken())
-                    .enqueue(new Callback<ResultModel>() {
+                    .enqueue(new Callback<ResultModel<EmptyData>>() {
                         @Override
-                        public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+                        public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
 
                         }
 
                         @Override
-                        public void onFailure(Call<ResultModel> call, Throwable t) {
+                        public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
 
                         }
                     });

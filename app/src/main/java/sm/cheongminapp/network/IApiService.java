@@ -67,7 +67,7 @@ public interface IApiService {
 
     @FormUrlEncoded
     @PUT("regid")
-    Call<ResultModel> RegId(
+    Call<ResultModel<EmptyData>> RegId(
             @Field("id") String id,
             @Field("regId") String regId);
 
@@ -84,14 +84,14 @@ public interface IApiService {
 
     @FormUrlEncoded
     @POST("chat/korean")
-    Call<ResultModel> sendMessageOnKorean(
+    Call<ResultModel<EmptyData>> sendMessageOnKorean(
             @Field("id") String id,
             @Field("room") int room,
             @Field("msg") String msg);
 
     @FormUrlEncoded
     @POST("chat/sign")
-    Call<ResultModel> sendMessageOnSign(
+    Call<ResultModel<EmptyData>> sendMessageOnSign(
             @Field("id") String id,
             @Field("room") int room,
             @Field("msg") String msg);

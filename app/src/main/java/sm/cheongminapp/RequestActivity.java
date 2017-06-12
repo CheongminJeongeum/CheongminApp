@@ -98,7 +98,6 @@ public class RequestActivity extends AppCompatActivity {
     @OnClick(R.id.request_submit_button)
     void Submit() {
         IApiService apiService = ApiService.getInstance().getService();
-
         apiService.requestReservation(
                 centerId,
                 MainActivity.id,
@@ -110,32 +109,20 @@ public class RequestActivity extends AppCompatActivity {
                 lat, lng).enqueue(new Callback<ResultModel<EmptyData>>() {
             @Override
             public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
-                if(response.isSuccessful() == false)
+                if(response.isSuccessful() == false || response.body().IsSuccessful)
                 {
                     Toast.makeText(getApplicationContext(), "요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    finish();
                     return;
                 }
 
-                if(response.body().IsSuccessful) {
-                    Toast.makeText(getApplicationContext(), "요청에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                    finish();
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(getApplicationContext(), "요청에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
             public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        // TODO:: 신청하는 액티비티(CenterActivitiy, MapsActivity, RequestActivity를 종료하고 MainActivity로 돌아가야함
-        //Intent intent = new Intent(RequestActivity.this, MainActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //startActivity(intent);
-        finish();
     }
 }

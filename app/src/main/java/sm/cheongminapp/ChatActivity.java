@@ -43,6 +43,7 @@ import sm.cheongminapp.data.HotKey;
 import sm.cheongminapp.data.SignData;
 import sm.cheongminapp.database.DBHelper;
 import sm.cheongminapp.model.ResultModel;
+import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 import sm.cheongminapp.repository.SignVideoRepository;
@@ -108,9 +109,11 @@ public class ChatActivity extends AppCompatActivity {
                 if(currentRoomId != room_id) return; // (현재 방과 번호가 다른 경우 무시)
 
                 String contents = intent.getStringExtra("contents"); // 상대방 대화 내용
-                Log.d("ㅆㅂ", "ㅅㅂ");
-                Toast.makeText(getApplicationContext(), contents, Toast.LENGTH_SHORT).show();
+
                 adapter.addResponseInput(contents);
+                adapter.notifyDataSetChanged();
+
+                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
             }
         }
     };
@@ -160,18 +163,6 @@ public class ChatActivity extends AppCompatActivity {
 
         // 이전 채팅 내용 불러오기
         loadChatLog();
-
-        // TODO: 임시 메세지 삭제
-        adapter.addChatInput("안녕하세요!");
-
-        ChatSignData chatSignData = new ChatSignData();
-        chatSignData.getSignDataList().add(new SignData("괜찮다", SignVideoRepository.getInstance().getSignVideo("괜찮다")));
-        chatSignData.getSignDataList().add(new SignData("고맙다", SignVideoRepository.getInstance().getSignVideo("고맙다")));
-
-        adapter.addSign(chatSignData);
-        adapter.addResponseInput("괜찮아 고마워");
-
-        adapter.notifyDataSetChanged();
 
         // 단축키 불러오기
         setupHotkeyList();
@@ -255,42 +246,44 @@ public class ChatActivity extends AppCompatActivity {
 
     @OnClick(R.id.chat_send)
     public void clickSend() {
-        Log.d("이모티콘", editText.getText().toString());
+        String sendText = editText.getText().toString();
 
-        if(MainActivity.mode == 1) { // 청
-            IApiService apiService = ApiService.getInstance().getService();
-            apiService.sendMessageOnKorean(MainActivity.id, currentRoomId,
-                    editText.getText().toString())
-                    .enqueue(new Callback<ResultModel>() {
-                        @Override
-                        public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+        IApiService apiService = ApiService.getInstance().getService();
+        if(MainActivity.mode == 1) {
+            apiService.sendMessageOnKorean(MainActivity.id, currentRoomId, sendText).enqueue(new Callback<ResultModel<EmptyData>>() {
+                @Override
+                public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
 
-                        }
+                }
 
-                        @Override
-                        public void onFailure(Call<ResultModel> call, Throwable t) {
+                @Override
+                public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
 
-                        }
-                    });
+                }
+            });
         } else { // 농
-            IApiService apiService = ApiService.getInstance().getService();
-            apiService.sendMessageOnSign(MainActivity.id, currentRoomId,
-                    editText.getText().toString())
-                    .enqueue(new Callback<ResultModel>() {
+            apiService.sendMessageOnSign(MainActivity.id, currentRoomId, sendText)
+                    .enqueue(new Callback<ResultModel<EmptyData>>() {
                         @Override
-                        public void onResponse(Call<ResultModel> call, Response<ResultModel> response) {
+                        public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
 
                         }
 
                         @Override
-                        public void onFailure(Call<ResultModel> call, Throwable t) {
+                        public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
 
                         }
                     });
         }
 
-        dbHelper.insert(currentRoomId, 0, editText.getText().toString());
-        adapter.addChatInput(editText.getText().toString());
+        // DB에 저장
+        dbHelper.insert(currentRoomId, 0, sendText);
+
+        adapter.addChatInput(sendText);
+
+        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+
+        editText.setText("");
     }
 
     @OnItemClick(R.id.list_shortcuts)
