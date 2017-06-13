@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical"
     android:gravity="end">
 
     <LinearLayout
+        android:id="@+id/layout_chat_input_box"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="0dp"
         android:paddingStart="10dp"
         android:paddingEnd="18dp"
         android:background="@drawable/chat_input_background">
@@ -25,8 +25,14 @@
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
+    <TextView
+        android:id="@+id/layout_chat_input_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/layout_chat_input_box"
+        android:layout_alignBottom="@id/layout_chat_input_box"
+        android:layout_marginRight="5dp"
+        android:text="오후 3:00"
+        android:textSize="10dp"/>
 
-</LinearLayout>
+</RelativeLayout>

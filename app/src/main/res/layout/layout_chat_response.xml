@@ -1,31 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/layout_chat_icon"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_account"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <FrameLayout
+        android:id="@+id/layout_chat_response_box"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="60dp"
-        android:paddingStart="18dp"
+        android:layout_toRightOf="@id/layout_chat_icon"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:paddingStart="20dp"
         android:paddingEnd="10dp"
         android:background="@drawable/chat_response_background">
-
         <TextView
             android:id="@+id/layout_chat_response_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:text=""
             android:textSize="16sp"/>
+    </FrameLayout>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/layout_chat_response_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/layout_chat_response_box"
+        android:layout_alignBottom="@id/layout_chat_response_box"
+        android:layout_marginLeft="5dp"
+        android:text="오후 3:00"
+        android:textSize="10dp"/>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
-
-</LinearLayout>
+</RelativeLayout>
