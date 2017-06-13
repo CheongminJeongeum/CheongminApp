@@ -25,8 +25,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,15 +39,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.data.ChatObject;
 import sm.cheongminapp.data.ChatRoom;
-import sm.cheongminapp.data.ChatSignData;
 import sm.cheongminapp.data.HotKey;
-import sm.cheongminapp.data.SignData;
 import sm.cheongminapp.database.DBHelper;
 import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
-import sm.cheongminapp.repository.SignVideoRepository;
 import sm.cheongminapp.view.adapter.ChatMessageAdapter;
 import sm.cheongminapp.view.adapter.HotKeyAdapter;
 
@@ -109,14 +107,37 @@ public class ChatActivity extends AppCompatActivity {
                 if(currentRoomId != room_id) return; // (현재 방과 번호가 다른 경우 무시)
 
                 String contents = intent.getStringExtra("contents"); // 상대방 대화 내용
+                String time = intent.getStringExtra("time");
+                time = parseDateTime(time);
+                Log.d("time", time);
 
-                adapter.addResponseInput(contents);
+                adapter.addResponseInput(contents, time);
                 adapter.notifyDataSetChanged();
 
                 recyclerView.scrollToPosition(adapter.getItemCount() - 1);
             }
         }
+
+
     };
+
+    public String parseDateTime(String time) {
+        String result = "";
+
+        String[] dateTime = time.split(" ");
+        String[] hhmmss = dateTime[1].split(":");
+        int hour = Integer.parseInt(hhmmss[0]);
+        if(hour >= 12) {
+            if(hour != 12) {
+                hour-=12;
+            }
+            result += "오후 "+hour;
+        } else {
+            result += "오전 "+hour;
+        }
+        result += ":"+hhmmss[1];
+        return result;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,15 +241,17 @@ public class ChatActivity extends AppCompatActivity {
         List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
         for(int i=0; i<chatList.size(); i++) {
             ChatObject chat = chatList.get(i);
+            chat.setTime(parseDateTime(chat.getTime()));
+            Log.d("bottomTime", chat.getTime());
             switch(chat.getType())
             {
                 case ChatObject.INPUT_OBJECT:
                     // 입력한 채팅
-                    adapter.addChatInput(chat.getText());
+                    adapter.addChatInput(chat.getText(), chat.getTime());
                     break;
                 case ChatObject.RESPONSE_OBJECT:
                     // 받은 채팅
-                    adapter.addResponseInput(chat.getText());
+                    adapter.addResponseInput(chat.getText(), chat.getTime());
                     break;
                 case ChatObject.SIGN_IMAGE_OBJECT:
                     // 수화 영상
@@ -276,12 +299,11 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         // DB에 저장
-        dbHelper.insert(currentRoomId, 0, sendText);
+        String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+        dbHelper.insert(currentRoomId, 0, sendText, time);
 
-        adapter.addChatInput(sendText);
-
+        adapter.addChatInput(sendText, parseDateTime(time));
         recyclerView.scrollToPosition(adapter.getItemCount() - 1);
-
         editText.setText("");
     }
 

@@ -6,6 +6,9 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import sm.cheongminapp.database.DBHelper;
 
 /**
@@ -35,11 +38,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             int room_id = Integer.parseInt(remoteMessage.getNotification().getTitle());
             String contents = remoteMessage.getNotification().getBody();
 
-            dbHelper.insert(room_id, 1, contents);
+            String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+            dbHelper.insert(room_id, 1, contents, time);
 
             Intent dataIntent = new Intent("chat");
             dataIntent.putExtra("room_id", room_id);
             dataIntent.putExtra("contents", contents);
+            dataIntent.putExtra("time", time);
             sendBroadcast(dataIntent);
         }
 

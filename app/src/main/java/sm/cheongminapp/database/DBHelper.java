@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // 새로운 테이블 생성
         db.execSQL("CREATE TABLE CHATLOG (num INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "room_id INTEGER, who INTEGER, contents TEXT);");
+                "room_id INTEGER, who INTEGER, contents TEXT, time DATETIME);");
     }
 
     // DB 업그레이드를 위해 버전이 변경될 때 호출되는 함수
@@ -38,12 +39,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // 0 : 나
     // 1 : 상대방
-    public void insert(int room_id, int who, String contents) {
+    public void insert(int room_id, int who, String contents, String datetime) {
         // 읽고 쓰기가 가능하게 DB 열기
         SQLiteDatabase db = getWritableDatabase();
         // DB에 입력한 값으로 행 추가
-        db.execSQL("INSERT INTO CHATLOG(room_id, who, contents)" +
-                " VALUES(" + room_id + ", " + who + ", '" + contents + "');");
+        db.execSQL("INSERT INTO CHATLOG(room_id, who, contents, time)" +
+                " VALUES(" + room_id + ", " + who + ", '" + contents + "'" + ", '" + datetime + "');");
         db.close();
     }
 
@@ -71,6 +72,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 obj = new ChatResponse();
             }
             obj.setText(cursor.getString(3));
+            obj.setTime(cursor.getString(4));
+            Log.d("datetime", obj.getTime());
             chatLogList.add(obj);
         }
 

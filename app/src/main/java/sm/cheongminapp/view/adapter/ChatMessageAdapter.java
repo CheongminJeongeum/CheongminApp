@@ -62,16 +62,18 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return chatObjects.size();
     }
 
-    public void addChatInput(String text) {
+    public void addChatInput(String text, String time) {
         ChatInput input = new ChatInput();
         input.setText(text);
+        input.setTime(time);
 
         chatObjects.add(input);
     }
 
-    public void addResponseInput(String text) {
+    public void addResponseInput(String text, String time) {
         ChatResponse input = new ChatResponse();
         input.setText(text);
+        input.setTime(time);
 
         chatObjects.add(input);
     }
