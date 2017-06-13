@@ -1,8 +1,10 @@
 package sm.cheongminapp.view.adapter;
 
 import android.content.Context;
+import android.support.annotation.BinderThread;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -37,12 +39,19 @@ public class HotKeyAdapter extends AbstractAdapter<HotKey> {
 
         HotKey hotKey = adapterList.get(position);
 
+        viewHolder.tvIndex.setText(String.valueOf(position + 1));
         viewHolder.tvName.setText(hotKey.Name);
 
         return convertView;
     }
 
     class ViewHolder {
+
+        @BindView(R.id.layout_hotkey_index)
+        TextView tvIndex;
+
+        @BindView(R.id.layout_hotkey_icon)
+        ImageView icIcon;
 
         @BindView(R.id.layout_hotkey_item_name)
         TextView tvName;

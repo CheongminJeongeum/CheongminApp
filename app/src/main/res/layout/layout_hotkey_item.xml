@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/layout_hotkey_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:text="1"
+        android:textSize="18dp" />
+
+    <ImageView
+        android:id="@+id/layout_hotkey_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/layout_hotkey_index"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/ic_account"/>
 
     <TextView
         android:id="@+id/layout_hotkey_item_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:paddingLeft="8dp"
+        android:gravity="center_vertical"
+        android:text="Hotkey Name"
         android:textSize="18dp"
         android:textColor="#262b33"
-        android:text="이름"
-        android:gravity="center_vertical" />
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/layout_hotkey_icon" />
 
-</LinearLayout>
+</RelativeLayout>

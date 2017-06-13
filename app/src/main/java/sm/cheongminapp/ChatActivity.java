@@ -289,7 +289,8 @@ public class ChatActivity extends AppCompatActivity {
     public void onItemClick(AdapterView<?> parent, int position) {
         HotKey hotKey = (HotKey)hotKeyAdapter.getItem(position);
 
-        Toast.makeText(this, hotKey.Content, Toast.LENGTH_SHORT).show();
+        editText.setText(hotKey.Content);
+        button.callOnClick();
     }
 
     @OnClick(R.id.chat_add_hotkey)
