@@ -109,7 +109,7 @@ public class RequestActivity extends AppCompatActivity {
                 lat, lng).enqueue(new Callback<ResultModel<EmptyData>>() {
             @Override
             public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
-                if(response.isSuccessful() == false || response.body().IsSuccessful)
+                if(response.isSuccessful() == false || response.body().IsSuccessful == false)
                 {
                     Toast.makeText(getApplicationContext(), "요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                     finish();

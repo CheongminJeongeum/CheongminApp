@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -16,6 +18,7 @@ import retrofit2.Response;
 import sm.cheongminapp.data.ChatRoom;
 import sm.cheongminapp.data.Friend;
 import sm.cheongminapp.model.ResultModel;
+import sm.cheongminapp.network.ApiHelper;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
 
@@ -37,6 +40,11 @@ public class ProfileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         friend = (Friend) getIntent().getSerializableExtra("Friend");
+
+        Picasso.with(getApplicationContext())
+                .load(ApiHelper.GetProfileImageUrl(friend.ID))
+                .placeholder(R.drawable.profile)
+                .into(ivProfile);
 
         tvName.setText(friend.Name);
 

@@ -45,9 +45,9 @@ public interface IApiService {
     Call<List<CenterModel>> getCenters();
 
     @FormUrlEncoded
-    @POST("centers/{id}/requests")
+    @POST("centers/{center_id}/requests")
     Call<ResultModel<EmptyData>> requestReservation(
-            @Path("id") int centerID,
+            @Path("center_id") int centerID,
             @Field("id") String userID,
             @Field("day") String day,
             @Field("start_time") int startTime,

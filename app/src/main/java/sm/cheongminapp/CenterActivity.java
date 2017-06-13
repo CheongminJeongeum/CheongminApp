@@ -88,7 +88,7 @@ public class CenterActivity extends AppCompatActivity {
 
         // 이전에 이용한 센터
         CenterModel center = new CenterModel();
-        center.ID = 0;
+        center.ID = 1;
         center.Name = "강남구";
 
         recentCenterModelList.add(center);

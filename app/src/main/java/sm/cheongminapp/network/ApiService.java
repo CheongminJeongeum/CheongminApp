@@ -27,6 +27,8 @@ public class ApiService {
         return service;
     }
 
+    public String getUrl() { return BASE_API_URL; }
+
     private static ApiService instance =  new ApiService();
     public static ApiService getInstance() {
         return instance;
