@@ -64,23 +64,19 @@ public class CenterActivity extends AppCompatActivity {
 
         // 미리 센터를 모두 받아와서 검색할때 검색된 것만 보여줍니다
         IApiService apiService = ApiService.getInstance().getService();
-        apiService.getCenters().enqueue(new Callback<List<CenterModel>>() {
+        apiService.getCenters().enqueue(new Callback<ResultModel<List<CenterModel>>>() {
             @Override
-            public void onResponse(Call<List<CenterModel>> call, Response<List<CenterModel>> response) {
-                if(response.isSuccessful() == false)
-                {
-                    return;
-                }
+            public void onResponse(Call<ResultModel<List<CenterModel>>> call, Response<ResultModel<List<CenterModel>>> response) {
+                if(response.isSuccessful() == false || response.body() == null) return;
 
-                List<CenterModel> centerModelList = response.body();
-
+                List<CenterModel> centerModelList = response.body().Data;
                 for(int i = 0; i < centerModelList.size(); i++) {
                     centerList.add(centerModelList.get(i));
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CenterModel>> call, Throwable t) {
+            public void onFailure(Call<ResultModel<List<CenterModel>>> call, Throwable t) {
 
             }
         });

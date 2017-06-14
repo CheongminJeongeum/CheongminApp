@@ -110,7 +110,10 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
         LatLng latLng = new LatLng(reservation.Lat, reservation.Lng);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
 
-        mMap.addMarker(new MarkerOptions().position(latLng).title(reservation.Location.split("\n")[0]));
+        String[] locations = reservation.Location.split("\n");
+        if(locations.length > 0) {
+            mMap.addMarker(new MarkerOptions().position(latLng).title(locations[0]));
+        }
     }
 
 
