@@ -9,6 +9,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import sm.cheongminapp.MainActivity;
 import sm.cheongminapp.data.ChatInput;
 import sm.cheongminapp.data.ChatObject;
 import sm.cheongminapp.data.ChatResponse;
@@ -28,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // 새로운 테이블 생성
         db.execSQL("CREATE TABLE CHATLOG (num INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "room_id INTEGER, who INTEGER, contents TEXT, time DATETIME);");
+                "room_id INTEGER, who TEXT, contents TEXT, time DATETIME);");
     }
 
     // DB 업그레이드를 위해 버전이 변경될 때 호출되는 함수
@@ -39,12 +40,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // 0 : 나
     // 1 : 상대방
-    public void insert(int room_id, int who, String contents, String datetime) {
+    public void insert(int room_id, String who, String contents, String datetime) {
         // 읽고 쓰기가 가능하게 DB 열기
         SQLiteDatabase db = getWritableDatabase();
         // DB에 입력한 값으로 행 추가
         db.execSQL("INSERT INTO CHATLOG(room_id, who, contents, time)" +
-                " VALUES(" + room_id + ", " + who + ", '" + contents + "'" + ", '" + datetime + "');");
+                " VALUES(" + room_id + ", '" + who + "', '" + contents + "'" + ", '" + datetime + "');");
         db.close();
     }
 
@@ -66,7 +67,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM CHATLOG WHERE room_id="+room_id, null);
         while (cursor.moveToNext()) {
             ChatObject obj = null;
-            if(cursor.getInt(2) == 0) {
+            if(cursor.getString(2).equals(MainActivity.id)) {
                 obj = new ChatInput();
             } else {
                 obj = new ChatResponse();
