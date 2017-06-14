@@ -21,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.blutooth.BTConnector;
+import sm.cheongminapp.fragment.FriendFragment;
 import sm.cheongminapp.fragment.HomeFragment;
 import sm.cheongminapp.fragment.RequestFragment;
 import sm.cheongminapp.model.ProfileModel;
@@ -129,8 +130,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 finish();
             }
-        } else if(requestCode == RequestFragment.REQ_CODE_REQUEST) {
+        } else if(requestCode == RequestFragment.REQ_CODE_REFRESH_REQUESTS) {
             requestFragment.onActivityResult(requestCode, resultCode, data);
+        } else if(requestCode == FriendFragment.REQ_CODE_REFRESH_FRIENDS) {
+            homeFragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 

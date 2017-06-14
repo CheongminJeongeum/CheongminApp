@@ -43,7 +43,7 @@ import sm.cheongminapp.view.adapter.ReservationAdapter;
  */
 public class RequestFragment extends Fragment {
 
-    public static final int REQ_CODE_REQUEST = 100;
+    public static final int REQ_CODE_REFRESH_REQUESTS = 101;
 
     @BindView(R.id.fragment_request_list_view)
     ListView lvRequestList;
@@ -86,13 +86,13 @@ public class RequestFragment extends Fragment {
     void onRequestButton() {
         //센터 검색 액티비티 시작
         Intent intent = new Intent(getActivity(), CenterActivity.class);
-        getActivity().startActivityForResult(intent, REQ_CODE_REQUEST);
+        getActivity().startActivityForResult(intent, REQ_CODE_REFRESH_REQUESTS);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQ_CODE_REQUEST:
+            case REQ_CODE_REFRESH_REQUESTS:
                 updateRequestList();
                 break;
         }

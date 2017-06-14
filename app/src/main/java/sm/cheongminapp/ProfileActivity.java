@@ -164,6 +164,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        setResult(Activity.RESULT_OK);
     }
 
     public String getPathFromUri(Context context, Uri contentUri) {

@@ -1,6 +1,7 @@
 package sm.cheongminapp.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -54,5 +55,14 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FriendFragment.REQ_CODE_REFRESH_FRIENDS:
+                friendFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
     }
 }

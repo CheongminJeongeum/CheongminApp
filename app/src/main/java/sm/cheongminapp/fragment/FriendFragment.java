@@ -27,8 +27,12 @@ import sm.cheongminapp.R;
 
 public class FriendFragment extends Fragment {
 
+    public final static int REQ_CODE_REFRESH_FRIENDS = 102;
+
     @BindView(R.id.fragment_friend_list_view)
     ListView lvFriend;
+
+    FriendAdapter freindAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,20 +40,35 @@ public class FriendFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        final FriendAdapter adapter = new FriendAdapter(getActivity());
-        lvFriend.setAdapter(adapter);
+        freindAdapter = new FriendAdapter(getContext());
+
+        lvFriend.setAdapter(freindAdapter);
         lvFriend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Friend friend = (Friend)adapter.getItem(position);
+                Friend friend = (Friend)freindAdapter.getItem(position);
 
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
                 intent.putExtra("Friend", friend);
-                startActivity(intent);
+                getActivity().startActivityForResult(intent, REQ_CODE_REFRESH_FRIENDS);
             }
         });
 
+        updateFriendList();
 
+        return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQ_CODE_REFRESH_FRIENDS:
+                updateFriendList();
+                break;
+        }
+    }
+
+    public void updateFriendList() {
         IApiService service = ApiService.getInstance().getService();
         service.getFriends().enqueue(new Callback<ResultModel<List<Friend>>>() {
             @Override
@@ -65,11 +84,11 @@ public class FriendFragment extends Fragment {
                     return;
                 }
 
-                adapter.clear();
+                freindAdapter.clear();
                 for(int i = 0; i < responseData.size(); i++) {
-                    adapter.addItem(responseData.get(i));
+                    freindAdapter.addItem(responseData.get(i));
                 }
-                adapter.notifyDataSetChanged();
+                freindAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -78,6 +97,5 @@ public class FriendFragment extends Fragment {
             }
         });
 
-        return view;
     }
 }
