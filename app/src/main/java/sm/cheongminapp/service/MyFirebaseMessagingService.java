@@ -35,15 +35,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody()); // 메시지
             Log.d(TAG, "Message Notification Title: " + remoteMessage.getNotification().getTitle()); // 방 번호
 
-            int room_id = Integer.parseInt(remoteMessage.getNotification().getTitle());
+            int room_id = Integer.parseInt(remoteMessage.getNotification().getTitle().split(",")[0]);
+            String friend = remoteMessage.getNotification().getTitle().split(",")[1];
             String contents = remoteMessage.getNotification().getBody();
 
             String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
-            dbHelper.insert(room_id, 1, contents, time);
+            dbHelper.insert(room_id, friend, contents, time);
 
             Intent dataIntent = new Intent("chat");
             dataIntent.putExtra("room_id", room_id);
             dataIntent.putExtra("contents", contents);
+            dataIntent.putExtra("friend", friend);
             dataIntent.putExtra("time", time);
             sendBroadcast(dataIntent);
         }

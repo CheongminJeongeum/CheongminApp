@@ -300,7 +300,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // DB에 저장
         String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
-        dbHelper.insert(currentRoomId, 0, sendText, time);
+        dbHelper.insert(currentRoomId, MainActivity.id, sendText, time);
 
         adapter.addChatInput(sendText, parseDateTime(time));
         recyclerView.scrollToPosition(adapter.getItemCount() - 1);
