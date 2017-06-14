@@ -78,14 +78,6 @@ public class FriendFragment extends Fragment {
             }
         });
 
-        // TODO: 임시 친구 삭제
-        Friend friend1 = new Friend();
-        friend1.ID = "admin1";
-        friend1.Name = "친구1";
-
-        adapter.addItem(friend1);
-        adapter.notifyDataSetChanged();
-
         return view;
     }
 }
