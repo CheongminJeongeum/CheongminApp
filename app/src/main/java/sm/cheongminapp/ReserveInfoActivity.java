@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Date;
 
@@ -78,6 +79,8 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
                 tvLocationDetail.setText(location[1]);
             }
         }
+
+        setUpMapIfNeeded();
     }
 
     @Override
@@ -93,13 +96,10 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.reserve_info_map);
             mapFragment.getMapAsync(this);
 
-            // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
             }
@@ -107,8 +107,10 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void setUpMap() {
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(reservation.Lat, reservation.Lng)));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+        LatLng latLng = new LatLng(reservation.Lat, reservation.Lng);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+
+        mMap.addMarker(new MarkerOptions().position(latLng).title(reservation.Location.split("\n")[0]));
     }
 
 
@@ -118,22 +120,6 @@ public class ReserveInfoActivity extends AppCompatActivity implements OnMapReady
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
 
-        // 한국으로 이동
-        LatLng latLng = new LatLng(37.56667, 126.97806);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
-        // 내 위치 버튼을 활성화하려면 위치 권한을 확인해야함
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //
-            //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
-            return;
-        }
-        googleMap.setMyLocationEnabled(true);
+        setUpMap();
     }
 }

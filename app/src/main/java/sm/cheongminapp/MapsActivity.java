@@ -1,5 +1,7 @@
 package sm.cheongminapp;
 
+import android.*;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,12 +9,15 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +33,8 @@ import butterknife.ButterKnife;
 import sm.cheongminapp.utility.GPSModule;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+
+    private static final int REQ_CODE_FIND_LOCATION = 100;
 
     @BindView(R.id.maps_toolbar)
     Toolbar toolbar;
@@ -83,42 +90,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onSupportNavigateUp();
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQ_CODE_FIND_LOCATION) {
+            if (permissions.length == 1 && permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if(checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                    mMap.setMyLocationEnabled(true);
+            } else {
+                Toast.makeText(this, "현재 위치를 가져올 수 없습니다" , Toast.LENGTH_LONG ).show();
+            }
+        }
+    }
+
     private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.maps_map_framgent);
             mapFragment.getMapAsync(this);
 
-            // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
             }
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
     private void setUpMap() {
+        LatLng latLng = new LatLng(37.56667, 126.97806);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
     }
 
     @Override
@@ -128,23 +125,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
 
-        // 한국으로 이동
-        LatLng latLng = new LatLng(37.56667, 126.97806);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        setUpMap();
 
-        // 내 위치 버튼을 활성화하려면 위치 권한을 확인해야함
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //
-            //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
-            return;
+        // 내 위치 버튼을 활성화하기 위해 권한 확인
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, REQ_CODE_FIND_LOCATION);
+        } else {
+            mMap.setMyLocationEnabled(true);
         }
-        googleMap.setMyLocationEnabled(true);
     }
 
     @Override
@@ -153,7 +141,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         final String address = gps.findAddress(latLng.latitude, latLng.longitude);
 
         AlertDialog.Builder dlg = new AlertDialog.Builder(MapsActivity.this);
-        dlg.setMessage("선택하신 장소가 "+address+" 입니까?");
+        dlg.setMessage("선택하신 장소가 " + address + " 입니까?");
         dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -172,7 +160,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void onSearchMap(String address) {
-        Geocoder geocoder =new Geocoder(this);
+        Geocoder geocoder = new Geocoder(this);
         try {
             List<Address> addressList = geocoder.getFromLocationName(address, 1);
             if(addressList.size() > 0)
@@ -181,7 +169,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 LatLng latLng = new LatLng(firstAddress.getLatitude(), firstAddress.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
             }
         } catch (IOException e) {
             e.printStackTrace();

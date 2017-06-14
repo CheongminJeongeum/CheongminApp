@@ -241,8 +241,8 @@ public class ChatActivity extends AppCompatActivity {
         List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
         for(int i=0; i<chatList.size(); i++) {
             ChatObject chat = chatList.get(i);
+
             chat.setTime(parseDateTime(chat.getTime()));
-            Log.d("bottomTime", chat.getTime());
             switch(chat.getType())
             {
                 case ChatObject.INPUT_OBJECT:
