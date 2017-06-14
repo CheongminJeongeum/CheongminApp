@@ -129,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 finish();
             }
+        } else if(requestCode == RequestFragment.REQ_CODE_REQUEST) {
+            requestFragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 

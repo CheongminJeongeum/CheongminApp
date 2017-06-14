@@ -43,6 +43,8 @@ import sm.cheongminapp.view.adapter.ReservationAdapter;
  */
 public class RequestFragment extends Fragment {
 
+    public static final int REQ_CODE_REQUEST = 100;
+
     @BindView(R.id.fragment_request_list_view)
     ListView lvRequestList;
 
@@ -62,9 +64,41 @@ public class RequestFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         reservationAdapter = new ReservationAdapter(ctx);
-
         lvRequestList.setAdapter(reservationAdapter);
 
+        updateRequestList();
+
+        return view;
+    }
+
+    @OnItemClick(R.id.fragment_request_list_view)
+    void onItemClick(AdapterView<?> parent, int position) {
+        Reservation reservation = (Reservation)reservationAdapter.getItem(position);
+
+        Intent intent = new Intent(getActivity(), ReserveInfoActivity.class);
+        intent.putExtra("Reservation", reservation);
+
+        startActivity(intent);
+    }
+
+
+    @OnClick(R.id.fragment_request_request_button)
+    void onRequestButton() {
+        //센터 검색 액티비티 시작
+        Intent intent = new Intent(getActivity(), CenterActivity.class);
+        getActivity().startActivityForResult(intent, REQ_CODE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQ_CODE_REQUEST:
+                updateRequestList();
+                break;
+        }
+    }
+
+    public void updateRequestList() {
         final ArrayList<Reservation> reservationList = new ArrayList<>();
 
         IApiService apiService = ApiService.getInstance().getService();
@@ -109,25 +143,5 @@ public class RequestFragment extends Fragment {
 
         apiService.getMyReservations(MainActivity.id).enqueue(callback);
         apiService.getMyRequests(MainActivity.id).enqueue(callback);
-
-        return view;
-    }
-
-    @OnItemClick(R.id.fragment_request_list_view)
-    void onItemClick(AdapterView<?> parent, int position) {
-        Reservation reservation = (Reservation)reservationAdapter.getItem(position);
-
-        Intent intent = new Intent(getActivity(), ReserveInfoActivity.class);
-        intent.putExtra("Reservation", reservation);
-
-        startActivity(intent);
-    }
-
-
-    @OnClick(R.id.fragment_request_request_button)
-    void onRequestButton() {
-        //센터 검색 액티비티 시작
-        Intent intent = new Intent(getActivity(), CenterActivity.class);
-        startActivity(intent);
     }
 }

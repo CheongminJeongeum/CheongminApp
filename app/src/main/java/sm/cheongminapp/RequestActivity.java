@@ -1,5 +1,6 @@
 package sm.cheongminapp;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sm.cheongminapp.fragment.RequestFragment;
 import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.network.ApiService;
@@ -117,6 +119,8 @@ public class RequestActivity extends AppCompatActivity {
                 }
 
                 Toast.makeText(getApplicationContext(), "요청에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+
+                setResult(Activity.RESULT_OK);
                 finish();
             }
 
