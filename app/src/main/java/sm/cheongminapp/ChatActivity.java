@@ -195,6 +195,8 @@ public class ChatActivity extends AppCompatActivity {
 
         // 리시버 등록
         setupReceiver();
+
+        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
     }
 
     @Override

@@ -11,12 +11,16 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by user on 2017. 6. 9..
  */
 public class BTService extends Service {
     private final IBinder myBinder = new MyLocalBinder();
+
+    String[] fileNames = {"action.csv", "goreum.csv", "healthy.csv"};
 
     BluetoothSocket mSocket = null;
     OutputStream mOutputStream = null;
@@ -27,6 +31,12 @@ public class BTService extends Service {
     byte[] readBuffer;
     String mStrDelimiter = "\n";
     char mCharDelimiter =  '\n';
+
+    List<List<Integer>> fingerList = new ArrayList<List<Integer>>();
+    List<List<Float>> zairoOneList = new ArrayList<List<Float>>();
+    List<List<Float>> zairoFourList = new ArrayList<List<Float>>();
+
+    int fingerData = 0;
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -84,13 +94,12 @@ public class BTService extends Service {
                         */
                         if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
                             byte[] packetBytes = new byte[byteAvailable];
-                            Log.d("byteAv", Integer.toString(byteAvailable));
+                            //Log.d("byteAv", Integer.toString(byteAvailable));
                             // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
                             mInputStream.read(packetBytes);
                             for(int i=0; i<byteAvailable; i++) {
                                 byte b = packetBytes[i];
                                 if(b == mCharDelimiter) {
-                                    Log.d("line", "line");
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     //  System.arraycopy(복사할 배열, 복사시작점, 복사된 배열, 붙이기 시작점, 복사할 개수)
                                     //  readBuffer 배열을 처음 부터 끝까지 encodedBytes 배열로 복사.
@@ -98,10 +107,45 @@ public class BTService extends Service {
 
                                     final String data = new String(encodedBytes, "US-ASCII");
                                     readBufferPosition = 0;
-                                    Log.d("blue", data);
 
+                                    if(data.charAt(0) == 'F') {
+                                        //Log.d("F", data);
+                                        String splitedData = data.split(":")[1];
+                                        String[] datas = splitedData.split(",");
+                                        List<Integer> fingers = new ArrayList<Integer>();
+                                        for(int j = 0; j<datas.length; j++) {
+                                            Log.d("F", datas[j]);
+                                            Integer.parseInt(datas[j]);
+                                        }
+                                        //fingerList.add(fingers);
+                                    }
+                                    else if(data.startsWith("1:")) {
+                                        //Log.d("1", data);
+                                        String splitedData = data.split(":")[1];
+                                        String[] datas = splitedData.split(",");
+                                        List<Float> zairoOne = new ArrayList<Float>();
+                                        for(int j = 0; j<datas.length; j++) {
+                                            Log.d("1", datas[j]);
+                                            Float.parseFloat(datas[j]);
+                                        }
+                                        //zairoOneList.add(zairoOne);
+                                    }
+                                    else if(data.startsWith("4:")) {
+                                        //Log.d("4", data);
+                                        String splitedData = data.split(":")[1];
+                                        String[] datas = splitedData.split(",");
+                                        List<Float> zairoFour = new ArrayList<Float>();
+                                        for(int j = 0; j<datas.length; j++) {
+                                            Log.d("4", datas[j]);
+                                            Float.parseFloat(datas[j]);
+                                        }
+                                        //zairoFourList.add(zairoFour);
+                                    }
                                     // 콤마 단위로 스플릿
 
+                                }
+                                else if(b == '�') {
+                                    continue;
                                 }
                                 else {
                                     readBuffer[readBufferPosition++] = b;
@@ -113,6 +157,10 @@ public class BTService extends Service {
 
                     }
                 }
+            }
+
+            public void calculate() {
+
             }
 
         });
