@@ -114,6 +114,12 @@ public class ChatActivity extends AppCompatActivity {
                 adapter.addResponseInput(contents, time);
                 adapter.notifyDataSetChanged();
 
+                // 사용자가 농인인 경우 입력된 수화 영상으로 매칭
+                if(MainActivity.mode == 0) {
+                    // 데이터 파싱
+
+                }
+
                 recyclerView.scrollToPosition(adapter.getItemCount() - 1);
             }
         }
@@ -228,8 +234,9 @@ public class ChatActivity extends AppCompatActivity {
         lvHotkeyList.setAdapter(hotKeyAdapter);
 
         HotKey hotKey1 = new HotKey();
-        hotKey1.Name = "핫키1";
-        hotKey1.Content = "내용1";
+        hotKey1.Icon = "https://maxcdn.icons8.com/app/uploads/2016/09/sweet-home-icon.jpg";
+        hotKey1.Name = "집";
+        hotKey1.Content = "경기도 의정부시 가능동";
 
         hotKeyAdapter.addItem(hotKey1);
     }

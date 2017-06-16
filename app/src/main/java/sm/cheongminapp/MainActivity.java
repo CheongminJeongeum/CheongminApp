@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                     .enqueue(new Callback<ResultModel<EmptyData>>() {
                         @Override
                         public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
-
                         }
 
                         @Override

@@ -6,6 +6,7 @@ package sm.cheongminapp.data;
 
 public class HotKey {
 
+    public String Icon;
     public String Name;
     public String Content;
 

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 import butterknife.BindView;
@@ -41,6 +43,10 @@ public class HotKeyAdapter extends AbstractAdapter<HotKey> {
 
         viewHolder.tvIndex.setText(String.valueOf(position + 1));
         viewHolder.tvName.setText(hotKey.Name);
+
+        Picasso.with(convertView.getContext())
+                .load(hotKey.Icon)
+                .into(viewHolder.icIcon);
 
         return convertView;
     }
