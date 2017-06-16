@@ -23,19 +23,19 @@ MOV000249438 괜찮다, 무방하다
 MOV000250606 늦다, 느리다 , 지각 , 더디다 , 서서히 , 지체 , 천천하다 , 찬찬하다
 MOV000241289 말씀
 */
-        signFileMap.put("고맙다", "android.resource://" + packageName + "/" + R.raw.mov000250232);
+        signFileMap.put("고맙", "android.resource://" + packageName + "/" + R.raw.mov000250232);
         signFileMap.put("감사", "android.resource://" + packageName + "/" + R.raw.mov000250232);
 
-        signFileMap.put("기다리다", "android.resource://" + packageName + "/" + R.raw.mov000249602);
+        signFileMap.put("기다리", "android.resource://" + packageName + "/" + R.raw.mov000249602);
         signFileMap.put("대기", "android.resource://" + packageName + "/" + R.raw.mov000249602);
 
-        signFileMap.put("괜찮다",  "android.resource://" + packageName + "/" + R.raw.mov000249438);
-        signFileMap.put("무방하다",  "android.resource://" + packageName + "/" + R.raw.mov000249438);
+        signFileMap.put("괜찮",  "android.resource://" + packageName + "/" + R.raw.mov000249438);
+        signFileMap.put("무방하",  "android.resource://" + packageName + "/" + R.raw.mov000249438);
 
-        signFileMap.put("늦다",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
-        signFileMap.put("느리다",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
+        signFileMap.put("늦",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
+        signFileMap.put("느리",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
         signFileMap.put("지각",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
-        signFileMap.put("더디다",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
+        signFileMap.put("더디",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
         signFileMap.put("서서히",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
         signFileMap.put("지체",  "android.resource://" + packageName + "/" + R.raw.mov000250606);
 

@@ -117,7 +117,6 @@ public class ChatActivity extends AppCompatActivity {
                 // 사용자가 농인인 경우 입력된 수화 영상으로 매칭
                 if(MainActivity.mode == 0) {
                     // 데이터 파싱
-
                 }
 
                 recyclerView.scrollToPosition(adapter.getItemCount() - 1);
