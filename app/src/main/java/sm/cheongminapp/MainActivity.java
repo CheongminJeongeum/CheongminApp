@@ -72,13 +72,13 @@ public class MainActivity extends AppCompatActivity {
         getAndSetMode();
 
 /*
-        TODO: 블루투스 작업시 주석 해제
         btc = new BTConnector(this);
 
         //if(mode == 0) {
         btc.checkBluetooth();
         //}
 */
+
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     });
 
         }
+
     }
 
     @Override
@@ -175,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
         //}
         try{
             unregisterReceiver(btc.mBackgroundReceiver);
-        }catch(Exception e){}*/
+        }catch(Exception e){}
+        */
     }
 
     @Override

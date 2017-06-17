@@ -114,7 +114,6 @@ public class BTConnector {
 
         if(mPariedDeviceCount == 0 ) { // 페어링된 장치가 없는 경우.
             Toast.makeText(ctx, "페어링된 장치가 없습니다.", Toast.LENGTH_LONG).show();
-            activity.finish(); // App 종료.
         }
         // 페어링된 장치가 있는 경우.
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
