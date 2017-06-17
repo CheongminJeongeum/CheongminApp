@@ -8,8 +8,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.opencsv.CSVReader;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,7 @@ import java.util.List;
 public class BTService extends Service {
     private final IBinder myBinder = new MyLocalBinder();
 
-    String[] fileNames = {"action.csv", "goreum.csv", "healthy.csv"};
+    String[] signFileNames = {"action.csv", "goreum.csv", "healthy.csv"};
 
     BluetoothSocket mSocket = null;
     OutputStream mOutputStream = null;
@@ -33,10 +36,16 @@ public class BTService extends Service {
     char mCharDelimiter =  '\n';
 
     List<List<Integer>> fingerList = new ArrayList<List<Integer>>();
-    List<List<Float>> zairoOneList = new ArrayList<List<Float>>();
-    List<List<Float>> zairoFourList = new ArrayList<List<Float>>();
+
+    List<List<Float>> zairoOneList = new ArrayList<List<Float>>(); // 임시로 모아놓는 리스트
+    List<List<Float>> zairoFourList = new ArrayList<List<Float>>(); // 임시로 모아놓는 리스트
+
+    List<List<List<Float>>> zairoReferenceData = new ArrayList<List<List<Float>>>();
+    List<List<Float>> zairoInputData = new ArrayList<List<Float>>();
 
     int fingerData = 0;
+
+    String[] fileNames = {"action.csv", "goreum.csv", "healthy.csv"};
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -62,6 +71,28 @@ public class BTService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        for(int i=0; i<signFileNames.length; i++) {
+            try {
+                CSVReader reader = new CSVReader(new InputStreamReader(getAssets().open(signFileNames[i])));
+                String[] lines;
+                List<List<Float>> entireCsvData = new ArrayList<List<Float>>();
+
+                if(reader.readNext() == null) continue; // 첫줄의 레이블(x1, x2, x3...제거)
+                while((lines = reader.readNext()) != null) {
+                    List<Float> lineData = new ArrayList<Float>();
+                    for(int j=0; j<lines.length; j++) {
+                        Log.d("line", lines[j]);
+                        lineData.add(Float.parseFloat(lines[j]));
+                    }
+                    entireCsvData.add(lineData);
+                }
+                zairoReferenceData.add(entireCsvData);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // 데이터 수신(쓰레드 사용 수신된 메시지를 계속 검사함)
@@ -69,7 +100,7 @@ public class BTService extends Service {
         final Handler handler = new Handler();
 
         readBufferPosition = 0;                 // 버퍼 내 수신 문자 저장 위치.
-        readBuffer = new byte[1024];            // 수신 버퍼.
+        readBuffer = new byte[4096];            // 수신 버퍼.
 
         // 문자열 수신 쓰레드.
         mWorkerThread = new Thread(new Runnable()
@@ -96,6 +127,8 @@ public class BTService extends Service {
                             byte[] packetBytes = new byte[byteAvailable];
                             //Log.d("byteAv", Integer.toString(byteAvailable));
                             // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
+
+
                             mInputStream.read(packetBytes);
                             for(int i=0; i<byteAvailable; i++) {
                                 byte b = packetBytes[i];
@@ -117,7 +150,7 @@ public class BTService extends Service {
                                             Log.d("F", datas[j]);
                                             Integer.parseInt(datas[j]);
                                         }
-                                        //fingerList.add(fingers);
+                                        fingerList.add(fingers);
                                     }
                                     else if(data.startsWith("1:")) {
                                         //Log.d("1", data);
@@ -128,7 +161,7 @@ public class BTService extends Service {
                                             Log.d("1", datas[j]);
                                             Float.parseFloat(datas[j]);
                                         }
-                                        //zairoOneList.add(zairoOne);
+                                        zairoOneList.add(zairoOne);
                                     }
                                     else if(data.startsWith("4:")) {
                                         //Log.d("4", data);
@@ -139,10 +172,26 @@ public class BTService extends Service {
                                             Log.d("4", datas[j]);
                                             Float.parseFloat(datas[j]);
                                         }
-                                        //zairoFourList.add(zairoFour);
+                                        zairoFourList.add(zairoFour);
                                     }
-                                    // 콤마 단위로 스플릿
+                                    // 한 단어가 끝날 때
+                                    else if(data.equals("stop")) {
+                                        int length = zairoOneList.size() > zairoFourList.size() ?
+                                                zairoFourList.size() : zairoOneList.size();
+                                        for(int j=0; j<length; j++) {
+                                            List<Float> zairoData = new ArrayList<Float>();
+                                            for(int k=0; k<zairoOneList.get(j).size(); k++) {
+                                                zairoData.add(zairoOneList.get(j).get(k));
+                                            }
+                                            for(int k=0; k<zairoFourList.get(j).size(); k++) {
+                                                zairoData.add(zairoFourList.get(j).get(k));
+                                            }
+                                            zairoInputData.add(zairoData);
+                                        }
 
+                                        String voca = prediction();
+                                        // 챗액티비티에 브로드캐스트 전송
+                                    }
                                 }
                                 else if(b == '�') {
                                     continue;
@@ -158,9 +207,9 @@ public class BTService extends Service {
                     }
                 }
             }
-
-            public void calculate() {
-
+            // 예측한 단어 반환
+            public String prediction() {
+                return "ㅗㅗ";
             }
 
         });

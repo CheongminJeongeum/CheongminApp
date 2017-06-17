@@ -113,22 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     });
 
         }
-        /*
-        String[] fileNames = {"action.csv", "goreum.csv", "healthy.csv"};
-        for(int i=0; i<fileNames.length; i++) {
-            try {
-                CSVReader reader = new CSVReader(new InputStreamReader(getAssets().open(fileNames[i])));
-                String[] lines;
-                while((lines = reader.readNext()) != null) {
-                    for(int j=0; j<lines.length; j++) {
-                        Log.d("line", lines[j]);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        */
+
     }
 
     @Override
