@@ -1,9 +1,13 @@
 package sm.cheongminapp.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import sm.cheongminapp.R;
+import sm.cheongminapp.data.ChatSignData;
+import sm.cheongminapp.data.SignData;
 
 /**
  * Created by Raye on 2017-05-28.
@@ -42,11 +46,24 @@ MOV000241289 말씀
         signFileMap.put("말씀",  "android.resource://" + packageName + "/" + R.raw.mov000241289);
     }
 
-    public String getSignVideo(String text) {
-        if(signFileMap.containsKey(text))
-            return signFileMap.get(text);
+    public SignData getSignData(String signText) {
+        if(signFileMap.containsKey(signText))
+            return new SignData(signText, signFileMap.get(signText));
 
-        return "";
+        return null;
+    }
+
+    public List<SignData> getSignDataList(List<String> signTextList) {
+        List<SignData> signDataList = new ArrayList<>();
+
+        for(String signText: signTextList) {
+            SignData signData = getSignData(signText);
+            if(signData != null){
+                signDataList.add(signData);
+            }
+        }
+
+        return signDataList;
     }
 
     private static SignVideoRepository instance;

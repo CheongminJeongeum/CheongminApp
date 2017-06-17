@@ -26,7 +26,13 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -39,12 +45,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sm.cheongminapp.data.ChatObject;
 import sm.cheongminapp.data.ChatRoom;
+import sm.cheongminapp.data.ChatSignData;
 import sm.cheongminapp.data.HotKey;
 import sm.cheongminapp.database.DBHelper;
 import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.model.data.EmptyData;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
+import sm.cheongminapp.repository.SignVideoRepository;
 import sm.cheongminapp.view.adapter.ChatMessageAdapter;
 import sm.cheongminapp.view.adapter.HotKeyAdapter;
 
@@ -98,6 +106,8 @@ public class ChatActivity extends AppCompatActivity {
     // 현재 방 번호 (나중에 인텐트 등으로 값 가져와야 함)
     public int currentRoomId = 1;
 
+    Gson gson = new Gson();
+
     // 채팅 액티비티를 활성화하고 있을 때만 호출됨.
     BroadcastReceiver chatReceiver = new BroadcastReceiver() {
         @Override
@@ -109,15 +119,33 @@ public class ChatActivity extends AppCompatActivity {
                 String contents = intent.getStringExtra("contents"); // 상대방 대화 내용
                 String time = intent.getStringExtra("time");
                 time = parseDateTime(time);
+
                 Log.d("time", time);
 
-                adapter.addResponseInput(contents, time);
-                adapter.notifyDataSetChanged();
-
-                // 사용자가 농인인 경우 입력된 수화 영상으로 매칭
+                // 사용자가 농인이므로 입력된 수화 영상으로 매칭
                 if(MainActivity.mode == 0) {
-                    // 데이터 파싱
+                    // ["가","나","다"]-가나다
 
+                    if(contents.contains("-")) {
+                        String[] data = contents.split("-");
+                        if(data.length < 1)
+                            return;
+
+                        List<String> signTextList = Arrays.asList(gson.fromJson(data[0], String[].class));
+
+                        ChatSignData signData = new ChatSignData();
+                        signData.setSignDataList(SignVideoRepository
+                                .getInstance()
+                                .getSignDataList(signTextList));
+
+                        adapter.addSign(signData);
+                        adapter.addResponseInput(data[1], time);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } else {
+                    adapter.addResponseInput(contents, time);
+                    adapter.notifyDataSetChanged();
                 }
 
                 recyclerView.scrollToPosition(adapter.getItemCount() - 1);
@@ -279,6 +307,7 @@ public class ChatActivity extends AppCompatActivity {
         String sendText = editText.getText().toString();
 
         IApiService apiService = ApiService.getInstance().getService();
+
         if(MainActivity.mode == 1) {
             apiService.sendMessageOnKorean(MainActivity.id, currentRoomId, sendText).enqueue(new Callback<ResultModel<EmptyData>>() {
                 @Override

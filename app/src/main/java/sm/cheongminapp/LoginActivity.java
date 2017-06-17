@@ -1,6 +1,7 @@
 package sm.cheongminapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import sm.cheongminapp.model.ResultModel;
 import sm.cheongminapp.model.data.LoginResult;
 import sm.cheongminapp.network.ApiService;
 import sm.cheongminapp.network.IApiService;
+import sm.cheongminapp.utility.PreferenceData;
 
 
 public class LoginActivity extends AppCompatActivity {
