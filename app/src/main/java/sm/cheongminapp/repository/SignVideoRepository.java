@@ -28,7 +28,7 @@ MOV000250606 늦다, 느리다 , 지각 , 더디다 , 서서히 , 지체 , 천�
 MOV000241289 말씀
 */
         signFileMap.put("고맙", "android.resource://" + packageName + "/" + R.raw.mov000250232);
-        signFileMap.put("감사", "android.resource://" + packageName + "/" + R.raw.mov000250232);
+        signFileMap.put("감사하", "android.resource://" + packageName + "/" + R.raw.mov000250232);
 
         signFileMap.put("기다리", "android.resource://" + packageName + "/" + R.raw.mov000249602);
         signFileMap.put("대기", "android.resource://" + packageName + "/" + R.raw.mov000249602);

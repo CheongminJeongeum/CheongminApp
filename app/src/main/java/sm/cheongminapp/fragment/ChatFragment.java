@@ -71,11 +71,6 @@ public class ChatFragment extends Fragment {
 
                 List<ChatRoom> chatRoomList = response.body().Data;
 
-                if(chatRoomList.size() <= 0) {
-                    Toast.makeText(getActivity(), "채팅방 목록 없음", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 chatRoomAdapter.clear();
 
                 for(int i = 0; i < chatRoomList.size(); i++) {
@@ -87,7 +82,6 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResultModel<List<ChatRoom>>> call, Throwable t) {
-                Toast.makeText(getActivity(), "채팅방 목록 요청 실패", Toast.LENGTH_SHORT).show();
             }
         });
 

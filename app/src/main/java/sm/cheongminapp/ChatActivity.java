@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
@@ -121,27 +122,33 @@ public class ChatActivity extends AppCompatActivity {
                 time = parseDateTime(time);
 
                 Log.d("time", time);
+                Log.d("contents", contents);
+
+                Log.d("mode", String.valueOf(MainActivity.mode));
 
                 // 사용자가 농인이므로 입력된 수화 영상으로 매칭
                 if(MainActivity.mode == 0) {
-                    // ["가","나","다"]-가나다
+                    // ["가","나","다", "가나다"]
+                    List<String> signTextList = new ArrayList<>();
 
-                    if(contents.contains("-")) {
-                        String[] data = contents.split("-");
-                        if(data.length < 1)
-                            return;
-
-                        List<String> signTextList = Arrays.asList(gson.fromJson(data[0], String[].class));
-
-                        ChatSignData signData = new ChatSignData();
-                        signData.setSignDataList(SignVideoRepository
-                                .getInstance()
-                                .getSignDataList(signTextList));
-
-                        adapter.addSign(signData);
-                        adapter.addResponseInput(data[1], time);
-                        adapter.notifyDataSetChanged();
+                    String[] textArrays = gson.fromJson(contents, String[].class);
+                    for(int i = 0; i < textArrays.length - 2; i++) {
+                        signTextList.add(textArrays[i]);
                     }
+
+                    ChatSignData signData = new ChatSignData();
+                    signData.setSignDataList(SignVideoRepository
+                            .getInstance()
+                            .getSignDataList(signTextList));
+
+                    if(signData.getSignDataList().size() > 0) {
+                        adapter.addSign(signData);
+                    }
+
+                    String inputText = signTextList.get(0);
+                    adapter.addResponseInput(inputText, time);
+
+                    adapter.notifyDataSetChanged();
 
                 } else {
                     adapter.addResponseInput(contents, time);
