@@ -137,7 +137,7 @@ public class BTService extends Service {
                                 lineData.add(lines[j].charAt(k) - '0');
                             }
                         }
-                        fingerReferenceData.get(outer).get(j).add(lineData);
+                        fingerReferenceData.get(outer).get(j-1).add(lineData);
                     }
                 }
 
@@ -196,13 +196,15 @@ public class BTService extends Service {
                                     final String data = new String(encodedBytes, "US-ASCII");
                                     readBufferPosition = 0;
 
+                                    //Log.d("str", data);
+
                                     boolean isChanged = false;
                                     if(data.charAt(0) == 'F') {
-                                        //Log.d("F", data);
                                         String splitedData = data.split(":")[1];
                                         String[] datas = splitedData.split(",");
                                         List<Integer> fingers = new ArrayList<Integer>();
                                         for(int j = 0; j<datas.length; j++) {
+                                            if(datas[j].equals("")) continue;
                                             if(!prevFingerShape[j].equals(datas[j])) {
                                                 prevFingerShape[j] = datas[j];
                                                 isChanged = true;
@@ -211,8 +213,9 @@ public class BTService extends Service {
                                         }
                                         if(isChanged) {
                                             for(int j=0; j<fingers.size(); j++) {
-                                                Log.d("F", Integer.toString(fingers.get(j)));
+                                                //Log.d("F", Integer.toString(fingers.get(j)));
                                             }
+                                            Log.d("F", data);
                                             fingerInputData.add(fingers);
                                         }
                                     }
@@ -222,7 +225,6 @@ public class BTService extends Service {
                                         String[] datas = splitedData.split(",");
                                         List<Float> zairoOne = new ArrayList<Float>();
                                         for(int j = 0; j<datas.length; j++) {
-                                            Log.d("1", datas[j]);
                                             zairoOne.add(Float.parseFloat(datas[j]));
                                         }
                                         zairoOneList.add(zairoOne);
@@ -233,22 +235,22 @@ public class BTService extends Service {
                                         String[] datas = splitedData.split(",");
                                         List<Float> zairoFour = new ArrayList<Float>();
                                         for(int j = 0; j<datas.length; j++) {
-                                            Log.d("4", datas[j]);
                                             zairoFour.add(Float.parseFloat(datas[j]));
                                         }
                                         zairoFourList.add(zairoFour);
                                     }
                                     // 한 단어가 끝날 때
-                                    else if(data.equals("stop")) {
+                                    else if(data.startsWith("sto")) {
                                         /*
                                             1번 자이로와 4번 자이로의 데이터를 합침.
-                                         */
+
                                         for(int j=0; j<fingerInputData.size(); j++) {
                                             for(int k=0; k<fingerInputData.get(i).size(); k++) {
                                                 Log.d("inputfinger", Integer.toString(
                                                         fingerInputData.get(i).get(j).intValue()));
                                             }
                                         }
+                                        */
                                         int length = zairoOneList.size() > zairoFourList.size() ?
                                                 zairoFourList.size() : zairoOneList.size();
                                         for(int j=0; j<length; j++) {
@@ -261,6 +263,7 @@ public class BTService extends Service {
                                             }
                                             zairoInputData.add(zairoData);
                                         }
+                                        Log.d("stop", "stop");
 
                                         String voca = prediction();
                                         // 챗액티비티에 브로드캐스트 전송
@@ -284,11 +287,16 @@ public class BTService extends Service {
             // 예측한 단어 반환
             public String prediction() {
                 // 손가락에서 추리고 남은 후보군들
-                HashMap<String, Integer> noVoca = new HashMap<String, Integer>();
+                int map[][] = new int[2][50];
 
+                for(int i=0; i<2; i++)
+                    for(int j=0; j<50; j++)
+                        map[i][j] = 0;
+
+                Log.d("fingerlen", Integer.toString(fingerReferenceData.size()));
                 for(int i=0; i<fingerReferenceData.size(); i++) {
                     // 어떤 상황이냐에 따라 패스할지 말지 결정
-                    for(int j=0; j<fingerReferenceData.get(i).size(); j++) {
+                    for(int j=0; j<3; j++) {
                         for(int k=0; k<fingerReferenceData.get(i).get(j).size(); k++) {
                             // 손가락 데이터 8개 순회
                             List<Integer> fingerInfoList = fingerReferenceData.get(i).get(j).get(k);
@@ -297,7 +305,8 @@ public class BTService extends Service {
                                 else if(fingerInfoList.get(l).intValue()
                                         != fingerInputData.get(j).get(l).intValue()) {
                                     // 안되는 단어들 처리
-                                    noVoca.put(i+"-"+k, 1);
+                                    map[i][k] = 1;
+                                    Log.d("novoca", vocaList[i][k]+", "+i+"-"+k);
                                     break;
                                 }
                             }
@@ -305,11 +314,13 @@ public class BTService extends Service {
                         }
                     }
                 }
-
+                Log.d("vocaListlen", Integer.toString(vocaList.length));
                 for(int i=0; i<vocaList.length; i++) {
                     // 여기서 상황 한정 결과 추리기
                     for(int j=0; j<vocaList[i].length; j++) {
-                        if(noVoca.get(i+"-"+j) == 1) {
+                        Log.d("vocaListlen[i]", Integer.toString(vocaList[i].length));
+                        Log.d("map", ""+i+","+j+","+map[i][j]);
+                        if(map[i][j] == 0) {
                             Log.d("vocalist", vocaList[i][j]);
                             predictedVoca.put(vocaList[i][j], 1);
                         }
@@ -317,7 +328,7 @@ public class BTService extends Service {
                 }
 
                 // 자이로 데이터로 예측
-                return matching();
+                return ""; //matching();
             }
 
             public String matching() {
