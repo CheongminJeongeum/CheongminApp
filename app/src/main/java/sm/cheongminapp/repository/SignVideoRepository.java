@@ -43,6 +43,28 @@ public class SignVideoRepository {
         signFileMap.put("지체",  filePath + R.raw.mov000250606);
 
         signFileMap.put("말씀",  filePath + R.raw.mov000241289);
+
+        // 6/20
+        signFileMap.put("안녕하세요", filePath + R.raw.mov000244910);
+
+        signFileMap.put("만남", filePath + R.raw.mov000252208);
+        signFileMap.put("만나다", filePath + R.raw.mov000252208);
+
+        signFileMap.put("부끄럽다", filePath + R.raw.mov000254200);
+
+        signFileMap.put("배", filePath + R.raw.mov000254721); // 신체
+
+        signFileMap.put("연락", filePath + R.raw.mov000255737);
+        signFileMap.put("연결", filePath + R.raw.mov000255737);
+
+        signFileMap.put("아프다", filePath + R.raw.mov000256144);
+
+        signFileMap.put("질문", filePath + R.raw.mov000258834);
+        signFileMap.put("묻다", filePath + R.raw.mov000258834);
+        signFileMap.put("문의", filePath + R.raw.mov000258834);
+        signFileMap.put("물어보다", filePath + R.raw.mov000258834);
+
+        signFileMap.put("물어보다", filePath + R.raw.mov000259394);
     }
 
     public SignData getSignData(String signText) {
