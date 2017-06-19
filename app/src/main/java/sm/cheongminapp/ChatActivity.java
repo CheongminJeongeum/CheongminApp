@@ -57,18 +57,6 @@ import sm.cheongminapp.repository.SignVideoRepository;
 import sm.cheongminapp.view.adapter.ChatMessageAdapter;
 import sm.cheongminapp.view.adapter.HotKeyAdapter;
 
-/*
-    TODO: 채팅 과정 구현
-    친구 프로필 페이지에서 대화방 생성 -> /chat/room (POST)로 요청함.
-    리턴값은 Room객체(추가해야 함). 응답이 오는 즉시 ChatActivity로 이동함(인텐트로 방 번호, 방 이름을 전달)
-
-    대화 목록창을 누르면 생성된 방들을 모두 가져옴. -> /chat/room (GET)으로 요청.
-    리스트 중 하나를 누르면 ChatActivity로 이동함(인텐트로 방 번호, 방 이름을 전달)
-
-    방 생성 시 중복체크 할 때가 조금 귀찮은데
-    Primary key 값을 자동 증가값으로 하지 말고, 차라리 두 사용자의 아이디값으로 지정하는것이 어떤가?
- */
-
 public class ChatActivity extends AppCompatActivity {
 
     @BindView(R.id.chat_toolbar)
