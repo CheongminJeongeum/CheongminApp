@@ -72,113 +72,58 @@ import sm.cheongminapp.view.adapter.HotKeyAdapter;
 public class ChatActivity extends AppCompatActivity {
 
     @BindView(R.id.chat_toolbar)
-    Toolbar toolbar;
+    public Toolbar toolbar;
 
     @BindView(R.id.chat_recycler_view)
-    RecyclerView recyclerView;
+    public RecyclerView messageView;
 
     @BindView(R.id.chat_message)
-    EditText editText;
+    public EditText etMessage;
 
     @BindView(R.id.chat_send)
-    Button button;
-
-    private String[] navItems = {"Brown", "Cadet Blue", "Dark Olive Green",
-            "Dark Orange", "Golden Rod"};
+    public Button btnSend;
 
     @BindView(R.id.list_shortcuts)
-    ListView lvHotkeyList;
+    public ListView lvHotkeyList;
 
     @BindView(R.id.fl_activity_chat_container)
-    FrameLayout flContainer;
+    public FrameLayout flContainer;
 
     @BindView(R.id.dl_activity_chat_drawer)
-    DrawerLayout dlDrawer;
+    public DrawerLayout dlDrawer;
 
-    ActionBarDrawerToggle dtToggle;
+    private ActionBarDrawerToggle dtToggle;
 
-    HotKeyAdapter hotKeyAdapter;
+    private HotKeyAdapter hotKeyAdapter;
 
-    DBHelper dbHelper;
-    ChatMessageAdapter adapter;
+    private DBHelper dbHelper;
+    private ChatMessageAdapter messageAdapter;
 
-    ChatRoom chatRoom;
+    private ChatRoom currentRoom;
+    private int currentRoomId = 1;
 
-    // 현재 방 번호 (나중에 인텐트 등으로 값 가져와야 함)
-    public int currentRoomId = 1;
-
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
 
     // 채팅 액티비티를 활성화하고 있을 때만 호출됨.
-    BroadcastReceiver chatReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver chatReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals("chat")) {
-                int room_id = intent.getIntExtra("room_id", -1); // 방 번호
-                if(currentRoomId != room_id) return; // (현재 방과 번호가 다른 경우 무시)
+                if(currentRoomId != intent.getIntExtra("room_id", -1))
+                    return;
 
-                String contents = intent.getStringExtra("contents"); // 상대방 대화 내용
-                String time = intent.getStringExtra("time");
-                time = parseDateTime(time);
+                String message = intent.getStringExtra("contents");
+                String time = parseDateTime(intent.getStringExtra("time"));
 
                 Log.d("time", time);
-                Log.d("contents", contents);
+                Log.d("message", message);
 
                 Log.d("mode", String.valueOf(MainActivity.mode));
 
-                // 사용자가 농인이므로 입력된 수화 영상으로 매칭
-                if(MainActivity.mode == 0) {
-                    // ["가","나","다", "가나다"]
-                    List<String> signTextList = new ArrayList<>();
-
-                    String[] textArrays = gson.fromJson(contents, String[].class);
-                    for(int i = 0; i < textArrays.length - 2; i++) {
-                        signTextList.add(textArrays[i]);
-                    }
-
-                    ChatSignData signData = new ChatSignData();
-                    signData.setSignDataList(SignVideoRepository
-                            .getInstance()
-                            .getSignDataList(signTextList));
-
-                    if(signData.getSignDataList().size() > 0) {
-                        adapter.addSign(signData);
-                    }
-
-                    String inputText = signTextList.get(0);
-                    adapter.addResponseInput(inputText, time);
-
-                    adapter.notifyDataSetChanged();
-
-                } else {
-                    adapter.addResponseInput(contents, time);
-                    adapter.notifyDataSetChanged();
-                }
-
-                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                onReceiveMessage(message, time);
             }
         }
-
-
     };
-
-    public String parseDateTime(String time) {
-        String result = "";
-
-        String[] dateTime = time.split(" ");
-        String[] hhmmss = dateTime[1].split(":");
-        int hour = Integer.parseInt(hhmmss[0]);
-        if(hour >= 12) {
-            if(hour != 12) {
-                hour-=12;
-            }
-            result += "오후 "+hour;
-        } else {
-            result += "오전 "+hour;
-        }
-        result += ":"+hhmmss[1];
-        return result;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,14 +138,14 @@ public class ChatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // 채팅방 정보 설정
-        chatRoom = (ChatRoom)getIntent().getSerializableExtra("ChatRoom");
-        currentRoomId = chatRoom.room_id;
+        currentRoom = (ChatRoom) getIntent().getSerializableExtra("ChatRoom");
+        currentRoomId = currentRoom.room_id;
 
-        getSupportActionBar().setTitle(chatRoom.room_name);
+        getSupportActionBar().setTitle(currentRoom.room_name);
 
         // 네비게이션 메뉴 설정
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer,
-                R.drawable.ic_drawer, R.string.open_drawer, R.string.close_drawer){
+                R.drawable.ic_drawer, R.string.open_drawer, R.string.close_drawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -213,24 +158,30 @@ public class ChatActivity extends AppCompatActivity {
             }
 
         };
-
         dlDrawer.setDrawerListener(dtToggle);
 
         // 채팅 메세지 어댑터 설정
-        adapter = new ChatMessageAdapter();
+        messageAdapter = new ChatMessageAdapter();
 
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        messageView.setAdapter(messageAdapter);
+        messageView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        messageView.setItemAnimator(new DefaultItemAnimator());
+
+        // 단축 메세지 등록
+        hotKeyAdapter = new HotKeyAdapter(this);
+        lvHotkeyList.setAdapter(hotKeyAdapter);
+
+        // 메세지 리시버 등록
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("chat");
+
+        registerReceiver(chatReceiver, filter);
 
         // 이전 채팅 내용 불러오기
         loadChatLog();
 
-        // 단축키 불러오기
-        setupHotkeyList();
-
-        // 리시버 등록
-        setupReceiver();
+        // 단축 메세지 불러오기
+        loadHotKeyList();
     }
 
     @Override
@@ -263,103 +214,14 @@ public class ChatActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void setupHotkeyList() {
-        hotKeyAdapter = new HotKeyAdapter(this);
-        lvHotkeyList.setAdapter(hotKeyAdapter);
-
-        HotKey hotKey1 = new HotKey();
-        hotKey1.Icon = "https://maxcdn.icons8.com/app/uploads/2016/09/sweet-home-icon.jpg";
-        hotKey1.Name = "집";
-        hotKey1.Content = "경기도 의정부시 가능동";
-
-        hotKeyAdapter.addItem(hotKey1);
-    }
-
-    public void loadChatLog() {
-        // 로컬 DB에서 채팅 기록 가져옴
-        dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
-
-        List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
-        for(int i=0; i<chatList.size(); i++) {
-            ChatObject chat = chatList.get(i);
-
-            chat.setTime(parseDateTime(chat.getTime()));
-            switch(chat.getType())
-            {
-                case ChatObject.INPUT_OBJECT:
-                    // 입력한 채팅
-                    adapter.addChatInput(chat.getText(), chat.getTime());
-                    break;
-                case ChatObject.RESPONSE_OBJECT:
-                    // 받은 채팅
-                    adapter.addResponseInput(chat.getText(), chat.getTime());
-                    break;
-                case ChatObject.SIGN_IMAGE_OBJECT:
-                    // 수화 영상
-                    break;
-            }
-        }
-    }
-
-    public void setupReceiver() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("chat");
-
-        registerReceiver(chatReceiver, filter);
-    }
-
     @OnClick(R.id.chat_send)
-    public void clickSend() {
-        String sendText = editText.getText().toString();
-
-        IApiService apiService = ApiService.getInstance().getService();
-
-        if(MainActivity.mode == 1) {
-            apiService.sendMessageOnKorean(MainActivity.id, currentRoomId, sendText).enqueue(new Callback<ResultModel<EmptyData>>() {
-                @Override
-                public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
-
-                }
-            });
-        } else { // 농
-            apiService.sendMessageOnSign(MainActivity.id, currentRoomId, sendText).enqueue(new Callback<ResultModel<EmptyData>>() {
-                        @Override
-                        public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
-
-                        }
-                    });
-        }
-
-        // DB에 저장
-        String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
-        dbHelper.insert(currentRoomId, MainActivity.id, sendText, time);
-
-        adapter.addChatInput(sendText, parseDateTime(time));
-        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
-        editText.setText("");
-    }
-
-    @OnItemClick(R.id.list_shortcuts)
-    public void onItemClick(AdapterView<?> parent, int position) {
-        HotKey hotKey = (HotKey)hotKeyAdapter.getItem(position);
-
-        editText.setText(hotKey.Content);
-        button.callOnClick();
+    public void onClickSend() {
+        String message = etMessage.getText().toString();
+        handleInputMessage(message);
     }
 
     @OnClick(R.id.chat_add_hotkey)
-    public void clickAddHotkey() {
+    public void onClickAddHotkey() {
         View dialogView = View.inflate(ChatActivity.this, R.layout.dialog_hotkey, null);
 
         final EditText etName = (EditText) dialogView.findViewById(R.id.dialog_hotkey_name);
@@ -382,30 +244,135 @@ public class ChatActivity extends AppCompatActivity {
         dlg.show();
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    @OnItemClick(R.id.list_shortcuts)
+    public void onHotKeyItemClick(AdapterView<?> parent, int position) {
+        HotKey hotKey = (HotKey)hotKeyAdapter.getItem(position);
 
-        @Override
-        public void onItemClick(AdapterView<?> adapter, View view, int position,
-                                long id) {
-            switch (position) {
-                case 0:
-                    flContainer.setBackgroundColor(Color.parseColor("#A52A2A"));
-                    break;
-                case 1:
-                    flContainer.setBackgroundColor(Color.parseColor("#5F9EA0"));
-                    break;
-                case 2:
-                    flContainer.setBackgroundColor(Color.parseColor("#556B2F"));
-                    break;
-                case 3:
-                    flContainer.setBackgroundColor(Color.parseColor("#FF8C00"));
-                    break;
-                case 4:
-                    flContainer.setBackgroundColor(Color.parseColor("#DAA520"));
-                    break;
+        etMessage.setText(hotKey.Content);
+        btnSend.callOnClick();
+    }
 
+    private void loadChatLog() {
+        // 로컬 DB에서 채팅 기록 가져옴
+        dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
+
+        List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
+        for(int i=0; i<chatList.size(); i++) {
+            ChatObject chat = chatList.get(i);
+
+            String messageText = chat.getText();
+            String timeText = parseDateTime(chat.getTime());
+
+            switch(chat.getType())
+            {
+                case ChatObject.INPUT_OBJECT:
+                    messageAdapter.addInputMessage(messageText, timeText);
+                    break;
+                case ChatObject.RESPONSE_OBJECT:
+                    messageAdapter.addResponseMessage(messageText, timeText);
+                    break;
             }
-
         }
     }
+
+    private void loadHotKeyList() {
+        HotKey hotKey1 = new HotKey();
+        hotKey1.Icon = "https://maxcdn.icons8.com/app/uploads/2016/09/sweet-home-icon.jpg";
+        hotKey1.Name = "집";
+        hotKey1.Content = "경기도 의정부시 가능동";
+
+        hotKeyAdapter.addItem(hotKey1);
+    }
+
+    private void onReceiveMessage(String message, String time) {
+        if(MainActivity.mode == 0) {
+            List<String> signTextList = parseSignText(message);
+
+            if(signTextList.size() <= 2)
+                return;
+
+            ChatSignData signData = parseSignData(signTextList.subList(0, signTextList.size() - 1));
+            messageAdapter.addSign(signData);
+
+            String messageText = signTextList.get(signTextList.size() - 1);
+            messageAdapter.addResponseMessage(messageText, time);
+
+        } else {
+            messageAdapter.addResponseMessage(message, time);
+        }
+
+        messageView.scrollToPosition(messageAdapter.getItemCount() - 1);
+    }
+
+    private void handleInputMessage(String message) {
+        String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+
+        messageAdapter.addInputMessage(message, parseDateTime(time));
+        messageView.scrollToPosition(messageAdapter.getItemCount() - 1);
+        etMessage.setText("");
+
+        // DB에 저장
+        dbHelper.insert(currentRoomId, MainActivity.id, message, time);
+
+        // API 호출
+        IApiService apiService = ApiService.getInstance().getService();
+        if(MainActivity.mode == 1) {
+            apiService.sendMessageOnKorean(MainActivity.id, currentRoomId, message).enqueue(new Callback<ResultModel<EmptyData>>() {
+                @Override
+                public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
+
+                }
+            });
+        } else {
+            apiService.sendMessageOnSign(MainActivity.id, currentRoomId, message).enqueue(new Callback<ResultModel<EmptyData>>() {
+                @Override
+                public void onResponse(Call<ResultModel<EmptyData>> call, Response<ResultModel<EmptyData>> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<ResultModel<EmptyData>> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+    private List<String> parseSignText(String signMessage) {
+        return Arrays.asList(gson.fromJson(signMessage, String[].class));
+    }
+
+    private ChatSignData parseSignData(List<String> signTextList) {
+        // ["가","나","다", "가나다"]
+        ChatSignData signData = new ChatSignData();
+        signData.setSignDataList(SignVideoRepository
+                .getInstance()
+                .getSignDataList(signTextList));
+
+        return signData;
+    }
+
+    private String parseDateTime(String time) {
+        String result = "";
+
+        String[] dateTime = time.split(" ");
+        String[] hhmmss = dateTime[1].split(":");
+        int hour = Integer.parseInt(hhmmss[0]);
+        if(hour >= 12) {
+            if(hour != 12) {
+                hour-=12;
+            }
+            result += "오후 "+hour;
+        } else {
+            result += "오전 "+hour;
+        }
+        result += ":"+hhmmss[1];
+        return result;
+    }
+
 }
