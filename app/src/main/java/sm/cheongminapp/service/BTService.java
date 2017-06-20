@@ -323,12 +323,9 @@ public class BTService extends Service {
                         }
                     }
                 }
-                Log.d("vocaListlen", Integer.toString(vocaList.length));
                 for(int i=0; i<vocaList.length; i++) {
                     // 여기서 상황 한정 결과 추리기
                     for(int j=0; j<vocaList[i].length; j++) {
-                        Log.d("vocaListlen[i]", Integer.toString(vocaList[i].length));
-                        Log.d("map", ""+i+","+j+","+map[i][j]);
                         if(map[i][j] == 0) {
                             Log.d("vocalist", vocaList[i][j]);
                             predictedVoca.put(vocaList[i][j], 1);
@@ -366,6 +363,7 @@ public class BTService extends Service {
 
                 for(int i=0; i<referData.size(); i++) {
                     for(int j=0; j<zairoInputData.size(); j++) {
+                        matrix[i][j] = 99999999; // 초기값
                         float result = cosineSim(referData.get(i), zairoInputData.get(j));
                         if(i == 0 && j == 0) matrix[i][j] = result;
                         else if(i == 0) matrix[i][j] = matrix[i][j-1] + result;
