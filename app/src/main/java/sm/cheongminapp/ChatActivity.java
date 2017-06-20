@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -25,15 +24,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -164,6 +159,12 @@ public class ChatActivity extends AppCompatActivity {
         filter.addAction("chat");
 
         registerReceiver(chatReceiver, filter);
+
+        // 수화 리시버 등록
+        IntentFilter signFilter = new IntentFilter();
+        filter.addAction("sign");
+
+        registerReceiver(signReceiver, signFilter);
 
         // 이전 채팅 내용 불러오기
         loadChatLog();
@@ -362,5 +363,14 @@ public class ChatActivity extends AppCompatActivity {
         result += ":"+hhmmss[1];
         return result;
     }
+
+    BroadcastReceiver signReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals("sign")) {
+                etMessage.append(intent.getStringExtra("msg")+" ");
+            }
+        }
+    };
 
 }

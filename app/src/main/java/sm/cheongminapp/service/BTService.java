@@ -241,16 +241,14 @@ public class BTService extends Service {
                                     }
                                     // 한 단어가 끝날 때
                                     else if(data.startsWith("sto")) {
-                                        /*
-                                            1번 자이로와 4번 자이로의 데이터를 합침.
-
-                                        for(int j=0; j<fingerInputData.size(); j++) {
-                                            for(int k=0; k<fingerInputData.get(i).size(); k++) {
-                                                Log.d("inputfinger", Integer.toString(
-                                                        fingerInputData.get(i).get(j).intValue()));
-                                            }
+                                        // 강제로 길이 3을 만들어
+                                        while(fingerInputData.size() < 3) {
+                                            List<Integer> list = new ArrayList<Integer>();
+                                            for(int j=0; j<8; j++)
+                                                list.add(2);
+                                            fingerInputData.add(list);
                                         }
-                                        */
+
                                         int length = zairoOneList.size() > zairoFourList.size() ?
                                                 zairoFourList.size() : zairoOneList.size();
                                         for(int j=0; j<length; j++) {
@@ -268,6 +266,17 @@ public class BTService extends Service {
                                         String voca = prediction();
                                         // 챗액티비티에 브로드캐스트 전송
                                         // 전역변수들 모두 초기화
+                                        Intent dataIntent = new Intent("chat");
+                                        dataIntent.putExtra("msg", voca);
+                                        sendBroadcast(dataIntent);
+
+                                        zairoInputData = new ArrayList<List<Float>>();
+                                        zairoOneList = new ArrayList<List<Float>>();
+                                        zairoFourList = new ArrayList<List<Float>>();
+                                        fingerInputData = new ArrayList<List<Integer>>();
+                                        predictedVoca = new HashMap<String, Integer>();
+                                        for(int j=0; j<prevFingerShape.length; j++)
+                                            prevFingerShape[j] = "-1";
                                     }
                                 }
                                 else if(b == '�') {
@@ -328,7 +337,7 @@ public class BTService extends Service {
                 }
 
                 // 자이로 데이터로 예측
-                return ""; //matching();
+                return matching();
             }
 
             public String matching() {
