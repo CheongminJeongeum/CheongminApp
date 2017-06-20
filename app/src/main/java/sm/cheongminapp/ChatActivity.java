@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -25,15 +25,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
     public Button btnSend;
 
     @BindView(R.id.list_shortcuts)
-    public ListView lvHotkeyList;
+    public ListView lvHotKeyList;
 
     @BindView(R.id.fl_activity_chat_container)
     public FrameLayout flContainer;
@@ -157,7 +153,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // 단축 메세지 등록
         hotKeyAdapter = new HotKeyAdapter(this);
-        lvHotkeyList.setAdapter(hotKeyAdapter);
+        lvHotKeyList.setAdapter(hotKeyAdapter);
 
         // 메세지 리시버 등록
         IntentFilter filter = new IntentFilter();
@@ -170,6 +166,16 @@ public class ChatActivity extends AppCompatActivity {
 
         // 단축 메세지 불러오기
         loadHotKeyList();
+
+        //onReceiveMessage("[\"대기\", \"고맙\", \"기다려주셔서 감사합니다\"]", "오전 11:0");
+        //onReceiveMessage("[\"안녕하세요\", \"안녕하세요\"]", "오전 11:0");
+
+        ChatSignData chatSignData = new ChatSignData();
+        chatSignData.setSignDataList(SignVideoRepository.getInstance(getApplicationContext()).getSignDataList(Arrays.asList("대기", "고맙")));
+
+        messageAdapter.addSign(chatSignData);
+        //messageAdapter.addResponseMessage("기다려주셔서 감사합니다", "오전 11시 40분");
+
     }
 
     @Override
@@ -202,6 +208,7 @@ public class ChatActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     @OnClick(R.id.chat_send)
     public void onClickSend() {
         String message = etMessage.getText().toString();
@@ -209,7 +216,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.chat_add_hotkey)
-    public void onClickAddHotkey() {
+    public void onClickAddHotKey() {
         View dialogView = View.inflate(ChatActivity.this, R.layout.dialog_hotkey, null);
 
         final EditText etName = (EditText) dialogView.findViewById(R.id.dialog_hotkey_name);
@@ -223,6 +230,8 @@ public class ChatActivity extends AppCompatActivity {
                 HotKey hotkey = new HotKey();
                 hotkey.Name = etName.getText().toString();
                 hotkey.Content = etContent.getText().toString();
+
+                Log.d("key", hotkey.Content);
 
                 hotKeyAdapter.addItem(hotkey);
                 hotKeyAdapter.notifyDataSetChanged();
@@ -240,8 +249,8 @@ public class ChatActivity extends AppCompatActivity {
         btnSend.callOnClick();
     }
 
+
     private void loadChatLog() {
-        // 로컬 DB에서 채팅 기록 가져옴
         dbHelper = new DBHelper(getApplicationContext(), "Chat.db", null, 1);
 
         List<ChatObject> chatList = dbHelper.getResultsByRoomId(currentRoomId);
@@ -264,20 +273,17 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void loadHotKeyList() {
-        HotKey hotKey1 = new HotKey();
-        hotKey1.Icon = "https://maxcdn.icons8.com/app/uploads/2016/09/sweet-home-icon.jpg";
-        hotKey1.Name = "집";
-        hotKey1.Content = "경기도 의정부시 가능동";
-
-        hotKeyAdapter.addItem(hotKey1);
     }
+
 
     private void onReceiveMessage(String message, String time) {
         if(MainActivity.mode == 0) {
             List<String> signTextList = parseSignText(message);
 
-            if(signTextList.size() <= 2)
+            if(signTextList.size() <= 2) {
+                messageAdapter.addResponseMessage(message, time);
                 return;
+            }
 
             ChatSignData signData = parseSignData(signTextList.subList(0, signTextList.size() - 1));
             messageAdapter.addSign(signData);
@@ -331,6 +337,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+
     private List<String> parseSignText(String signMessage) {
         return Arrays.asList(gson.fromJson(signMessage, String[].class));
     }
@@ -339,7 +346,7 @@ public class ChatActivity extends AppCompatActivity {
         // ["가","나","다", "가나다"]
         ChatSignData signData = new ChatSignData();
         signData.setSignDataList(SignVideoRepository
-                .getInstance()
+                .getInstance(getApplicationContext())
                 .getSignDataList(signTextList));
 
         return signData;

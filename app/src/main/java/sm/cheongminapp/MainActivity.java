@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
         //loadReferenceFingersData();
 
-
         btc = new BTConnector(this);
 
         //if(mode == 0) {
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // regid 갱신하기(서버에 api만들어서)
+        // RegID 갱신
         if(!pref.getValue("regid", "").equals("")) {
             IApiService apiService = ApiService.getInstance().getService();
             apiService.RegId(MainActivity.id, FirebaseInstanceId.getInstance().getToken())
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO:디버그용 토스트 메세지 삭제
+        // TODO:finish(); 주석 해제
         Toast.makeText(MainActivity.this, Integer.toString(requestCode), Toast.LENGTH_SHORT).show();
 
         if(requestCode == BTConnector.REQUEST_ENABLE_BT) {
@@ -151,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             else if(resultCode == RESULT_CANCELED) { // 블루투스 비활성화 상태 (종료)
                 Toast.makeText(getApplicationContext(), "블루투스를 사용할 수 없어 프로그램을 종료합니다",
                         Toast.LENGTH_LONG).show();
-                finish();
+                //finish();
             }
         } else if(requestCode == RequestFragment.REQ_CODE_REFRESH_REQUESTS) {
             requestFragment.onActivityResult(requestCode, resultCode, data);

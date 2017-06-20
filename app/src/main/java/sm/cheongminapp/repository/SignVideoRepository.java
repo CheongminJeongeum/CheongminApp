@@ -1,5 +1,9 @@
 package sm.cheongminapp.repository;
 
+import android.content.Context;
+import android.os.Debug;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +18,16 @@ import sm.cheongminapp.data.SignData;
  */
 
 public class SignVideoRepository {
-    private final static String filePath = "android.resource://sm.cheongminap/";
+    private final static String resourcePrefix = "android.resource://";
 
     private Map<String, String> signFileMap = new HashMap<>();
 
-    SignVideoRepository() {
+    SignVideoRepository(Context context) {
+
+        String filePath = resourcePrefix + context.getPackageName() + "/";
+
+        Log.d("PackageName", context.getPackageName());
+
         /*
         MOV000250232 고맙다, 감사
         MOV000249602 기다리다, 대기
@@ -88,9 +97,9 @@ public class SignVideoRepository {
     }
 
     private static SignVideoRepository instance;
-    public static SignVideoRepository getInstance() {
+    public static SignVideoRepository getInstance(Context context) {
         if(instance == null)
-            instance = new SignVideoRepository();
+            instance = new SignVideoRepository(context);
 
         return instance;
     }

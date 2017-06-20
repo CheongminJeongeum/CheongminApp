@@ -1,6 +1,7 @@
 package sm.cheongminapp.view.viewholder;
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,7 +31,9 @@ public class ChatSignVH extends BaseViewHolder {
         videoView.setTag(signData);
 
         signData.setPlayIndex(0);
-        videoView.setVideoPath(signData.getSignDataList().get(signData.getPlayIndex()).getVideoPath());
+
+        Uri uri = Uri.parse(signData.getSignDataList().get(signData.getPlayIndex()).getVideoPath());
+        videoView.setVideoURI(uri);
 
         // 영상 재생이 완료되면 다음 영상으로 넘기거나 정지
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

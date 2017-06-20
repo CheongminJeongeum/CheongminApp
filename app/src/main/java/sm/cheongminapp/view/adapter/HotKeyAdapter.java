@@ -44,10 +44,6 @@ public class HotKeyAdapter extends AbstractAdapter<HotKey> {
         viewHolder.tvIndex.setText(String.valueOf(position + 1));
         viewHolder.tvName.setText(hotKey.Name);
 
-        Picasso.with(convertView.getContext())
-                .load(hotKey.Icon)
-                .into(viewHolder.icIcon);
-
         return convertView;
     }
 
@@ -55,9 +51,6 @@ public class HotKeyAdapter extends AbstractAdapter<HotKey> {
 
         @BindView(R.id.layout_hotkey_index)
         TextView tvIndex;
-
-        @BindView(R.id.layout_hotkey_icon)
-        ImageView icIcon;
 
         @BindView(R.id.layout_hotkey_item_name)
         TextView tvName;

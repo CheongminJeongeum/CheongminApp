@@ -15,15 +15,6 @@
         android:text="1"
         android:textSize="18dp" />
 
-    <ImageView
-        android:id="@+id/layout_hotkey_icon"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/layout_hotkey_index"
-        android:layout_marginLeft="5dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_account"/>
-
     <TextView
         android:id="@+id/layout_hotkey_item_name"
         android:layout_width="wrap_content"
@@ -31,10 +22,10 @@
         android:layout_marginLeft="5dp"
         android:paddingLeft="8dp"
         android:gravity="center_vertical"
-        android:text="Hotkey Name"
+        android:text="Name"
         android:textSize="18dp"
         android:textColor="#262b33"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/layout_hotkey_icon" />
+        android:layout_toEndOf="@+id/layout_hotkey_index" />
 
 </RelativeLayout>
