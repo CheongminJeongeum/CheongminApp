@@ -25,10 +25,10 @@ import java.util.Map;
 public class BTService extends Service {
     private final IBinder myBinder = new MyLocalBinder();
 
-    String[][] signFileNames = {{"action.csv", "goreum.csv", "healthy.csv"}};
+    public static final int INF = 999999999;
     String[] fingerFileNames = {"상황_병원.csv", "상황_회사.csv"};
-    String[][] vocaList = {{"가래", "간호사", "건강", "고름", "곪다", "기침", "몸살", "문병", "발목",
-            "복통", "빈혈", "설사", "수술", "심장마비", "아프다", "암", "약국", "열", "의사", "임신", "입원",
+    String[][] vocaList = {{"가래", "간호사", "건강", "고름", "곪다", "기침", "몸살", "심하다", "문병", "발목",
+            "복통", "빈혈", "설사", "두통", "수술", "심장마비", "감사", "아프다", "암", "약국", "열", "의사", "임신", "입원",
             "저혈압", "주사", "퇴원", "폐렴"}, {"경력", "근무", "대리", "대리(직급)", "부장", "사원", "사장", "서류",
             "야근", "월급", "출근", "출근", "출장", "취업", "퇴근", "회사원", "회의", "휴가"}};
 
@@ -81,25 +81,25 @@ public class BTService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        //loadReferenceZairoData();
+        loadReferenceZairoData();
         loadReferenceFingersData();
     }
 
     public void loadReferenceZairoData() {
-        for(int outer = 0; outer<signFileNames.length; outer++) {
+        for(int outer = 0; outer<vocaList.length; outer++) {
             List<List<List<Float>>> zairoData = new ArrayList<List<List<Float>>>();
-            for (int i = 0; i < signFileNames[outer].length; i++) {
+            for (int i = 0; i < vocaList[outer].length; i++) {
                 try {
                     CSVReader reader = new CSVReader(
-                            new InputStreamReader(getAssets().open(signFileNames[outer][i])));
+                            new InputStreamReader(getAssets().open(vocaList[outer][i]+".csv")));
                     String[] lines;
                     List<List<Float>> entireCsvData = new ArrayList<List<Float>>();
 
-                    if (reader.readNext() == null) continue; // 첫줄의 레이블(x1, x2, x3...제거)
+                    // if (reader.readNext() == null) continue; // 첫줄의 레이블(x1, x2, x3...제거)
                     while ((lines = reader.readNext()) != null) {
                         List<Float> lineData = new ArrayList<Float>();
                         for (int j = 0; j < lines.length; j++) {
-                            Log.d("line", lines[j]);
+                            // Log.d("line", lines[j]);
                             lineData.add(Float.parseFloat(lines[j]));
                         }
                         entireCsvData.add(lineData);
@@ -128,7 +128,7 @@ public class BTService extends Service {
 
                 while ((lines = reader.readNext()) != null) {
                     for (int j = 1; j < lines.length; j++) {
-                        Log.d("line", lines[j]);
+                        // Log.d("line", lines[j]);
                         List<Integer> lineData = new ArrayList<Integer>();
                         for (int k = 0; k < lines[j].length(); k++) {
                             if (lines[j].charAt(k) == '-') {
@@ -338,12 +338,12 @@ public class BTService extends Service {
             }
 
             public String matching() {
-                float minDistance = 999999999;
+                float minDistance = INF;
                 int minI = 0, minJ = 0;
 
-                for(int i=0; i<signFileNames.length; i++) {
-                    for(int j=0; j<signFileNames[i].length; j++) {
-                        if(predictedVoca.get(signFileNames[i][j]) == 1) {
+                for(int i=0; i<vocaList.length; i++) {
+                    for(int j=0; j<vocaList[i].length; j++) {
+                        if(predictedVoca.get(vocaList[i][j]) == 1) {
                             float res = calc(i, j);
                             if(minDistance > res) {
                                 minDistance = res;
@@ -362,8 +362,13 @@ public class BTService extends Service {
                 float[][] matrix = new float[referData.size()][zairoInputData.size()];
 
                 for(int i=0; i<referData.size(); i++) {
+                    for (int j = 0; j < zairoInputData.size(); j++) {
+                        matrix[i][j] = INF; // 초기값
+                    }
+                }
+
+                for(int i=0; i<referData.size(); i++) {
                     for(int j=0; j<zairoInputData.size(); j++) {
-                        matrix[i][j] = 99999999; // 초기값
                         float result = cosineSim(referData.get(i), zairoInputData.get(j));
                         if(i == 0 && j == 0) matrix[i][j] = result;
                         else if(i == 0) matrix[i][j] = matrix[i][j-1] + result;

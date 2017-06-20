@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     PreferenceData pref = new PreferenceData(this);
     BTConnector btc;
 
-    String[][] signFileNames = {{"action.csv", "goreum.csv", "healthy.csv"}};
+    String[][] signFileNames = {{"행동.csv", "고름.csv", "건강.csv"}};
     String[] fingerFileNames = {"상황_병원.csv", "상황_회사.csv"};
     String[][] vocaList = {{"가래", "간호사", "건강", "고름", "곪다", "기침", "몸살", "문병", "발목",
      "복통", "빈혈", "설사", "수술", "심장마비", "아프다", "암", "약국", "열", "의사", "임신", "입원",
