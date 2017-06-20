@@ -161,6 +161,12 @@ public class ChatActivity extends AppCompatActivity {
 
         registerReceiver(chatReceiver, filter);
 
+        // 수화 리시버 등록
+        IntentFilter signFilter = new IntentFilter();
+        filter.addAction("sign");
+
+        registerReceiver(signReceiver, signFilter);
+
         // 이전 채팅 내용 불러오기
         loadChatLog();
 
@@ -369,5 +375,14 @@ public class ChatActivity extends AppCompatActivity {
         result += ":"+hhmmss[1];
         return result;
     }
+
+    BroadcastReceiver signReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals("sign")) {
+                etMessage.append(intent.getStringExtra("msg")+" ");
+            }
+        }
+    };
 
 }
